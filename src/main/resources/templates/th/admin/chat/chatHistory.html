@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="th/layout/adminLayout">
+<head>
+    <meta charset="UTF-8">
+    <title>회원채팅이력</title>
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/secondaryMenu.css}">
+    </th:block>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container">
+        <div class="layout-navigation-bar">
+            <div class="layout-navigation-secondary-wrap">
+                <div class="layout-navigation-secondary" style="position: relative;">
+                    <div class="layout-navigation-secondary__content">
+                        <nav class="layout-navigation-secondary__menu">
+                            <a class="layout-navigation-secondary__menu__item" th:href="@{/admin/chatList}">채팅리스트</a>
+                            <a class="layout-navigation-secondary__menu__item"
+                               th:href="@{/admin/chatHistory}">회원 채팅이력</a>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <h4>회원 채팅이력</h4>
+                </div>
+                <form class="form-inline col-md-4 ml-auto" th:action="@{/admin/chatHistory}">
+                    <div class="input-group input-group-sm">
+                        <input type="text" class="form-control" id="memberId" name="memberId"placeholder="아이디"/>
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">검색</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <table class="table table-hover">
+                <thead>
+                <tr class="list-group list-group-horizontal">
+                    <th style="width:10%">회원아이디</th>
+                    <th style="width:70%">채팅내용</th>
+                    <th style="width:20%">상담일자</th>
+                </tr>
+                </thead>
+                <tbody id="tableList">
+                    <tr class="list-group list-group-horizontal" th:each="msgList: ${msgLists}">
+                        <td th:text="${msgList.memberId}" style="width:10%"></td>
+                        <td th:utext="${msgList.msg}" style="width:70%"></td>
+                        <td th:text="${msgList.time}" style="width:20%"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div>
+                <nav aria-label="Page navigation example" class="paginator" th:object="${page.pageMaker}">
+                    <ul class="pagination pagination-sm justify-content-center">
+                        <li class="page-item" th:if="*{prev} == true" rel="prev" role="button">
+                            <a class="page-link" aria-hidden="true" th:if="${page.memberId}==null" th:href="@{/admin/chatHistory(page=*{startPage}-1, perPageNum=*{cri.perPageNum})}" >&laquo;</a>
+                            <a class="page-link" aria-hidden="true" th:unless="${page.memberId}==null" th:href="@{/admin/chatHistory(memberId=${page.memberId},page=*{startPage}-1, perPageNum=*{cri.perPageNum})}" >&laquo;</a>
+                        </li>
+                        <li class="page-item" th:each="idx,iterStat : ${#numbers.sequence(page.pageMaker.startPage,page.pageMaker.endPage)}"  th:classappend="*{cri.page} == ${idx} ? active : null">
+                            <a class="page-link" th:if="${page.memberId}==null" th:href="@{/admin/chatHistory(page=${idx},perPageNum=*{cri.perPageNum})}" th:text="${idx}"></a>
+                            <a class="page-link" th:unless="${page.memberId}==null" th:href="@{/admin/chatHistory(memberId=${page.memberId},page=${idx},perPageNum=*{cri.perPageNum})}" th:text="${idx}"></a>
+                        </li>
+                        <li class="page-item" th:if="*{next} == true and *{endPage > 0}" rel="next" role="button">
+                            <a class="page-link" aria-hidden="true" th:if="${page.memberId}==null" th:href="@{/admin/chatHistory(page=*{endPage}+1,perPageNum=*{cri.perPageNum})}">&raquo;</a>
+                            <a class="page-link" aria-hidden="true" th:unless="${page.memberId}==null" th:href="@{/admin/chatHistory(memberId=${page.memberId},page=*{endPage}+1,perPageNum=*{cri.perPageNum})}">&raquo;</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

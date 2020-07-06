@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bit.house.mapper.AdminMapper">
+
+    <resultMap id="saleStat" type="orderListVO"> <!-- 필요 없을ㅈ ㅣ도 -->
+        <result column="memberId" property="memberId"/>
+        <result column="totalPrice" property="totalPrice"/>
+        <result column="orderQty" property="orderQty"/>
+        <result column="year" property="year"/>
+        <result column="month" property="month"/>
+        <result column="day" property="day"/>
+
+        <association property="memberVO" javaType="memberVO">
+            <result column="memberId" property="memberId"/>
+        </association>
+
+    </resultMap>
+
+    <resultMap id="memberInfo" type="memberVO">
+        <result column="memberName" property="memberName"/>
+        <result column="memberId" property="memberId"/>
+        <result column="memberAddr" property="memberAddr"/>
+        <result column="memberEmail" property="memberEmail"/>
+
+        <association property="orderListVO" javaType="orderListVO">
+            <result column="orderQty" property="orderQty"/>
+            <result column="totalPrice" property="totalPrice"/>
+        </association>
+
+    </resultMap>
+
+    <resultMap id="dailysalestats" type="orderListVO">
+        <result column="memberId" property="memberId"/>
+        <result column="totalPrice" property="totalPrice"/>
+        <result column="orderQty" property="orderQty"/>
+        <result column="year" property="year"/>
+        <result column="month" property="month"/>
+        <result column="day" property="day"/>
+
+        <association property="memberVO" javaType="memberVO">
+            <result column="memberId" property="memberId"/>
+        </association>
+        <association property="productVO" javaType="productVO">
+            <result column="sellerName" property="sellerName"/>
+        </association>
+
+    </resultMap>
+
+    <resultMap id="directPayment" type="productVO">
+        <result column="productNo" property="productNo"/>
+        <result column="productName" property="productName"/>
+        <result column="purchasePrice" property="purchasePrice"/>
+        <result column="productMainImg" property="productMainImg"/>
+
+        <association property="colorVO" javaType="colorVO">
+            <result column="colorCode" property="colorCode"/>
+            <result column="colorType" property="colorType"/>
+        </association>
+
+    </resultMap>
+
+    <select id="getDirectPayment" resultMap="directPayment">
+        select c.colorCode, p.productNo, c.colorType, p.productName, p.purchasePrice, p.productMainImg  from color c, product p where c.colorType = #{colorN} and p.productNo=#{productNo};
+    </select>
+
+    <!-- 해당 업체 연간 판매량 -->
+    <select id="getYearlySellerSalesVolume" resultMap="dailysalestats">
+				select sellerName, sum(orderQty) as orderQty,
+				sum(totalPrice)as totalPrice, year  from dailysalestats where sellerName = #{sellerName}
+				group by sellerName, year order by year desc;
+				</select>
+
+    <!--#매출액순 (연간 월간)-->
+    <select id="getMonthlySellerSalesVolume" resultMap="dailysalestats">
+				select sellerName, sum(orderQty) as orderQty,
+				sum(totalPrice)as totalPrice, year, month  from dailysalestats where sellerName = #{sellerName} and year=#{year}
+				group by sellerName, year, month order by year desc;
+				</select>
+
+    <!--매출액순 (연간 월간 일갈)-->
+    <select id="getDailySellerSalesVolume" resultMap="dailysalestats">
+				select sellerName, sum(orderQty) as orderQty,
+				sum(totalPrice)as totalPrice, year, month, day  from dailysalestats where sellerName = #{sellerName} and year=#{year}
+				 and month = #{month}
+				 group by sellerName, year, month, day order by year desc;
+				</select>
+    <select id="getMember" resultType="allMemberVO">
+		select * from allmember
+	</select>
+    <select id="getProduct" resultType="productVO">
+		select * from product
+	</select>
+    <select id="getYear" resultType="String">
+		select year from dailysalestats group by YEAR
+	</select>
+    <select id="getProductOption" resultType="productOptionVO">
+		select * from productoption
+	</select>
+
+
+    <select id="getTotalPrice" resultType="orderListVO"> <!-- 날짜별 이건 판매 총액, 판매량 -->
+        select sum(totalPrice) as totalPrice, productNo, sum(orderQty) as orderQty, orderDate,
+        EXTRACT(YEAR FROM orderDate ) as year, EXTRACT(MONTH FROM orderDate ) as month, EXTRACT(DAY FROM orderDate ) as
+        day
+        from orderlist
+        group by productNo, orderDate order by orderDate;
+    </select>
+    <!-- where productNo = ''
+    /*year = #{year} , productNo = #{productNo},
+                                   month = #{month}, colorName 만약 색상까지 세분화 안한다면 주석처리 */
+                                   -->
+    <select id="getSpendingPattern" resultType="orderListVO"> <!-- 그냥 판매량 순으로 정렬해서 USERSPENDINGPATTERN이나 매출순위 뽑음 -->
+        select sum(totalPrice) as totalPrice, productNo, sum(orderQty) as orderQty, orderDate,
+        EXTRACT(YEAR FROM orderDate ) as year, EXTRACT(MONTH FROM orderDate ) as month, EXTRACT(DAY FROM orderDate ) as
+        day
+        from orderlist <!-- where productNo = '' -->
+        group by productNo order by totalPrice;
+    </select>
+
+
+    <!--#월단위 구매 많이한 유저
+select memberId,sum(totalPrice) as totalPrice, sum(orderQty) as orderQty, month, year
+from dailysalestats2
+group by memberId, month,year, month order by orderQty desc;
+    -->
+
+
+    <!-- memberInfo Page -->
+    <select id="getUserInfo" resultMap="memberInfo">
+		select m.memberName, m.memberId, m.memberAddr, m.memberEmail, sum(u.orderQty)as orderQty,
+sum(u.totalPrice)as totalPrice from member m, dailysalestats u where u.memberId = m.memberId
+group by memberId;
+	</select>
+
+    <select id="getOrderList" resultType="orderListVO">
+		select * from orderlist order by orderDate desc;
+	</select>
+
+    <!-- graph page -->
+    <select id="getUserPurchaseVolume" resultMap="saleStat">
+		  select sum(totalPrice) as totalPrice, memberId from dailysalestats group by memberId order by totalPrice desc;
+	</select>
+    <!-- userDateStat page -->
+    <select id="getUserDateStat" resultMap="saleStat">
+		  select sum(totalPrice) as totalPrice, memberId, year,month,day from dailysalestats where
+		    orderdate between #{date1} and #{date2} group by memberId;
+	</select>
+
+
+    <insert id="insertNonMemberOrderList" parameterType="java.util.List">
+        INSERT INTO orderlist(
+        orderNo,
+        productNo,
+        memberId,
+        colorName,
+        orderQty,
+        totalPrice,
+        recipient,
+        orderAddr,
+        orderDate,
+        payCode,
+        orderCode)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+            "${item.orderNo}",
+            "${item.productNo}",
+            null,
+            "${item.colorName}",
+            "${item.orderQty}",
+            "${item.totalPrice}",
+            "${item.recipient}",
+            "${item.orderAddr}",
+            "${item.orderDate}",
+            "${item.payCode}",
+            "${item.orderCode}"
+            )
+        </foreach>
+    </insert>
+
+
+    <insert id="insertMemberOrderList" parameterType="java.util.List">
+        INSERT INTO orderlist(
+        orderNo,
+        productNo,
+        memberId,
+        colorName,
+        orderQty,
+        totalPrice,
+        recipient,
+        orderAddr,
+        orderDate,
+        payCode,
+        orderCode)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+            "${item.orderNo}",
+            "${item.productNo}",
+            "${item.memberId}",
+            "${item.colorName}",
+            "${item.orderQty}",
+            "${item.totalPrice}",
+            "${item.recipient}",
+            "${item.orderAddr}",
+            "${item.orderDate}",
+            "${item.payCode}",
+            "${item.orderCode}"
+            )
+        </foreach>
+    </insert>
+
+
+    <insert id="insertInicis">
+        INSERT INTO orderlist(
+        orderNo,
+        productNo,
+        memberId,
+        colorName,
+        orderQty,
+        totalPrice,
+        recipient,
+        orderAddr,
+        orderDate,
+        payCode,
+        orderCode)
+        VALUES
+        (#{orderNo},#{productNo},null,#{colorName},#{orderQty},#{totalPrice},#{recipient},#{orderAddr},#{orderDate}
+        ,#{payCode},#{orderCode}
+        )
+    </insert>
+
+
+    <insert id="insertNonMemTable">
+        INSERT INTO nonmember(
+        orderNo,nonMemberName,nonMemberEmail,nonMemberPw,nonMemberTel,nonMemberAddr)
+        VALUES
+        (#{orderNo},#{nonMemberName},#{nonMemberEmail},#{nonMemberPw},#{nonMemberTel},#{nonMemberAddr}
+        )
+    </insert>
+
+
+    <select id="getOrderNo" resultType="String" parameterType="String">
+        select orderNo from orderlist where orderNo like concat('%',#{today},'%') order by orderNo desc limit 1
+    </select>
+
+    <select id="getProductManagement" resultType="productVO">
+        select productNo,sellerName,productName,modelName,customerPrice,sellPrice,purchasePrice,productCreateDate from product;
+    </select>
+    <!--#연단위 구매 많이한 유저
+    select memberId,sum(totalPrice) as totalPrice, sum(orderQty) as orderQty, year
+    from dailysalestats2
+    group by memberId, year order by orderQty desc;-->
+
+    <!--#일단위 구매 많이한 유저
+    select memberId,sum(totalPrice) as totalPrice, sum(orderQty) as orderQty, day, month, year
+    from dailysalestats2
+    group by memberId, day order by orderQty desc;-->
+
+    <!--EXTRACT(YEAR FROM orderDate ) = #{year}-->
+
+
+    <!-- 주소를 등록
+    첫 시도 (Update 해야되는데 insert 하려 해서 에러남)
+    <select id="insertAddr" r>
+select *,if(memberAddr is null,'하리보',if(deliveryAddr1 is null,'하리보둘',
+if(deliveryAddr2 is null,'하리보셋',deliveryAddr2))) as news from member1;
+
+
+    멤버 주소 업데이트
+update member1 set memberAddr=if(memberAddr is null,'asd',memberAddr), deliveryAddr1 = if(memberAddr is not null, null, 'Addr1에들어감'),
+ deliveryAddr2 = if(memberAddr is not null, null, if(deliveryAddr1 is not null,null,'Addr2에 들어감' ))
+ where memberId='test';
+    -->
+    <update id="updateMemberAddr">
+       update member set  deliveryAddr2 = if(memberAddr is not null,if(deliveryAddr1 is not null,#{fullAddr},null ),  null)
+, deliveryAddr1 = if(memberAddr is not null, if(deliveryAddr1 is not null, deliveryAddr1,#{fullAddr} ), null) ,
+memberAddr=if(memberAddr is null,#{fullAddr},memberAddr) where memberId=#{memberId};
+
+</update>
+
+    <select id="getPopularity" resultType="orderListVO">
+        select sellerName, productName, sum(orderQty) as orderQty from dailysalestats group by productName order by orderQty desc;
+    </select>
+
+</mapper>

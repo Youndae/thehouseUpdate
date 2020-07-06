@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="th/layout/adminLayout">
+<head>
+    <meta charset="UTF-8">
+    <title>메인</title>
+
+</head>
+<body>
+        <div layout:fragment="content">
+            회사명 입력 <input type="text" value="" id="inputSellerName"> <!-- th:attr="onclick=|alert('${thingCertificate.certificateId}')|" -->
+            <button name="sellerBtn" onsubmit="true" onclick="sellerBtn()" >제출</button>
+            <br>
+            <h1> 회원관리 </h1>
+            <a href="/admin/spendingPattern">회원 소비 패턴</a><br>
+            <a href="/admin/memberInfo">회원 정보</a><br>
+            <a href="/admin/memberOrderList">회원 주문 내역</a><br>
+            <a href="">채팅</a><br>
+            <h1> 제품관리 </h1>
+            <a href="/admin/productRegistration">제품 판매 등록 내역</a><br>
+            <a href="/admin/productManagement">제품 판매 관리</a><br>
+            <h1> 업체관리 </h1>
+            <a href="/admin/sellerManagement"> 업체관리</a><br>
+            <a href="/admin/applySeller">업체신청승인</a><br>
+            <script>
+                function sellerBtn() {
+                    var inputSellerName = document.getElementById("inputSellerName").value;
+                    console.log("inputSellerName : "+inputSellerName);
+                    var sellform ={
+                        inputSellerName : inputSellerName
+                    }
+                    $.ajax({
+                        //console.log("hi");
+                        url: "sellerGraphAjax",
+                        type: "POST",
+                        data: sellform,
+                        success: function (data) {
+                            alert("suc");
+                        },//이제 이값보내서 db 통계 뽑아서 다시 불러와서 2번 그래프에 다시 배열
+                        error: function () {
+                            alert("test err");
+                        }
+                    });
+                }
+            </script>
+        </div>
+<!---->
+
+</body>
+</html>

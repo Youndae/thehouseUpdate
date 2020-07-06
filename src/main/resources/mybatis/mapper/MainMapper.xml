@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bit.house.mapper.MainMapper">
+
+    <select id="selectMainList" resultType="productVO">
+		select productNo, sellerName, productName, customerPrice, productMainImg from thehouse.product order by rand() limit 12
+	</select>
+
+	<select id="selectBestLists" resultType="productQtyVO">
+		select *, dense_rank() over (order by totalQty desc) as ranking from thehouse.producttotalqty limit 100
+	</select>
+
+	<select id="selectNewBestLists" resultType="productQtyVO">
+		select *, dense_rank() over (order by totalQty desc) as ranking from thehouse.producttotalqty
+		where productCreateDate> DATE_ADD(now(), INTERVAL -1 month) limit 100
+	</select>
+
+</mapper>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="th/layout/defaultLayout">
+<head>
+    <meta charset="UTF-8">
+    <title>베스트상품</title>
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/mainContent.css}">
+        <link rel="stylesheet" th:href="@{/css/storeBest.css}">
+    </th:block>
+    <th:block layout:fragment="js">
+        <script type="text/javascript" th:src="@{/js/storeBest.js}"></script>
+    </th:block>
+
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container">
+        <div class="ranking-feed" id="ranking-type-filter">
+            <ol class="ranking-type-filter">
+                <a th:href="@{/storeBest}">
+                    <li class="nav-link active ranking-type-filter__item ranking-type-filter__item--left">역대판매 베스트</li></a>
+                <a th:href="@{/storeNewBest}">
+                   <li class="nav-link ranking-type-filter__item ranking-type-filter__item--right right--active">신제품 베스트</li></a>
+            </ol>
+
+            <span class="ranking__explain">최근 한달내에 나온 신상품 중 베스트 순위입니다.</span>
+
+            <div class="virtualized-list ranking-feed__content row" id="newBest"
+                 style="padding-top: 0px; transform: translateY(0px);">
+                <tr th:each="products : ${newList}">
+                    <div class="ranking-feed-item-wrap col-12 col-md-12 col-lg-3">
+                        <div class="ranking-product-item__wrap">
+                            <article class="production-item"><a class="ranking-product-item__link"
+                                                                th:href="@{/productions/productDetails(productNo=${products.productNo})}"></a>
+                                <div th:name="|a${products.ranking}|"
+                                     class="ranking-product-item__number-wrap ranking-product-item__number__medal">
+                                    <span th:name="|b${products.ranking}|" class="ranking-product-item__number"
+                                          th:text="${products.ranking}" th:data-rank="${products.ranking}"></span>
+                                </div>
+                                <div class="ranking-product-item__img-wrap">
+                                    <div class="production-item-image production-item__image">
+                                        <img class="image" alt=""
+                                             th:src="@{'/uploadImg/'+${products.productMainImg}}"
+                                             srcset="">
+                                    </div>
+                                </div>
+                                <div class="ranking-product-item__content">
+                                    <h1 class="ranking-product-item__header">
+                                        <span class="ranking-product-item__header__brand"
+                                              th:text="${products.sellerName}"></span>
+                                        <span class="ranking-product-item__header__name"
+                                              th:text="${products.productName}"></span>
+                                    </h1>
+                                    <span class="production-item-price">
+                                <span class="production-item-price__price"
+                                      th:text="${#numbers.formatInteger(products.customerPrice, 3, 'COMMA')}"></span>
+                                </span>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </tr>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

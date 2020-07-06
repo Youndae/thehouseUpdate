@@ -1,0 +1,145 @@
+.chatBox{
+    /*position: absolute;*/
+    bottom: 0;
+    right: 0;
+    width: 300px;
+    margin: 40px;
+    margin-bottom: 0;
+    font-size: 13px;
+}
+.chat-content{
+    overflow: auto;
+    height: 300px;
+}
+
+.chatBox .card-header{
+    background: #35c5f0;
+}
+.card-footer {
+    padding:0 !important;
+    border-top: 1px solid #dbdbdb;
+    -webkit-box-align: stretch;
+    -ms-flex-align: stretch;
+    align-items: stretch;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.header-title{
+    height: 50px;
+}
+.card-header {
+    -webkit-box-align: stretch;
+    -ms-flex-align: stretch;
+    align-items: stretch;
+    box-shadow: 0 1px 2px rgba(10, 10, 10, 0.1);
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    border-radius: 10px 10px 0 0;
+}
+.card-header-title i{
+    font-size: 10px;
+    color: #35c5f0;
+    margin-right: 6px;
+}
+.card-header .card-header-title{
+    color: #FFF;
+}
+.chat-content small{
+    margin: 0;
+}
+.chat-content p{
+    background: #ecf1f8;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 0;
+}
+.my-content .media-content{
+    width: 80%;
+}
+.my-content .message{
+    float: right;
+    background: #35c5f0;
+    color: #FFF;
+    text-align: right;
+    padding: 10px;
+    margin-bottom: 4px;
+    font-size: 13px;
+}
+.my-content .chat-content small{
+    float: right;
+}
+.my-content small{
+    display: block;
+    float: right;
+    width: 100%;
+    text-align: right;
+}
+.chat-textarea{
+    font-size: 14px;
+    padding: 8px;
+    height: 40px;
+    width: 100%;
+    border: none;
+    overflow: auto;
+    outline: none;
+
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    resize: none;
+}
+.chat-message-group{
+    padding: 0px 15px;
+}
+.chat-message-group .chat-thumb{
+    float: left;
+    width: 20%;
+}
+.chat-message-group .chat-messages{
+    float: left;
+    width: 80%;
+
+}
+.chat-message-group .message{
+    float: left;
+    padding: 10px;
+    background: #ecf1f8;
+    font-size: 13px;
+    border-radius: 5px;
+    margin-top: 3px;
+}
+.chat-messages .from{
+    float: left;
+    display: block;
+    width: 100%;
+    text-align: left;
+    font-size: 11px;
+}
+.chat-thumb img{
+    border-radius: 40px;
+}
+.writer-user .chat-messages{
+    float: right;
+    width: 100%;
+}
+.writer-user .chat-messages .message{
+    float: right;
+    background: #35c5f0;
+    color: #FFF;
+}
+.writer-user .chat-messages .from{
+    float: left;
+    display: block;
+    width: 100%;
+    text-align: right;
+}
+.chat-message-group .typing{
+    float: left;
+}
+.chatBox .card-header-icon i{
+    color: #FFF;
+    font-size: 13px;
+}

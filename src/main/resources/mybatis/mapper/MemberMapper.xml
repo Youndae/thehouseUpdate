@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bit.house.mapper.MemberMapper">
+
+    <insert id="insertMember" parameterType="com.bit.house.domain.MemberVO">
+        INSERT INTO member (memberId, memberName, memberEmail, memberTel)
+        VALUES (#{userid}, #{userName}, #{userEmail}, #{userTel})
+
+    </insert>
+
+    <insert id="insertSocialToMember" parameterType="com.bit.house.domain.MemberVO">
+        INSERT INTO member (memberId, memberName, memberEmail)
+        VALUES (#{userid}, #{userName}, #{userEmail})
+
+    </insert>
+
+    <select id="searchMember" resultType="com.bit.house.domain.MemberVO">
+        SELECT
+        *
+        FROM
+        member
+        WHERE memberId = #{userid}
+
+    </select>
+</mapper>

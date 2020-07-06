@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="th/layout/adminLayout">
+<head>
+    <meta charset="UTF-8">
+    <title>업체관리</title>
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/profile.css}">
+    </th:block>
+    <script type="text/javascript" th:src="@{/js/sellerAdm.js}"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container">
+        <div class="form-group">
+            <form action="/admin/sellerDetail" id="detailSeller" name="detailSeller">
+                <h5 class="post__title">
+                    거래처 상세
+                    <input type="button" class="posts__title__show-all" id="sellerDetail" name="sellerDetail"
+                           value="더보기" style="background-color: #DBDBDB; border: 0; outline: 0;"/>
+                </h5>
+                <input type="hidden" id="sellerName" name="sellerName" value=""/>
+                <input type="hidden" id="seller" name="seller" th:value="${sellerStat.sellerName}"/>
+            </form>
+        </div>
+        <div class="form-group">
+            <table class="table table-hover">
+                <tr>
+                    <th>업체명</th>
+                    <th>전화번호</th>
+                    <th>승인날짜</th>
+                </tr>
+                <tr>
+                    <td th:text="${sellerStat.sellerName}"></td>
+                    <td th:text="${sellerStat.managerTel}"></td>
+                    <td th:text="${sellerStat.permitDate}"></td>
+                </tr>
+            </table>
+        </div>
+        <section class="post post--collection">
+            <form action="/admin/allSellerProduct" id="allProduct" name="allProduct">
+                <h5 class="post__title">
+                    판매글
+                    <strong th:text="${productCount}"></strong>
+                    <input class="posts__title__show-all" type="button" id="productAll" name="productAll"
+                           value="더보기" style="background-color: #DBDBDB; border: 0; outline: 0;"/>
+                </h5>
+                <input type="hidden" id="sellerProduct" name="sellerProduct" value=""/>
+                <div class="row post--cards__list">
+                    <th:block th:each="stat : ${sellerProduct}">
+                        <div class="col-4 col-md-3">
+                            <div class="post--cards__item">
+                                <a th:href="@{/productions/productDetails(productNo=${stat.productNo})}">
+                                    <img class="post--cards__item__img" th:src="@{'/uploadImg/'+${stat.productMainImg}}"
+                                         th:attr="srcset=|@{'/uploadImg/'+${stat?.productMainImg}} 1.5x,
+                                                      @{'/uploadImg/'+${stat?.productMainImg}} 2x,
+                                                      @{'/uploadImg/'+${stat?.productMainImg}} 3x|"
+                                         style="width: 200px; height: 200px;"/>
+                                </a>
+                            </div>
+                        </div>
+                    </th:block>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>
+</body>
+</html>

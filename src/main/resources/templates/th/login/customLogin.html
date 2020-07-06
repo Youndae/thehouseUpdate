@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="th/layout/defaultLayout">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+<!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">-->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}">
+
+    <title>니가사는그집</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="container">
+        <div class="login_wrapper">
+            <div class="text-center logo-font">
+
+                <div class="col-md-12 md-auto mt-4 mb-3">
+                    <a th:href="@{/storeMain}">
+                        <img th:src="@{/icon/thehouse.png}" class="rounded-circle" width="70px" height="70px">
+                    </a>
+                </div>
+
+
+                <h2>
+                    <b>니가사는 그집</b>
+                </h2>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-5 col-cs-12 md-auto">
+                    <form method='post' th:action="@{/login}">
+                        <hr>
+                        <div class="mt-4 mb-3">
+                            <label for="username">아이디<span class="text-muted"></span></label> <input
+                                type="text" class="form-control" id="username" name="username" placeholder="User id">
+                            <div class="invalid-feedback">아이디를 입력하세요.</div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="password">패스워드<span class="text-muted"></span></label> <input
+                                type="password" class="form-control" id="password" name="password"
+                                placeholder="User password">
+                            <div class="invalid-feedback">비밀번호를 입력하세요.</div>
+                        </div>
+
+                        <button class="btn btn-block btn-info btn-sm mb-3" id="loginButton" type="submit">
+                            로그인
+                        </button>
+                        <div class="text-center">
+                            <div class="row">
+                                <a class="col-md-6 xs-6" href="#">아이디 찾기</a>
+                                <a class="col-md-6 xs-6" th:href="@{/signup}">회원 가입</a>
+                            </div>
+                        </div>
+                    </form>
+                    <hr>
+                    <form>
+                        <div class="row justify-content-center mt-3 mb-3">
+
+                            <a href="javascript:;" class="btn_social" data-social="google">
+                                <img th:src="@{/img/google.png}" width="60px" height="60px"
+                                     class="rounded-circle float-left"/>
+                            </a>
+
+                            <a href="javascript:;" class="btn_social ml-5" data-social="kakao">
+                                <img th:src="@{/img/kakao.png}" width="60px" height="60px"
+                                     class="rounded-circle float-center"/>
+                            </a>
+                            <a href="javascript:;" class="btn_social ml-5" data-social="naver">
+                                <img th:src="@{/img/naver.png}" width="60px" height="60px"
+                                     class="rounded-circle float-right"/>
+                            </a>
+
+                        </div>
+
+<!--                        <div class="text-center mb-5">-->
+<!--                            <div class="row">-->
+<!--                                <a class="col-md-12 xs-12" href="#">비회원으로 주문조회 하기</a>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>-->
+<script>
+    $('.btn_social').click(function () {
+        var socialType = $(this).data('social');
+        location.href = "/oauth2/authorization/" + socialType;
+    });
+</script>
+</div>
+</body>
+</html>
+

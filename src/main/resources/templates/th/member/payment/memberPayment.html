@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="th/layout/defaultLayout"> <!-- 이거 쓰면 이니시스 안먹힘 -->
+<head>
+    <meta charset="UTF-8">
+    <title>Member</title>
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/mainContent.css}">
+        <link rel="stylesheet" th:href="@{/css/basket.css}">
+    </th:block>
+
+    <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+    </div>
+    <script src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+</head>
+
+
+<body>
+
+<div layout:fragment="content">
+
+    <div id="body" class="orders pre_order" data-s_id="ad223c51bbde2a256a849d25cbb9b308" style="padding-bottom: 0px;">
+        <!--
+            <div id="layer" style="display:none;position:fixed;overflow:hidden;z-index:10000;-webkit-overflow-scrolling:touch;">
+                <img src="//i1.daumcdn.net/localimg/localimages/07/postcode/320/close.png" id="btnCloseLayer" style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1" alt="닫기 버튼">
+            </div>-->
+
+        <div id="chai_event" data-id="1075" data-has_products="false"></div>
+        <div id="pre_order" class=" bucket" data-id="23159872" data-is-overseas-purchase="false">
+
+            <!-- form -->
+            <form id="edit_order" class="edit_order" action="/kakaoPay" accept-charset="UTF-8" method="post">
+
+
+                <input name="utf8" type="hidden" value="✓"><input type="hidden" name="_method" value="patch"><input
+                    type="hidden" name="authenticity_token"
+                    value="ze6WpkSJXppVytsnsVCC/Rw4N/nrcPaUYMlh94aRzHT3RPv8LgoiclODhGPwB5YVSWDdbRpq+Khtuxdc5WbwSg==">
+                <div id="title">
+                    주문/결제
+                </div>
+                <div class="panel">
+                    <div class="title">
+                        <div class="title">주문상품</div>
+                    </div>
+                    <table cellspacing="0" id="order_productions">
+                        <tbody data-hj-suppress="" data-hj-ignore-attribute="">
+                        <tr class="production" data-id="41033" data-cost="55900" data-count="1"
+                            data-name="[핀란디아] [오늘의딜] 데이브 화이트/블랙 메쉬 책상의자 5colors">
+                            <td>
+                                <th:block th:if="${productVO == null}">
+                                    <div class="information" th:each="list, listStat : ${memberBasketList}">
+                                        <input type="hidden" name="orderQty" id="orderQty" th:value="${list.qty}"><br>
+                                        <input type="hidden" name="productNo" id="productNo"
+                                               th:value="${list.productNo}"><br>
+                                        <input type="hidden" name="colorName" id="colorName"
+                                               th:value="${list.productColor}"><br>
+                                        <input type="hidden" name="memberId" id="memberId" th:value="ha123"><br>
+                                        <input type="hidden" name="totalPrice" id="totalPrice"
+                                               th:value="${list.getProductVO().getPurchasePrice()}"><br>
+                                        <input type="hidden" name="usedPoint" id="usedPoint" th:value=3><br>
+                                        <input type="hidden" name="orderAddr" id="orderAddr" th:value="addr"><br>
+                                        <input type="hidden" name="orderDate" id="orderDate" th:value="2020-06-05"><br>
+                                        <input type="hidden" name="payCode" id="payCode" th:value="1"><br>
+                                        <input type="hidden" name="orderCode" id="orderCode" th:value="10"><br>
+                                        <input type="hidden" name="productName" id="productName"
+                                               th:value="${list.productName}">
+                                        <!--orderListVO에 저장안되나-->
+                                        <img th:src="@{'/uploadImg/'+${list.getProductVO().getProductMainImg()}}"
+                                             alt="320">
+                                        <div>
+                                            <div class="name" id="productNameTest" th:text="${list.productName}"></div>
+                                            <div class="option" th:text="${list.productColor}"></div>
+                                            <div class="cost_count">
+                                                <div class="totalCost"
+                                                     th:price-total="${list.getProductVO().getPurchasePrice()}"
+                                                     th:text="${list.getProductVO().getPurchasePrice()}"></div>
+                                                <div class="divider">|</div>
+                                                <div class="count" th:text="${list.qty}+개"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </th:block>
+                                <th:block th:unless="${productVO == null}">
+                                    <input type="hidden" name="orderQty"  th:value=1><br>
+                                    <input type="hidden" name="productNo" id="productNo"
+                                           th:value="${productVO.productNo}"><br>
+                                    <input type="hidden" name="colorName" id="colorName"
+                                           th:value="${productVO.colorVO.colorType}"><br>
+                                    <input type="hidden" name="totalPrice" id="totalPrice"
+                                           th:value="${productVO.purchasePrice}"><br>
+                                    <input type="hidden" name="productName" id="productName"
+                                           th:value="${productVO.productName}">
+
+                                    <div class="information">
+                                        <img th:src="@{'/uploadImg/'+${productVO.getProductMainImg()}}" alt="320">
+                                        <div>
+                                            <div class="name" id="productNameTest1"
+                                                 th:text="${productVO.productName}"></div>
+                                            <div class="option" th:text="${productVO.colorVO.colorType}"></div>
+                                            <div class="cost_count">
+                                                <div class="totalCost" th:price-total="${productVO.getPurchasePrice()}"
+                                                     th:text="${productVO.getPurchasePrice()}"></div>
+                                                <div class="divider">|</div>
+                                                <div class="count" th:text="1개"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </th:block>
+
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="panel">
+                    <div class="title">
+                        <div class="title">배송지</div>
+                        <button type="button" id="addrCheckbox" class="addrCheckbox" onclick="saveMemberAddr()">&nbsp;배송지
+                            저장하기
+                        </button>
+                    </div>
+                    <div class="input">
+                        <div class="field">
+                            <div class="label">받는분</div>
+                            <div class="input">
+                                <input presence="true" autocomplete="off" class="can_copy half" data-hj-suppress=""
+                                       type="text" name="recipient" id="order_recipient">
+                                <input type="hidden" name="order[received_name]" id="order_received_name" value="">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="label">우편번호</div>
+                            <div class="input">
+                                <input class="non_edit quarter" presence="true" readonly="readonly" value=""
+                                       data-hj-suppress="" type="text" name="zipCode" id="order_received_zip_code">
+                                <span class="find_address" onclick="execPostCode()">우편번호</span>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="label">주소</div>
+                            <div class="input vertical">
+                                <input readonly="readonly" class="non_edit full" value="" data-hj-suppress=""
+                                       type="text" name="receivedAt" id="order_received_at">
+                                <input value="" autocomplete="off" data-hj-suppress="" class="full" type="text"
+                                       name="receivedAtDetail" id="order_received_at_detail">
+                            </div>
+                        </div>
+                        <!--<div class="form-group">
+                            <input class="form-control" style="width: 40%; display: inline;" placeholder="우편번호" name="zipCode" id="zipCode" type="text" readonly="readonly" >
+                            <button type="button" class="btn btn-default" onclick="execPostCode();"><i class="fa fa-search"></i> 우편번호 찾기</button>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" style="top: 5px;" placeholder="도로명 주소" name="receivedAt" id="receivedAt" type="text" readonly="readonly" />
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" placeholder="상세주소" name="addr3" id="addr3" type="text"  />
+                        </div>-->
+                        <div class="field">
+                            <div class="label">휴대전화</div>
+                            <div class="input phone">
+                                <input type="text" name="order[received_phone_number]" id="order_received_phone_number">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="label vertical">
+                                배송 메모
+                            </div>
+                            <div class="input vertical">
+                                <input type="text" name="delivery_message" id="delivery_message"
+                                       class="delivery_memo donot_check_before_payment full view_delivery_preset"
+                                       autocomplete="off" data-hj-suppress="">
+                                <div id="delivery_messages" style="display: none;">
+
+                                    <div class="delivery_message first">
+                                        <div class="product_name">[핀란디아][오늘의딜] 데이브 화이트/블랙 메쉬 책상의자 5colors</div>
+                                        <input class="delivery_each_memo donot_check_before_payment full view_delivery_preset"
+                                               autocomplete="off" data-hj-suppress="" type="text"
+                                               name="order[order_productions_attributes][0][delivery_memo]"
+                                               id="order_order_productions_attributes_0_delivery_memo">
+                                    </div>
+                                    <input class="products_delivery_is_backwoods" type="hidden" value="false"
+                                           name="order[order_productions_attributes][0][is_backwoods]"
+                                           id="order_order_productions_attributes_0_is_backwoods">
+                                    <input type="hidden" value="41543208"
+                                           name="order[order_productions_attributes][0][id]"
+                                           id="order_order_productions_attributes_0_id"></div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="panel">
+                    <div class="title">
+                        <div class="title">주문자</div>
+                        <input type="checkbox" id="copy_delivery" onclick="ShipToBill(this.form);">배송지 정보와 동일하게</input>
+                        <span> &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span>
+
+                    </div>
+                    <div class="input">
+                        <div class="field">
+                            <div class="label">이름</div>
+                            <div class="input">
+                                <input autocomplete="off" data-hj-suppress="" class="half" type="text"
+                                       name="order[payer_name]" id="order_payer_name">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="label">이메일</div>
+                            <div class="input email">
+                                <input presence="true" value="" autocomplete="off" data-hj-suppress="" type="text"
+                                       name="order[payer_email]" id="order_payer_email">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="label">휴대전화</div>
+                            <div class="input phone">
+                                <input presence="true" value="" data-hj-suppress="" type="text"
+                                       name="order[payer_phone_number]" id="order_payer_phone_number">
+                                <div id="verified_phone_number">
+                                    <div class="verified_phone_number" data-value="" data-verified=""></div>
+                                    <div class="need_verified">
+
+                                        <div id="verified_inputs" style="display: none;">
+                                            <input id="verified_input" class="donot_check_before_payment"
+                                                   placeholder="인증번호" autocomplete="off" type="text" data-hj-suppress=""
+                                                   size="6">
+                                            <div id="check_verified">확인</div>
+                                            <div id="resend_verified_number">재전송</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="label"></div>
+                            <div class="input">
+                                <div class="form-check sms_agreement">
+                                    <label class="form-check-label" for="order_sms_aggrement">
+                                        <input name="order[sms_aggrement]" type="hidden" value="0"><input
+                                            class="form-check" type="checkbox" value="1" checked="checked"
+                                            name="order[sms_aggrement]" id="order_sms_aggrement">
+                                        <!--<span class="check-img"></span>
+                                        SMS 수신동의 <span> (배송 정보를 SMS로 보내드립니다.)</span>-->
+                                    </label></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="title">최종 결제 금액</div>
+                    <div class="cost">
+                        <div class="cost_panel">
+                            <div class="title">총 상품 금액</div>
+                            <div class="amount" id="preview_product_cost" data-hj-suppress="">
+                                <span class="number" th:id="paymentTP"></span>원
+                            </div>
+                        </div>
+
+                        <div class="cost_panel">
+                            <div class="title">배송비</div>
+                            <div class="amount" id="preview_delivery_cost" data-hj-suppress="">0</div>
+                        </div>
+
+                        <div class="cost_panel">
+                            <div class="title">포인트 사용</div>
+                            <div class="amount" id="preview_mileage_cost" data-hj-suppress="">0</div>
+                        </div>
+
+                        <div class="total cost_panel">
+                            <div class="amount" id="preview_selling_cost" data-hj-suppress="">
+                                <span class="number" th:id="paymentTP"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="panel">
+                    <div class="title light">결제 수단</div>
+                    <div class="pay_method">
+                        <div class="payment_panel">
+                            <input type="radio" value="kcp_credit_card" name="order[payment_method]"
+                                   id="order_payment_method_kcp_credit_card">
+
+                            <label class="first  top" for="order_payment_method_kcp_credit_card"
+                                   onclick="kakaoSubmit()">
+                                <!-- kakaoPay submit 어떻게? -->
+                                <img class="img" width="64" src="/img/kaka5.png" alt="Card">
+                                <div class="title">카카오페이</div>
+                                <!--<button>카카오</button>-->
+                                <div class="event" data-title="유의사항" data-detail1="-긴급재난지원금은 오늘의집에서 사용이 불가합니다"
+                                     data-detail2="">
+
+                                </div>
+                            </label> <input type="radio" value="without_bankbook" name="order[payment_method]"
+                                            id="order_payment_method_without_bankbook">
+
+                            <label class=" top" for="order_payment_method_without_bankbook" onclick="requestPay()">
+                                <img class="img" width="64"
+                                     src="/img/ini.png" alt="Vbank">
+                                <div class="title">이니시스</div>
+                                <div class="event" data-title="" data-detail1="" data-detail2="">
+
+                                </div>
+                            </label>
+                        </div>
+
+                        <div id="event_information">
+                            <div class="title">유의사항</div>
+                            <div class="detail line1">-긴급재난지원금은 오늘의집에서 사용이 불가합니다</div>
+                            <div class="detail line2" style="display: none;"></div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div id="confirm_checkbox">
+                    <div class="form-check check_agree_policy">
+                        <label class="form-check-label" for="check_agree_policy">
+                            <input type="checkbox" id="check_agree_policy" class="form-check">
+                            <span class="check-img"></span>
+                            결제 진행 필수사항 동의
+                        </label>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <th:block layout:fragment="js">
+        <script type="text/javascript" th:src="@{/js/memberPayment.js}"></script>
+    </th:block>
+</div>
+<button onClick="requestPay()">이니시스 결제</button>
+<script th:inline="javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+<form method="post" action="/kakaoPay">
+    <button>카카오페이로 결제하기</button>
+</form>
+
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="th/layout/defaultLayout">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/mainContent.css}">
+        <link rel="stylesheet" th:href="@{/css/basket.css}">
+    </th:block>
+</head>
+<body>
+<div layout:fragment="content">
+<div class="commerce-cart-empty" id="SNExist" style="display: block">
+    <div class="commerce-cart-empty__content"><img class="commerce-cart-empty__content__image"
+                                                   src="/img/basketNull.png"
+                                                   alt="장바구니가 비었습니다."> 장바구니가 비었습니다<a
+            class="button button--color-blue button--size-50 button--shape-4 commerce-cart-empty__content__button"
+            href="/storeMain">상품 담으러 가기</a>
+    </div>
+
+</div>
+</div>
+</body>
+</html>

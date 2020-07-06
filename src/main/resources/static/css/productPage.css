@@ -1,0 +1,139 @@
+.btn-basket, .btn-buy-now {
+    border-radius: 8px;
+    height: 50px;
+    width: 201px;
+    font-size: 20px;
+    color: white;
+    margin-top: 20px;
+    font-weight: bold;
+    box-shadow: inherit;
+}
+
+.btn-basket{
+    background: white;
+    color: #1bb1de;
+    border: 2px solid #1bb1de;
+}
+
+.btn-buy-now{
+    background: #1bb1de;
+    color: white;
+    border: none;
+
+}
+
+.production-selling-header__title__brand{
+    font-size: 20px;
+}
+
+.input-qty{
+    border-radius: 8px;
+    height: 30px;
+    width: 50px;
+    margin-top: 20px;
+    margin-left: 10px;
+}
+
+.production-selling-header__price__original{
+text-decoration: line-through;
+}
+
+.production-selling-header__price__customer{
+    font-size: 32px;
+    font-weight: 900;
+    font-family: Tahoma,sans-serif;
+    color: black;
+}
+.production-selling-header__price__original {
+
+    font-family: Tahoma,sans-serif;
+    font-size: 20px;
+    color: #757575;
+    text-transform: lowercase;
+
+
+}
+
+
+.won{
+    font-size: 28px;
+    font-weight: 400;
+}
+
+.production-selling-header__title__name{
+    margin: 0;
+    font-size: 25px;
+    line-height: 34px;
+    font-weight: 400;
+    color: black;
+}
+
+.production-selling-header__title__brand{
+    text-decoration: none;
+    font-size: 13px;
+    touch-action: manipulation;
+    cursor: pointer;
+    color: #35c5f0;
+    font-weight: 700;
+}
+
+#inputGroupSelect01{
+    margin-bottom: 15px;
+}
+
+#details{
+    padding-left: 110px;
+}
+
+#pills-tab {
+    border-bottom: 1px solid lightgrey;
+    border-top: 1px solid lightgrey;
+}
+
+.stars-outer {
+    display: inline-block;
+    position: relative;
+    font-family: FontAwesome;
+}
+
+.stars-outer::before {
+    content: "\f006 \f006 \f006 \f006 \f006";
+}
+
+.stars-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 0;
+}
+
+.stars-inner::before {
+    content: "\f005 \f005 \f005 \f005 \f005";
+    color: #f8ce0b;
+}
+
+
+.attribution:hover {
+    color: #1fa67a;
+}
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    cursor: inherit;
+    display: block;
+}

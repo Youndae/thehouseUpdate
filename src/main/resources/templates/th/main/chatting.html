@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/chatting.css}">
+    <link rel="icon" th:href="@{/icon/thehouse.png}">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/solid.js"
+            integrity="sha384-+Ga2s7YBbhOD6nie0DzrZpJes+b2K1xkpKxTFFcx59QmVPaSA8c7pycsNaFwUK6l"
+            crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/fontawesome.js"
+            integrity="sha384-7ox8Q2yzO/uWircfojVuCQOZl+ZZBg2D2J5nkpLqzH1HY0C1dHlTKIbpRz/LG23c"
+            crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/chatting.js}"></script>
+    <meta charset="UTF-8">
+    <title>채팅방</title>
+</head>
+<body onbeforeunload="disconnect()">
+<div class="chatBox" id="chatBox">
+    <div class="card">
+        <header class="card-header header-title">
+            <a class="card-header-icon" href="#" onclick="disconnect()" style="margin-left: 235px; color: #fff; font-weight:bold;">
+                <span class="icon">
+                    <svg class="bi bi-door-closed" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M3 2a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2zm1 0v13h8V2H4z"/>
+                        <path d="M7 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                        <path fill-rule="evenodd" d="M1 15.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13a.5.5 0 0 1-.5-.5z"/>
+                    </svg>
+                </span>
+            </a>
+        </header>
+
+        <div class="chatbox-area">
+            <div class="card-content chat-content">
+
+            </div>
+        </div>
+
+        <footer class="card-footer" id="chatBox-textbox">
+            <div style="width: 80%">
+                <input id="message" class="chat-textarea" placeholder="메시지를 입력하세요.">
+            </div>
+            <div class="has-text-centered" style="width: 20%">
+                <button class="btn btn-light" onclick="sendMsg()" th:id="sendBtn">send</button>
+            </div>
+        </footer>
+
+        <script th:inline="javascript" type="text/javascript">
+            var chatId = [[${chatInfo.chatId}]];
+            var admin = [[${chatInfo.adminId}]];
+            var enterTime = [[${chatInfo.time}]];
+
+            if (admin == null) {
+                var sender = [[${chatInfo.memberId}]];
+            } else {
+                var sender = [[${chatInfo.adminId}]];
+            }
+
+        </script>
+    </div>
+</div>
+</body>
+</html>

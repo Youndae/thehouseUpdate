@@ -1,0 +1,14 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<div th:fragment="navBar_myPage">
+    <div class="w3-container">
+        <div class="w3-bar">
+            <a th:href="@{/member/myBoard}"
+               class="w3-bar-item w3-button w3-hover-none w3-border-white w3-bottombar w3-hover-border-blue w3-hover-text-blue">내 게시물</a>
+            <!--<a th:href="@{/member/viewFollow}"
+               class="w3-bar-item w3-button w3-hover-none w3-border-white w3-bottombar w3-hover-border-blue w3-hover-text-blue">팔로워</a>-->
+            <a th:href="@{/member/receiveNote}"
+               class="w3-bar-item w3-button w3-hover-none w3-border-white w3-bottombar w3-hover-border-blue w3-hover-text-blue">쪽지</a>
+        </div>
+    </div>
+</div>

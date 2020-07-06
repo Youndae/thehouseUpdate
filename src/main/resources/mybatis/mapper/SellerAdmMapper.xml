@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bit.house.mapper.SellerAdmMapper">
+
+    <select id="sellerManagement" resultType="SellerVO">
+        SELECT sellerName, managerTel, permitDate FROM seller
+    </select>
+
+    <select id="sellerProduct" resultType="ProductVO">
+        SELECT productMainImg, productName, customerPrice, productNo
+        FROM product
+        WHERE sellerName=#{sellerName}
+        LIMIT 4;
+    </select>
+
+    <select id="productCount" resultType="int">
+        SELECT count(*) FROM product WHERE sellerName=#{sellerName}
+    </select>
+
+    <select id="sellerStat" parameterType="String" resultType="SellerVO">
+        SELECT sellerName, managerTel, permitDate
+        FROM seller
+        WHERE sellerName=#{sellerName}
+    </select>
+
+    <select id="sellerDetail" resultType="SellerVO">
+        SELECT * FROM seller WHERE sellerName=#{sellerName}
+    </select>
+
+    <select id="allSellerProduct" resultType="ProductVO">
+        SELECT ProductMainImg, productNo, sellerName, productName, customerPrice
+        FROM product
+        WHERE sellerName = #{sellerName}
+    </select>
+
+    <select id="applySeller" resultType="SellerVO">
+        SELECT sellerName, managerTel, applyDate FROM seller WHERE permit=0
+    </select>
+
+    <update id="applyProc" parameterType="SellerVO">
+        UPDATE seller SET
+        permit = 1, permitDate = sysdate()
+        WHERE sellerName = #{sellerName}
+    </update>
+
+</mapper>

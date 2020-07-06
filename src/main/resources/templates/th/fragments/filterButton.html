@@ -1,0 +1,25 @@
+<meta charset="UTF-8">
+<div th:fragment="filterButtonFragment">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+    <div class="w3-container">
+        <div class="w3-dropdown-click">
+            <button onclick="myFunction()" class="w3-button w3-blue">판매량</button>
+            <div id="Demo" class="w3-dropdown-content w3-bar-block w3-card-4 w3-animate-zoom">
+                <div class="transparent"><button>많은순</button></div>
+                <div><button>낮은순</button></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function myFunction() {
+            var x = document.getElementById("Demo");
+            if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show";
+            } else {
+                x.className = x.className.replace(" w3-show", "");
+            }
+        }
+    </script>
+</div>

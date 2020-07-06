@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>니가사는그집</title>
+
+</head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.0.2.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<link rel="stylesheet" th:href="@{/css/statAdmin.css}">
+
+<!-- body@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
+
+<body>
+<div class="container">
+    <!-- 차트 div -->
+    <!-- 차트 1 -->
+    <div>
+        <h1> 연도별 매출 </h1>
+        <!--회사명 입력 <input type="text" value="" id="inputSellerName">-->
+        <form action="/admin/searchCom" method="get">
+            회사명<input name="sellerName" type="text">
+            <input type="submit" value="검색">
+        </form>
+        <!--<button name="sellerBtn" onsubmit="true" onclick="sellerBtn()">제출</button>-->
+        <!-- 차트 1 -->
+        <div class="row-cols-1" id="name" style="width:35%; height:50px">
+            <canvas class="chart1" id="myChart" style="width:35%; height:100%; float:left"></canvas>
+        </div>
+        <!-- 차트 2 -->
+        <div class="row-cols-2" id="name2" style="width:35%; height:50px">
+            <canvas class="chart2" id="myChart2" style="width:35%; height:100%; float:left; display: none"></canvas>
+        </div>
+        <!-- 차트 3 -->
+        <div class="row-cols-3" id="name3" style="width:35%; height:50px">
+            <canvas class="chart3" id="myChart3" style="width:35%; height:100%; float:left; display: none"></canvas>
+        </div>
+    </div>
+</div>
+<script th:inline="javascript">
+
+    function sellerBtn() {
+        var inputSellerName = document.getElementById("inputSellerName").value;
+        console.log("inputSellerName : " + inputSellerName);
+        $.ajax({
+            //console.log("hi");
+            url: "sellerGraphAjax",
+            type: "POST",
+            data: {
+                inputSellerName: inputSellerName
+            },
+            success: function (data) {
+                console.log("suc");
+            },//이제 이값보내서 db 통계 뽑아서 다시 불러와서 2번 그래프에 다시 배열
+            error: function () {
+                alert("test err");
+            }
+        });
+    }
+
+
+
+
+
+    var globalGraph2Return;
+    var globalGraph3Return;
+
+    var json = [[${jsonText}]];
+    var yearList = [[${yearList}]];
+    var yearlyJson = [[${yearlyJson}]];
+    var sellN = [[${sellerName}]];
+    sessionStorage.setItem("sellerName",sellN);
+    sellN = sessionStorage.getItem("sellerName");
+
+    var jsonParse = JSON.parse(json);
+    var yearlyJsonParse = JSON.parse(yearlyJson);
+    var yearlyYearArr = new Array(); // 연
+    var yerlyQtyArr = new Array();// 판매량
+    var yearlyTotalPrice = new Array();    // 총액
+    var yearlySellerNameArr = new Array();    // 판매자
+    console.log("len : " + yearlyJsonParse.length + yearlyJsonParse);
+    for (var j = 0; j < yearlyJsonParse.length; j++) {
+        yearlyYearArr[j] = yearlyJsonParse[j].year;
+        yerlyQtyArr[j] = yearlyJsonParse[j].orderQty;
+        yearlyTotalPrice[j] = yearlyJsonParse[j].totalPrice;
+        // yearlySellerNameArr[j] = yearlyJsonParse[j].sellerName;
+    }
+    var yearArr = new Array();
+    var yearArr2 = new Array();
+    var productNo = new Array();
+    var backC =
+        'rgba(102, 152, 217, 1)'
+    ;
+    var borderC =
+        'rgba(27, 87, 166, 0.2)'
+    ;
+    var options = {
+        maintainAspectRatio: true, // default value. false일 경우 포함된 div의 크기에 맞춰서 그려짐.
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    };
+
+    // 차트 data
+    var chart1Data = {
+        labels: yearlyYearArr,  // 연도 들어갈 자리
+        datasets: [{
+            label: sellN, // 품목 들어갈 자리
+            data: yearlyTotalPrice, // 판매량 1, 품목, 날짜 ==== 0507날짜의 판매량 1위~6위 품목
+            backgroundColor: backC,
+            borderColor: borderC,
+            borderWidth: 1
+        }]
+    };
+
+
+    var monthData; //var monthData = [[${monthJsonText}]];
+    var dayData;    //var dayData = [[${dayJsonText}]];
+    var monthLabel;
+    var yearLabel;
+    // 1번째 차트 ajax@@@@@@@@@@@@@@@@@@
+    $(document).ready(
+        function () {
+            var chart1Canvas = document.getElementById("myChart");
+            var ctx = chart1Canvas.getContext('2d');
+            var myNewChart = new Chart(ctx, {
+                type: 'bar',
+                data: chart1Data,
+                options: options
+            });
+
+            chart1Canvas.onclick = function (evt) {
+                if (document.getElementById("myChart2").style.display == 'none') {
+                    document.getElementById("myChart2").style.display = 'block';
+                } else {
+                    console.log("이미 보여져있다");
+                    //document.getElementById("myChart2").style.display = 'none';
+                }
+                var activePoints = myNewChart.getElementsAtEvent(evt); // activePoints선언
+                console.log("activePoints: " + activePoints);
+                if (activePoints[0]) {
+                    var chartData = activePoints[0]['_chart'].config.data;
+                    var idx = activePoints[0]['_index'];
+
+                    yearLabel = chartData.labels[idx];
+                    var value = chartData.datasets[0].data[idx];
+                    var labels = chartData.labels[idx];
+                    var yearform = {
+                        product: productNo[0],
+                        year: yearLabel,
+                        sellerName: sellN
+                    }
+                    console.log("product : " + productNo[0]);
+                    console.log("year : " + yearLabel);
+                    $.ajax({
+                        //console.log("hi");
+                        url: "yearGraphAjax",
+                        type: "POST",
+                        data: yearform,
+                        success: function (data) {
+                            // ajax 성공시 chart2() 호출
+                            globalGraph2Return = data;
+                            //alert(globalGraph2Return);
+                            reload1();
+                            chart2();
+                        },//이제 이값보내서 db 통계 뽑아서 다시 불러와서 2번 그래프에 다시 배열
+                        error: function () {
+                            alert("test err");
+                        }
+                    });
+
+                }
+            };
+        }
+    );
+
+    //2번 차트 ajax@@@@@@@@@@
+    function reload1() {
+        document.getElementById('myChart2').remove();
+        console.log("reload1");
+        var canv1 = document.createElement('canvas');
+        canv1.id = 'myChart2';
+        document.getElementById('name2').appendChild(canv1);
+    }
+
+    function reload2() {
+        $('#myChart3').remove();
+        console.log("reload2");
+        var canv2 = document.createElement('canvas'); //style="float: left;"
+        canv2.id = 'myChart3';
+        document.getElementById('name3').appendChild(canv2);
+    }
+
+    function chart2() {
+
+        console.log("chart2입니다 :: " + globalGraph2Return);
+        var monthlyMonthArr = new Array();
+        var monthlyQtyArr = new Array();
+        var monthlyTotalPriceArr = new Array();
+        for (var i = 0; i < globalGraph2Return.length; i++) {
+            monthlyMonthArr[i] = globalGraph2Return[i].month;
+            monthlyTotalPriceArr[i] = globalGraph2Return[i].totalPrice;
+            monthlyQtyArr[i] = globalGraph2Return[i].orderQty;
+        }
+        console.log("monthly : " + monthlyMonthArr + monthlyQtyArr + monthlyTotalPriceArr);
+
+        var chart2Data = {
+            labels: monthlyMonthArr, // month 들어갈 자리
+            datasets: [{
+                label: sellN, //
+                data: monthlyTotalPriceArr, // 달당 수량
+                backgroundColor: backC,
+                borderColor: borderC,
+                borderWidth: 1
+            }]
+        };
+
+        var chart2Canvas = document.getElementById("myChart2");
+        var ctx2 = chart2Canvas.getContext('2d');
+        var chart2 = new Chart(ctx2, {
+            type: 'bar',
+            data: chart2Data,
+            options: options
+        });
+        chart2Canvas.onclick = function (evt) {
+            if (document.getElementById("myChart3").style.display == 'none') {
+                document.getElementById("myChart3").style.display = 'block';
+            } else {
+                console.log("이미 보여져있다");
+            }
+
+            var activePoints = chart2.getElementsAtEvent(evt); // aP선언
+            console.log("activePoints: " + activePoints);
+            if (activePoints[0]) {
+                var chartData = activePoints[0]['_chart'].config.data;
+                console.log("chartData : " + chartData);
+                var idx = activePoints[0]['_index'];
+                console.log("idx : " + idx);
+
+                monthLabel = chartData.labels[idx];
+                console.log("label : " + monthLabel);
+
+                var value = chartData.datasets[0].data[idx];
+                console.log("value : " + value);     //label : month,
+
+                var url = "http://example.com/?label=" + monthLabel + "&value=" + value;
+                console.log(url);
+
+
+                var monthform = {
+                    product: productNo[0],
+                    year: yearLabel,
+                    month: monthLabel,
+                    sellerName: sellN
+                }
+                console.log("product : " + productNo[0]);
+                console.log("month : " + monthLabel);
+                $.ajax({
+                    url: "monthGraphAjax",
+                    type: "POST",
+                    async: false,
+                    data: monthform,
+                    success: function (data) {
+                        globalGraph3Return = data;
+                        reload2();
+                        chart3();
+                    },//이제 이값보내서 db 통계 뽑아서 다시 불러와서 2번 그래프에 다시 배열
+                    error: function () {
+                        alert("test err");
+                    }
+                });
+            }
+        };
+    }
+
+
+    function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+
+
+    function chart3() {
+        console.log("전역변수차트3변수" + globalGraph3Return);
+
+        var dailyDayArr = new Array();
+        var dailyQtyArr = new Array();
+        var dailyTotalPriceArr = new Array();
+        for (var i = 0; i < globalGraph3Return.length; i++) {
+            dailyDayArr[i] = globalGraph3Return[i].day;
+            dailyTotalPriceArr[i] = globalGraph3Return[i].totalPrice;
+            console.log("컴마 "+numberWithCommas(globalGraph3Return[i].totalPrice));
+            dailyQtyArr[i] = globalGraph3Return[i].orderQty;
+        }
+        console.log("monthly : " + dailyDayArr + dailyQtyArr + dailyTotalPriceArr);
+
+
+        var chart3Data = {
+            labels: dailyDayArr, //day 들어갈 자리
+            datasets: [{
+                label: sellN,   // 이름
+                data: dailyTotalPriceArr, // 데이터
+                backgroundColor: backC,
+                borderColor: borderC,
+                borderWidth: 1
+            }]
+        };
+        var chart3Canvas = document.getElementById("myChart3");
+        var ctx3 = chart3Canvas.getContext('2d');
+        var chart3 = new Chart(ctx3, {
+            type: 'bar',
+            data: chart3Data,
+            options: options
+        });
+        chart3Canvas.onclick = function (evt) {
+            var activePoints = chart3.getElementsAtEvent(evt); // aP선언
+            console.log("activePoints: " + activePoints);
+            if (activePoints[0]) {
+                var chartData = activePoints[0]['_chart'].config.data;
+                var idx = activePoints[0]['_index'];
+
+                var label = chartData.labels[idx]; // label = day
+                var value = chartData.datasets[0].data[idx];
+
+                var url = "http://example.com/?label=" + label + "&value=" + value;
+                console.log(url);
+            }
+        };
+    }
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<div th:fragment="headerFragment">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12 xs-12 md-auto">
+                <nav class="navbar navbar-icon-top navbar-expand-lg navbar-light" style="background-color: white;">
+                    <a class="navbar-brand logo-font" th:href="@{/}"><img th:src="@{/icon/thehouse.png}" class="rounded-circle" width=50px
+                                                          height=50px /> <b>니가사는그집</b></a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse sub-font" id="navbarSupportedContent">
+                        <ul class="navbar-nav ml-auto">
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link" th:href="@{/seller/sellerInfo}" id="navbarDropdown" role="button" aria-haspopup="true"
+                                   aria-expanded="false">업체관리
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" th:href="@{/seller/sellerInfo}">업체 관리</a>
+                                    <a class="dropdown-item" th:href="@{/seller/sellerInfoLogin}">업체 ID 관리</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link" th:href="@{/seller/category}" id="navbarDropdown" role="button" aria-haspopup="true"
+                                   aria-expanded="false">상품관리
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" th:href="@{/seller/category}">상품등록</a>
+                                    <a class="dropdown-item" th:href="@{/seller/productList}">상품리스트</a>
+                                </div>
+
+
+                            </li>
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link" th:href="@{/seller/orderList}" id="navbarDropdown" role="button" aria-haspopup="true"
+                                   aria-expanded="false">주문관리
+                                </a>
+
+                            </li>
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link" th:href="@{/seller/sellerChart}" id="navbarDropdown" role="button" aria-haspopup="true"
+                                   aria-expanded="false">통계관리
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" th:href="@{/seller/sellerChart}">전체통계</a>
+                                    <a class="dropdown-item" th:href="@{/seller/sellerChart}">월별통계</a>
+                                    <a class="dropdown-item" th:href="@{/seller/sellerChart}">일별통계</a>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <ul class="navbar-nav">
+                            <form class="form-inline my-2 my-lg-0" form-method="post" th:action="@{/customLogout}">
+                                <input sec:authorize="isAuthenticated()" type="submit" class="button-css ml-2 mr-3" style="border: 1px solid red; color:red;" value="로그아웃">
+<!--                                <button sec:authorize="isAuthenticated()" class="btn btn-outline-danger my-2 my-sm-0 btn-sm" type="submit">로그아웃</button>-->
+                            </form>
+                        </ul>
+
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+</html>

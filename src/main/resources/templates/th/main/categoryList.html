@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="th/layout/defaultLayout">
+<head>
+    <meta charset="UTF-8">
+    <title>메인</title>
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/mainContent.css}">
+        <link rel="stylesheet" th:href="@{/css/sidebar.css}">
+    </th:block>
+
+</head>
+<body>
+<div layout:fragment="content">
+    <a href="#" data-drawer-trigger aria-controls="drawer-name" aria-expanded="false"
+       class='fas fa-align-justify sticky-top' style='font-size:36px'></a>
+    <th:block th:replace="th/fragments/sidebarfilter"></th:block>
+    <div id="store-index">
+        <section class="container store-index-section store-index-product-list">
+            <div class="virtualized-list row"
+                 style="padding-top: 0px; padding-bottom: 3888px; transform: translateY(0px); ">
+                <tr th:each="products : ${productList}">
+                    <div class="col-6 col-md-3 product-item-wrap">
+                        <article class="production-item"><a class="production-item__overlay"
+                                                            th:href="@{/productions/productDetails(productNo=${products.productNo})}"></a>
+                            <div class="production-item-image production-item__image">
+                                <img class="image" alt="" th:src="@{'/uploadImg/'+${products.productMainImg}}"
+                                     srcset="">
+                            </div>
+                            <div class="production-item__content">
+                                <h1 class="production-item__header">
+                                    <span class="production-item__header__brand"
+                                          th:text="${products.sellerName}"></span>
+                                    <span class="production-item__header__name"
+                                          th:text="${products.productName}"></span></h1>
+                                <span class="production-item-price">
+                            <span class="production-item-price__price" th:text="${products.customerPrice}"></span>
+                        </span>
+                            </div>
+                        </article>
+                    </div>
+                </tr>
+            </div>
+        </section>
+    </div>
+</div>
+
+</body>
+</html>

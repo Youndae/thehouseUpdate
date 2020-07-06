@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        a:link {text-decoration: none; color: #333333;}
+        a:visited {text-decoration: none; color: #333333;}
+        a:active {text-decoration: none; color: #333333;}
+        a:hover {text-decoration: underline; color: red;}
+    </style>
+</head>
+
+<body>
+<div>
+
+                <h1
+                    class="production-selling-cart-complete-modal__title">장바구니에 상품을 담았습니다</h1>
+                <a class="button button--color-blue button--size-60 button--shape-4 production-selling-cart-complete-modal__button"
+                       style="color:deepskyblue;" onclick="selfCloseSubmit()">장바구니 보러가기</a>
+                    <button class="button button--color-gray-7 button--size-60 button--shape-4 production-selling-cart-complete-modal__button"
+                            type="button" style="color:papayawhip; background-color: #1bb1de; border: #1bb1de" onclick="selfClose()">쇼핑 계속하기
+                    </button>
+
+</div>
+
+<script type="text/javascript">
+    function selfCloseSubmit() {
+        opener.location.href = '/basket';
+        window.close();
+
+        goSession = sessionStorage.getItem("ProductNameSession")
+        $.ajax({ // 세션 보내기 ajax
+            //console.log("hi");
+            url: "basketSession",
+            type: "POST",
+            traditional: true,
+            data: {'hoho': goSession}
+            ,
+            success: function (e) {
+                var result = e.result
+                console.log("success");
+                //console.log(hoho3);
+                console.log(e);
+                location.href = "/basket";
+            },
+            error: function () {
+                alert("test err");
+            }
+        });
+
+    }
+
+    function selfClose() {
+        window.opener.location.reload();
+        window.close();
+
+
+    }
+
+</script>
+</body>
+</html>

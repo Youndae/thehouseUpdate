@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="th/layout/defaultLayout">
+<head>
+    <meta charset="UTF-8">
+    <title>메인</title>
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/mainContent.css}">
+    </th:block>
+    <link th:href="@{/css/productPage.css}" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{https://www.w3schools.com/w3css/4/w3.css}">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css"/>
+    <link rel="stylesheet" media="screen" href="https://d1nyaccf3kuclt.cloudfront.net/assets/v3/layout/application_react-c68374e516e05258989e1c408ec53ff0ffa468ef1755a945c31caf2e365af3d0.css">
+    <link rel="stylesheet" media="screen" href="https://d1nyaccf3kuclt.cloudfront.net/dist/css/9-e75c67c6.chunk.css">
+    <link rel="stylesheet" media="screen" href="https://d1nyaccf3kuclt.cloudfront.net/dist/css/20-dfb1ddc9.chunk.css">
+    <link rel="stylesheet" media="screen" href="https://d1nyaccf3kuclt.cloudfront.net/dist/css/App-18d780d3.css">
+    <link rel="stylesheet" media="screen" href="https://d1nyaccf3kuclt.cloudfront.net/dist/css/15-82708389.chunk.css">
+    <link rel="stylesheet" media="screen" href="https://d1nyaccf3kuclt.cloudfront.net/dist/css/templates-Commerce-Cart-2ea5daa5.chunk.css">
+    <link rel="stylesheet" type="text/css" href="https://d1nyaccf3kuclt.cloudfront.net/dist/css/7-254b0bc7.chunk.css">
+    <link rel="stylesheet" type="text/css" href="https://d1nyaccf3kuclt.cloudfront.net/dist/css/12-69bdf3b3.chunk.css">
+    <link rel="stylesheet" type="text/css" href="https://d1nyaccf3kuclt.cloudfront.net/dist/css/templates-Home-HomePage-23b340c6.chunk.css">
+    <link rel="stylesheet" type="text/css" href="https://d1nyaccf3kuclt.cloudfront.net/dist/css/2-a868d236.chunk.css">
+    <link rel="stylesheet" type="text/css" href="https://d1nyaccf3kuclt.cloudfront.net/dist/css/6-c0386d07.chunk.css">
+    <link rel="stylesheet" type="text/css" href="https://d1nyaccf3kuclt.cloudfront.net/dist/css/13-0f9754c8.chunk.css">
+    <link rel="stylesheet" type="text/css" href="https://d1nyaccf3kuclt.cloudfront.net/dist/css/29-45fb8d35.chunk.css">
+    <link rel="stylesheet" type="text/css" href="https://d1nyaccf3kuclt.cloudfront.net/dist/css/templates-Content-CardFeed-CardCollectionFeed-b4eb851d.chunk.css">
+    <link rel="stylesheet" type="text/css" href="https://d1nyaccf3kuclt.cloudfront.net/dist/css/templates-Commerce-RankingFeed-312e334b.chunk.css">
+    <link rel="stylesheet" type="text/css" href="https://d1nyaccf3kuclt.cloudfront.net/dist/css/14-ce81812a.chunk.css">
+    <link rel="stylesheet" type="text/css" href="https://d1nyaccf3kuclt.cloudfront.net/dist/css/templates-Content-ProjectFeed-978244ed.chunk.css">
+    <link rel="stylesheet" type="text/css" href="https://d1nyaccf3kuclt.cloudfront.net/dist/css/templates-Advice-AdviceFeed-8da7faa1.chunk.css">
+    <link rel="stylesheet" type="text/css" href="https://d1nyaccf3kuclt.cloudfront.net/dist/css/32-f41a52da.chunk.css">
+    <link rel="stylesheet" type="text/css" href="https://d1nyaccf3kuclt.cloudfront.net/dist/css/templates-Commerce-StoreIndex-StoreIndex-85ea7969.chunk.css">
+    <link rel="stylesheet" type="text/css" href="https://d1nyaccf3kuclt.cloudfront.net/dist/css/templates-Commerce-Selling-d79c1417.chunk.css">
+
+
+
+
+</head>
+<body>
+<div layout:fragment="content" class="mt-5">
+    <form action="/goPayment" method="get">
+        <div class="container">
+
+            <div class="row">
+
+                <div class="w3-content" style="max-width:450px">
+
+                    <div th:if="${product.productMainImg}">
+                        <img class="mySlides" th:src="@{'/uploadImg/'+${product.productMainImg}}"
+                             style="width:100%;display:none">
+                    </div>
+
+                    <div th:if="${product.productSubImg1}">
+                        <img class="mySlides" th:src="@{'/uploadImg/'+${product.productSubImg1}}" style="width:100%">
+                    </div>
+
+                    <div th:if="${product.productSubImg2}">
+                        <img class="mySlides" th:src="@{'/uploadImg/'+${product.productSubImg2}}"
+                             style="width:100%;display:none">
+                    </div>
+
+                    <div th:if="${product.productSubImg3}">
+                        <img class="mySlides" th:src="@{'/uploadImg/'+${product.productSubImg3}}"
+                             style="width:100%;display:none">
+                    </div>
+
+                    <div class="w3-row-padding w3-section">
+                        <div class="w3-col s3" th:if="${product.productMainImg}">
+                            <img class="demo w3-opacity w3-hover-opacity-off"
+                                 th:src="@{'/uploadImg/'+${product.productMainImg}}" style="width:100%;cursor:pointer"
+                                 onclick="currentDiv(1)">
+                        </div>
+
+                        <div class="w3-col s3" th:if="${product.productSubImg1}">
+                            <img class="demo w3-opacity w3-hover-opacity-off"
+                                 th:src="@{'/uploadImg/'+${product.productSubImg1}}" style="width:100%;cursor:pointer"
+                                 onclick="currentDiv(2)">
+                        </div>
+
+
+                        <div class="w3-col s3" th:if="${product.productSubImg2}">
+                            <img class="demo w3-opacity w3-hover-opacity-off"
+                                 th:src="@{'/uploadImg/'+${product.productSubImg2}}" style="width:100%;cursor:pointer"
+                                 onclick="currentDiv(3)">
+                        </div>
+
+
+                        <div class="w3-col s3" th:if="${product.productSubImg3}">
+                            <img class="demo w3-opacity w3-hover-opacity-off"
+                                 th:src="@{'/uploadImg/'+${product.productSubImg3}}" style="width:100%;cursor:pointer"
+                                 onclick="currentDiv(4)">
+                        </div>
+
+                    </div>
+
+                    <input type="hidden" id="productName" th:value="${product.productName}">
+                    <input type="hidden" id="productNo" name="productNo" th:value="${product.productNo}">
+                    <input type="hidden" id="productColor" name="productColor" th:value="${product.colorCodeVOList}">
+                    <input type="hidden" name="directPayment" th:value="real">
+                </div>
+
+                <div class="col-md-7 pl-lg-5">
+                    <div class="production-item-stats">
+                        <h1 class="production-selling-header__title"><p
+                                class="production-selling-header__title__brand-wrap">
+                            <a class="production-selling-header__title__brand"
+                               href="" th:value="${product.productNo}" th:text="${product.sellerName}"></a>
+                        </p><span class="production-selling-header__title__name" th:value="${product.productName}"
+                                  th:text="${product.productName}" th:id="pName"></span>
+                        </h1>
+                        <h4><span class="production-selling-header__price__original"
+                                  th:text="${product.sellPrice} +'원'"></span></h4>
+                        <h4><span class="production-selling-header__price__customer"
+                                  th:text="${product.customerPrice}"></span><span class="won">원</span></h4>
+                    </div>
+                    <div class="input-group">
+                        <select class="custom-select col-md-7" th:id="inputGroupSelect01" name="colorN">
+                            <option selected value="" id="disabled">색상을 선택해주세요</option>
+                            <option id="colorSelect" th:each="color : ${product.colorCodeVOList}"
+                                    th:value="${color}"
+                                    th:utext="${color}"/>
+                        </select>
+                    </div>
+
+                    <div>
+                        <select class="custom-select col-md-1" name="hohoBox" id="hohoBox">
+                            <option th:value="1">1</option>
+                            <option th:value="2">2</option>
+                            <option th:value="3">3</option>
+                            <option th:value="4">4</option>
+                            <option th:value="5">5</option>
+                            <option th:value="6">6</option>
+                            <option th:value="7">7</option>
+                            <option th:value="8">8</option>
+                            <option th:value="9">9</option>
+                            <option th:value="10">10</option>
+                        </select>
+
+                    </div>
+                    <button type="submit" class="btn-basket" onclick="saveSessionStorage(); return false;">
+                        장바구니
+                    </button>
+                    <div id="modal-root" style="display: none;">
+                    <div>
+                        <div class="react-modal react-modal--center open open-active">
+                            <div class="react-modal__content-wrap">
+                                <div class="react-modal__content production-selling-cart-complete-modal"><h1
+                                        class="production-selling-cart-complete-modal__title">장바구니에 상품을 담았습니다</h1><a
+                                        class="button button--color-blue button--size-60 button--shape-4 production-selling-cart-complete-modal__button"
+                                        href="/basket">장바구니 보러가기</a>
+                                    <button class="button button--color-gray-7 button--size-60 button--shape-4 production-selling-cart-complete-modal__button"
+                                            id="modalBtn" type="button" onclick="window.location.reload()">확인
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    <!--<p><a onclick="goModal();" id="getModal">모달창띄우기</a></p>-->
+                    <!--<a href="/basketPop" value="저장" onClick="saveSessionStorage(); return false;">저장</a>
+                    <a href="/basketPop" rel="modal:open" onclick="saveSessionStorage();">모달창띄우기</a>-->
+                    <button type="submit" class="btn-buy-now">바로구매</button>
+                </div>
+            </div>
+
+
+            <div class="container">
+                <ul class="nav nav-pills mb-3 justify-content-center sticky-top bg-white"
+                    style="width: auto; background-color: white" id="pills-tab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" id="pills-productInfo-tab" data-toggle="pill"
+                           href="#pills-productInfo"
+                           role="tab"
+                           aria-controls="pills-productInfo" aria-selected="true">상품정보</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="pills-reviews-tab" data-toggle="pill" href="#pills-reviews" role="tab"
+                           aria-controls="pills-reviews" aria-selected="false">리뷰</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab"
+                           aria-controls="pills-contact" aria-selected="false">업체정보</a>
+                    </li>
+                </ul>
+                <div class="tab-content my-4" id="pills-tabContent">
+                    <div class="tab-pane fade show active" id="pills-productInfo" role="tabpanel"
+                         aria-labelledby="pills-productInfo-tab" th:if="${product.productExpImg}">
+                        <img th:src="@{'/uploadImg/'+${product.productExpImg}}" class="d-block w-100" alt="..."></div>
+                    <div class="tab-pane fade" id="pills-reviews" role="tabpanel"
+                         aria-labelledby="pills-reviews-tab">
+                        <div class="card mb-3" style="max-width: 100%;" th:each="reviews, iter :${reviewList}">
+                            <div class="row no-gutters">
+                                <div class="col-md-4">
+                                    <div th:id="'carouselExampleFade_' + ${iter.count}"
+                                         class="carousel slide carousel-fade"
+                                         data-ride="carousel">
+                                        <div class="carousel-inner">
+                                            <div class="carousel-item active card-img-top"
+                                                 th:if="${reviews.reviewImg1}">
+                                                <img th:src="${reviewUrlImg} + ${reviews.reviewImg1}"
+                                                     class="d-block w-100"
+                                                     alt="...">
+                                            </div>
+
+                                            <div class="carousel-item card-img-top" th:if="${reviews.reviewImg2}">
+                                                <img th:src="${reviewUrlImg} + ${reviews.reviewImg2}"
+                                                     class="d-block w-100"
+                                                     alt="...">
+                                            </div>
+
+                                            <div class="carousel-item card-img-top" th:if="${reviews.reviewImg3}">
+                                                <img th:src="${reviewUrlImg} + ${reviews.reviewImg3}"
+                                                     class="d-block w-100"
+                                                     alt="...">
+                                            </div>
+                                        </div>
+                                        <a class="carousel-control-prev"
+                                           th:href="@{'#carouselExampleFade_' + ${iter.count}}"
+                                           role="button"
+                                           data-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                        <a class="carousel-control-next"
+                                           th:href="@{'#carouselExampleFade_' + ${iter.count}}"
+                                           role="button"
+                                           data-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h3 class="card-title" th:text="${reviews.memberId}"></h3>
+                                        <label>모델명:</label>
+                                        <h4 class="card-text" th:text="${reviews.modelName}"></h4>
+                                        <label>색상:</label>
+                                        <h4 class="card-text" th:text="${reviews.colorName}"></h4>
+                                        <p class="card-text" th:text="${reviews.reviewContent}"></p>
+                                        <p class="card-text"><small class="text-muted"
+                                                                    th:text="${reviews.orderConfirmDate}"></small></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+                        <table class="table table-sm">
+                            <tbody>
+                            <tr>
+                                <th scope="row">업체이름:</th>
+                                <td th:text="${seller.sellerName}"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">업체관리자전화번호:</th>
+                                <td th:text="${seller.managerTel}"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">업체관리자이메일:</th>
+                                <td th:text="${seller.managerEmail}"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">주소:</th>
+                                <td th:text="${seller.sellerAddr}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <script>
+        function goModal(){
+            var a = document.getElementById('modal-root');
+            a.style.display = "block";
+        }
+
+
+        $(document).ready(function () {
+            $("#inputGroupSelect01").focus(function () {
+                var x = document.getElementById("inputGroupSelect01").options[0].disabled = true;
+            });
+        });
+    </script>
+
+    <script>
+        function currentDiv(n) {
+            showDivs(slideIndex = n);
+        }
+
+        function showDivs(n) {
+            var i;
+            var x = document.getElementsByClassName("mySlides");
+            var dots = document.getElementsByClassName("demo");
+            if (n > x.length) {
+                slideIndex = 1
+            }
+            if (n < 1) {
+                slideIndex = x.length
+            }
+            for (i = 0; i < x.length; i++) {
+                x[i].style.display = "none";
+            }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" w3-opacity-off", "");
+            }
+            x[slideIndex - 1].style.display = "block";
+            dots[slideIndex - 1].className += " w3-opacity-off";
+        }
+    </script>
+
+    <script th:inline="javascript">
+        var memId2 = [[${jsonText}]];
+        var memId = JSON.parse(memId2);
+
+        console.log("memId : " + memId);
+        var first;
+        var i = 0;
+        var goSession;
+        var sessionCheck = sessionStorage.getItem("ProductNameSession");
+        var localCheck = localStorage.getItem("saveL")
+        if (localCheck == null) {
+            console.log("localSession 없음");
+        } else {
+            console.log("localSession 이ㅆ음");
+        }
+
+        var valList;
+        var localStored = new Array();
+
+        var a;
+        var b;
+
+        if (localCheck != null) {
+            localStored = JSON.parse(localCheck);
+            console.log("로칼 stroed : " + localStored);
+            b = localStored.length;
+            console.log("로칼 len : " + b);
+            for (var i = 0; i < b; i++) {
+                console.log(localStored[i]);
+            }
+        } else {
+            console.log("localSession업음");
+            b = 0;
+            console.log("stored없음");
+        }
+
+        if (sessionCheck != null) {
+            var stored = JSON.parse(sessionCheck);
+            a = stored.length;
+
+        } else {
+            valList = new Array();
+            a = 0;
+        }
+
+
+        function saveSessionStorage() {
+            if (memId == null) {
+                console.log("saveSessionStorage 실행");
+
+                var value = document.getElementById("productNo").value;
+                var colorValue = $('#inputGroupSelect01').val();
+                var qtyValue = $("select[name=hohoBox]").val();
+                var arr = [value, colorValue, qtyValue];
+                var list;
+                var localSessionItem = localStorage.getItem("saveL");
+                if (colorValue == "") {
+                    alert("색상 선택하세요")
+                    window.location.href = '/';
+                } else {
+                    if (localSessionItem == null) {
+                        console.log("localSessionItem is Null입니다")
+                        b = 0;
+                        console.log("before arr : " + arr);
+                        localStored[0] = arr;
+                        console.log(localStored[0]);
+                        console.log("생 arr : " + localStored);
+                        first = "첫번째";
+                        localStorage.setItem("saveL", JSON.stringify(localStored));
+                    } else {
+                        first = "두번째";
+                        b = 0;
+                        console.log("localSession is not Null : ");
+                        for (var i = 0; i < localStored.length; i++) {
+                            console.log("localStored : " + localStored);
+                            if (localStored[b][0] == value && localStored[b][1] == colorValue) {
+                                console.log("로컬 이미 저장돼있습니다");
+                                break;
+                            }
+                            if (localStored[b + 1] == undefined) {
+                                console.log(b);
+                                localStored[b + 1] = arr;
+                                console.log("b+1은? " + localStored[b + 1] + " & localStored : " + localStored);
+                                localStorage.setItem("saveL", JSON.stringify(localStored));
+                                break;
+                            }
+                            b++;
+                        }
+
+                    }
+
+                    ajaxSessionStorage();
+                }
+            } else {
+                var selectOption = $('#inputGroupSelect01').val();
+                var qty = document.getElementById("hohoBox").value;
+                var pNo = document.getElementById("productNo").value;
+                console.log("pNo" + pNo);
+                if (selectOption == "") {
+                    alert("다시 골라요");
+                    window.location.href = '/';
+                } else {
+                    $.ajax({ // 세션 보내기 ajax
+                        //console.log("hi");
+                        url: "/basketMember",
+                        type: "POST",
+                        data: {
+                            memberId: memId,
+                            productNo: pNo,
+                            productColor: selectOption,
+                            qty: qty
+                        }
+                        ,
+                        success: function (e) {
+                            console.log("basketMem 완료")
+                            goModal();
+                            //window.open('/basketPop', '_blank', 'width=300px,height=300px,resizable=no,scrollbars=no,status=no,left=0px,top=0px');
+                        },
+                        error: function () {
+                            console.log("test err");
+                        }
+                    });
+                }
+            }
+        }
+
+        function ajaxSessionStorage() {
+
+            console.log("ajaxSessionStorage 실행");
+            hoho = [localStorage.getItem("saveL")];
+            console.log("real" + hoho + "len" + hoho.length);
+            hoSession = JSON.parse(localStorage.getItem("saveL"));
+            console.log("ex" + hoSession.length + hoSession);
+            /* JSON.stringify(hoSession);
+             console.log("af"+JSON.stringify(hoSession).length+JSON.stringify(hoSession));
+             JSON.parse(hoSession);
+             console.log("prse :" + JSON.parse(hoSession).length+JSON.parse(hoSession));*/
+            var go = 'ho';
+            $.ajax({ // 세션 보내기 ajax
+                //console.log("hi");
+                url: "/basketLocal",
+                type: "POST",
+                traditional: true,
+                data: {
+                    'hoho': hoSession,
+                    'first': first
+                }
+                ,
+                success: function (e) {
+                    goModal();
+                    //window.open('/basketPop', '_blank', 'width=300px,height=300px,resizable=no,scrollbars=no,status=no,left=0px,top=0px');
+                }, error: function () {
+                    console.log("test err");
+                }
+            });
+        }
+
+        // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 로컬끝
+        /*if (sessionCheck == null) {
+            console.log("sessionCheck is null");
+            while (true) {
+                console.log(a + "번째");
+                if (valList[a] == null) {
+                    valList[a] = value;
+                    break;
+                }
+                a++;
+            }
+            sessionStorage.setItem("ProductNameSession", JSON.stringify(valList));
+        } else {
+            a = 0;
+            console.log("sessionCheck is  not null");
+            while (true) {
+                if (stored[a] == value) {
+                    alert("세션 이미 저장돼있습니다");
+                    break;
+                }
+                if (stored[a] == null) {
+                    stored[a] = value;
+                    break;
+                } else {
+                }
+                a++;
+            }
+            sessionStorage.setItem("ProductNameSession", JSON.stringify(stored));
+        }
+
+
+        // setItem( ) 메서드를 이용하여 key를 지정하고, value값을 세션에 저장한다.
+        // sessionStorage.setItem(key, value);
+        //console.log("@@@@@@@@@@@@@@@ valList : "+valList);
+
+        }
+        else
+        {
+        console.log("memId : ~ajax " + memId);
+
+        var selectOption = document.getElementById("inputGroupSelect01");
+        console.log(selectOption);
+        selectOption = selectOption.options[selectOption.selectedIndex].value;
+        console.log("옵션 : " + selectOption);
+        var qty = document.getElementById("qty").value;
+        console.log("qty : " + qty | 0);
+        //var pName = document.getElementById("pName").value;
+        //console.log("pName" + pName);
+        var pNo = document.getElementById("productNo").value;
+        console.log("pNo" + pNo);
+
+        if (qty == "") {
+            alert("숫자 입력하세요");
+
+        } else {
+            $.ajax({ // 세션 보내기 ajax
+                //console.log("hi");
+                url: "/basketMember",
+                type: "POST",
+                data: {
+                    memberId: memId,
+                    productNo: pNo,
+                    productColor: selectOption,
+                    qty: qty
+                }
+                ,
+                success: function (e) {
+                    alert("basketMem 완료")
+
+                },
+                error: function () {
+                    alert("test err");
+                }
+            });
+        }
+
+        }
+        }
+        */
+
+
+    </script>
+</div>
+</body>
+</html>

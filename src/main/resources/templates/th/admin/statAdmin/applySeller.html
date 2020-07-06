@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="th/layout/adminLayout">
+<head>
+    <meta charset="UTF-8">
+    <title>업체관리</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container">
+        <h2>신청업체 목록</h2>
+        <table class="table table-hover">
+                <tr>
+                    <th>업체명</th>
+                    <th>전화번호</th>
+                    <th>신청날짜</th>
+                </tr>
+            <th:block th:each="seller : ${applySeller}">
+                <tr th:onclick="'location.href=\''+@{applySellerDetail/{sellerName}(sellerName=${seller.sellerName})}+'\''">
+                    <td th:text="${seller.sellerName}"></td>
+                    <td th:text="${seller.managerTel}"></td>
+                    <td th:text="${seller.applyDate}"></td>
+                </tr>
+            </th:block>
+        </table>
+    </div>
+</div>
+</body>
+</html>

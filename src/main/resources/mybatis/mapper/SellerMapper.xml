@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bit.house.mapper.SellerMapper">
+
+    <select id="searchSeller" resultType="com.bit.house.domain.SellerVO">
+        SELECT
+        *
+        FROM
+        seller
+        WHERE sellerId = #{userid}
+    </select>
+
+    <insert id="insertSeller" parameterType="com.bit.house.domain.SellerVO">
+        INSERT INTO seller (sellerId, sellerName, sellerRes, sellerUrl, sellerManager, managerTel, managerEmail, permit)
+        VALUES (#{sellerId}, #{sellerName}, #{sellerRes}, #{sellerUrl}, #{sellerManager}, #{managerTel}, #{managerEmail}, '0')
+    </insert>
+
+    <insert id="insertSellerToUser" parameterType="com.bit.house.domain.SellerVO">
+         INSERT INTO allmember (userid, userpw, authCode, enabled)
+         VALUES (#{sellerId}, #{sellerPw}, '2', '0')
+    </insert>
+
+    <select id="searchSellerInfo" resultType="com.bit.house.domain.SellerVO">
+        SELECT
+        *
+        FROM
+        seller
+        WHERE sellerId = #{sellerId}
+    </select>
+
+    <update id="updateSellerInfo">
+		UPDATE seller
+		SET sellerName=#{sellerName}, sellerRes=#{sellerRes}, sellerImg=#{sellerImg}, sellerAddr=#{sellerAddr}, sellerUrl=#{sellerUrl}
+		where sellerId=#{sellerId}
+	</update>
+
+    <update id="updateSellerManager">
+		UPDATE seller
+		SET sellerManager=#{sellerManager}, managerTel=#{managerTel}, managerEmail=#{managerEmail}
+		where sellerId=#{sellerId}
+	</update>
+
+    <update id="updateSellerInfoLogin">
+		UPDATE allMember
+		SET userpw=#{sellerPw}
+		where userid=#{sellerId}
+	</update>
+</mapper>

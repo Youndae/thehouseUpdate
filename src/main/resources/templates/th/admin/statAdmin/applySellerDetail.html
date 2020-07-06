@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="th/layout/adminLayout">
+<head>
+    <meta charset="UTF-8">
+    <title>업체관리</title>
+    <script type="text/javascript" th:src="@{/js/sellerAdm.js}"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container">
+        <h2 th:text="${sellerDetail.sellerName}"></h2>
+        <div class="login_wrapper">
+            <div class="row justify-content-center">
+                <div class="col-md5 col-xs10 md-auto">
+                    <div class="mt-4 mb-3">
+                        <label for="sellerRes">사업자등록번호<span class="text-muted"/></label>
+                        <input type="text" class="form-control" id="sellerRes" name="sellerRes"
+                               th:value="${sellerDetail.sellerRes}" style="background-color: #FFFFFF;" readonly>
+                    </div>
+                    <div class="mt-4 mb-3">
+                        <label for="sellerUrl">홈페이지<span class="text-muted"/></label>
+                        <input type="text" class="form-control" id="sellerUrl" name="sellerUrl"
+                               th:value="${sellerDetail.sellerUrl}" style="background-color: #FFFFFF;" readonly>
+                    </div>
+                    <div class="mt-4 mb-3">
+                        <label for="managerEmail">담당자 이메일<span class="text-muted"/></label>
+                        <input type="text" class="form-control" id="managerEmail" name="managerEmail"
+                               th:value="${sellerDetail.managerEmail}" style="background-color: #FFFFFF;" readonly>
+                    </div>
+                    <div class="mt-4 mb-3">
+                        <label for="sellerAddr">주소<span class="text-muted"/></label>
+                        <input type="text" class="form-control" id="sellerAddr" name="sellerAddr"
+                               th:value="${sellerDetail.sellerAddr}" style="background-color: #FFFFFF;" readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <form action="/admin/applyProc" id="proc" name="proc">
+                    <input type="button" id="apply" name="apply" value="승인"/>
+                    <input type="hidden" id="sellerName" name="sellerName" value=""/>
+                    <input type="hidden" id="name" name="name" th:value="${sellerDetail.sellerName}"/>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

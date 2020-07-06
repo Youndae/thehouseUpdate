@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bit.house.mapper.ProductMapper">
+
+    <insert id="insertProduct" parameterType="com.bit.house.domain.ProductVO">
+        INSERT INTO product (productNo, sellerName, productName, modelName, customerPrice, sellPrice, purchasePrice, categoryCode,
+         productMainImg, productSubImg1, productSubImg2, productSubImg3, productExpImg, clickTotalCount )
+        VALUES (#{productNo}, #{sellerName}, #{productName}, #{modelName}, #{customerPrice}, #{sellPrice}, #{purchasePrice}, #{categoryCode},
+        #{productMainImg}, #{productSubImg1}, #{productSubImg2}, #{productSubImg3}, #{productExpImg}, '0')
+    </insert>
+
+    <select id="searchProductListInfo" resultType="com.bit.house.domain.ProductVO">
+        SELECT pro.productNo, pro.sellerName, pro.productName, pro.modelName, pro.customerPrice, pro.sellPrice
+        FROM product pro, seller sel
+        WHERE pro.sellerName=sel.sellerName
+        AND sellerId=#{sellerId};
+
+    </select>
+
+    <select id="searchProductTarget" resultType="com.bit.house.domain.ProductVO">
+        SELECT pro.productNo, pro.productName, pro.modelName, pro.customerPrice, pro.sellPrice, pro.purchasePrice, pro.categoryCode, pro.productMainImg, pro.productSubImg1, pro.productSubImg2, pro.productSubImg3, pro.productExpImg
+        FROM product pro, seller sel
+        WHERE pro.sellerName=sel.sellerName
+        AND pro.productNo=#{productNo}
+        AND sellerId=#{sellerId}
+    </select>
+
+    <update id="updateProductInfo" parameterType="com.bit.house.domain.ProductVO">
+		UPDATE product
+		SET productNo=#{productNo}, productName=#{productName}, modelName=#{modelName}, customerPrice=#{customerPrice}, sellPrice=#{sellPrice}, purchasePrice=#{purchasePrice}, categoryCode=#{categoryCode},
+		    productMainImg=#{productMainImg}, productSubImg1=#{productSubImg1}, productSubImg2=#{productSubImg2}, productSubImg3=#{productSubImg3}, productExpImg=#{productExpImg}
+		where productNo=#{productNo2}
+    </update>
+
+</mapper>
+

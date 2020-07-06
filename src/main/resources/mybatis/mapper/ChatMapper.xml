@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bit.house.mapper.ChatMapper">
+
+    <insert id="insertMsg" parameterType="map">
+        insert into thehouse.chat values(#{chatRoomId}, #{memberId}, #{msg}, #{time})
+    </insert>
+
+    <select id="selectChatMsg" resultType="chatMsgVO">
+        select memberId, msg, time from thehouse.chat
+        <if test="memberId!=null and memberId!=''">
+            where memberId=#{memberId}
+        </if>
+        order by time desc limit #{pageStart}, #{perPageNum}
+    </select>
+
+    <select id="countList" resultType="int">
+        select count(*) from thehouse.chat
+        <if test="memberId!=null and memberId!=''">
+            where memberId=#{memberId}
+        </if>
+    </select>
+
+</mapper>

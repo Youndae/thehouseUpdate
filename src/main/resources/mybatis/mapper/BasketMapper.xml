@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bit.house.mapper.BasketMapper">
+
+    <resultMap id="bskInfo" type="basketVO">
+
+        <result column="productColor" property="productColor"/>
+        <result column="sellPrice" property="sellPrice"/>
+        <result column="productName" property="productName"/>
+        <result column="productMainImg" property="productMainImg"/>
+        <result column="modelName" property="modelName"/>
+        <result column="memberId" property="memberId"/>
+        <result column="qty" property="qty"/>
+        <result column="productNo" property="productNo"/>
+        <result column="recipient" property="recipient"/>
+
+        <association property="productVO" javaType="productVO">
+            <result column="productNo" property="productNo"/>
+            <result column="sellerName" property="sellerName"/>
+            <result column="purchasePrice" property="purchasePrice"/>
+            <result column="productMainImg" property="productMainImg"/>
+        </association>
+
+        <association property="productOptionVO" javaType="productOptionVO">
+            <result column="productOptionNo" property="productOptionNo"/>
+            <result column="colorCode" property="colorCode"/>
+        </association>
+
+        <!--<collection property="productVO" ofType="productVO"
+                    column="memberId" javaType="java.util.ArrayList" select="selectClickProductList"/>-->
+        <association property="colorVO" javaType="colorVO">
+            <result column="colorType" property="colorType"/>
+            <result column="colorCode" property="colorCode"/>
+        </association>
+    </resultMap>
+    <!--
+    배열 파라미터를 직접 넘겼을 경우 - public List<Members> getAuthUserList(String[] userArray) {
+		return sqlSession.selectList("getAuthUserList", userArray);
+
+        <select id="getBasketSessionList" parameterType="java.util.ArrayList" resultMap="product">
+        select * from product where productName in
+        <foreach collection="hoho" item="item" index="index" separator=",">
+            #{item}
+        </foreach>
+        </select>
+    -->
+
+    <!--
+    배열 파라미터를 Map을 통해 넘겼을 경우
+    public List<Members> getAuthUserList(String[] userArray) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("userArray",userArray);
+		return sqlSession.selectList("getAuthUserList", map);
+}
+            <select id="getAuthUserList"  resultType="members">
+            SELECT m.*,a.name FROM members AS m
+            JOIN authority AS a ON m.authority = a.authority
+            WHERE m.authority IN
+            <foreach collection="array" item="arr" open="(" close=")" separator=",">
+             #{arr}
+            </foreach>
+            ORDER BY m.authority;
+            </select>
+
+
+    -->
+<!--
+
+0608 쓸것
+-->
+    <!--
+    <select id="getNonMemberBasketList"  resultType="BasketVO">
+                select * from (select p.productNo, p.productName, p.sellerName, p.modelName, p.productCreateDate, p.productMainImg, p.purchasePrice, o.colorCode from product p,
+     productoption o where p.productNo = o.productNo) as a
+                WHERE productName IN
+                <foreach collection="hohoSession2" item="productNameArr" open="(" close=")" separator=",">
+                 #{productNameArr}
+                </foreach>
+
+    </select>
+        and colorCode IN
+            <foreach collection="colorList" item="productColorArr" open="(" close=")" separator=",">
+             #{productColorArr}
+            </foreach>
+
+
+        <foreach collection="hohoSession2" item="productNameArr" open="(" close=")" separator=",">
+            #{productNameArr}
+        </foreach>
+            -->
+
+    <select id="getNonMemberBasketList"  resultMap="bskInfo" parameterType="java.util.List">
+        select * from (select o.productOptionNo, p.productNo, p.productName, p.sellerName, p.modelName, p.productCreateDate,
+        p.productMainImg, p.purchasePrice, c.colorType, c.colorCode from product p, color c,
+        productoption o where p.productNo = o.productNo and o.colorCode=c.colorCode ) as a
+        WHERE productNo IN
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        and colorType IN
+        <foreach collection="list2" item="item2" separator="," open="(" close=")">
+            #{item2}
+        </foreach>
+
+    </select>
+
+    <select id="getMemberBasketList"  resultMap="bskInfo" parameterType="String">
+        select p.productName, p.sellerName, p.modelName,
+        p.productMainImg, p.purchasePrice,  b.* from  product p,
+        basket b where b.memberId = #{memberId} and b.productNo = p.productNo;
+    </select>
+
+
+<!--
+    <select id="getArray" parameterType="java.util.ArrayList" resultType="basketVO">
+        select * from product where productName in
+        <foreach collection="hoho2" item="item" index="index" separator=",">
+            #{item}
+        </foreach>
+    </select>-->
+
+
+
+    <select id="getBasket" resultType="basketVO">
+        select * from basket;
+    </select>
+
+    <insert id="insertBasketMember" >
+        insert into basket(memberId, productNo, productColor, qty) values(#{memberId}, #{productNo}, #{productColor}, #{qty});
+    </insert>
+
+   <delete id="deletememberBasket">
+        DELETE FROM basket <where>
+       <foreach collection="list" item="item" open="" close="" separator="OR">
+           (memberId=#{item.memberId} AND productColor = #{item.productColor} AND productNo = #{item.productNo})
+       </foreach>
+   </where>
+    </delete>
+</mapper>

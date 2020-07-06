@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bit.house.mapper.RecommenderMapper">
+
+    <!-- 추천 시스템-->
+    <!--word2vec 트레이닝 프로세스-->
+    <resultMap id="clickProductList" type="recommenderVO">
+        <result property="memberId" column="memberId"/>
+        <collection property="productVO" ofType="productVO" column="memberId" javaType="java.util.ArrayList" select="selectClickProductList"/>
+    </resultMap>
+
+
+    <select id="selectClickProductById" resultMap="clickProductList">
+		select memberId from thehouse.member
+	</select>
+
+    <select id="selectClickProductList" resultType="productVO">
+		select productNo FROM thehouse.clickproduct where memberId=#{memberId} order by clickDate desc
+	</select>
+
+    <!--회원이 가장 최근(24시간이내) 조회한 상품넘버 조회-->
+    <select id="selectClickProduct" parameterType="String" resultType="String">
+		select productNo from thehouse.clickproduct where memberId=#{memberId} and clickDate > DATE_ADD(now(), INTERVAL -24 HOUR) order by clickDate desc limit 1
+	</select>
+
+    <!--추천시스템으로 나온 아이템 정보 조회-->
+    <select id="selectProductDetail" parameterType="String" resultType="productVO">
+		select productNo, sellerName, productName, customerPrice, productMainImg from thehouse.product where productNo=#{productNo}
+	</select>
+
+    <!-- 추천 시스템 END-->
+
+    <!--회원이 상품을 조회한 이력을 검색 -->
+    <select id="selectClickHistory" parameterType="map" resultType="int">
+        select exists (select * from thehouse.clickproduct where memberId=#{memberId} and productNo=#{productNo}) as success
+    </select>
+
+    <!--상품페이지 들어갈때 clickproduct테이블에 회원이 같은 상품을 조회한 이력이 없으면 insert -->
+    <insert id="insertCount" parameterType="map">
+        insert into thehouse.clickproduct(memberId, productNo, clickDate, clickCount) values (#{memberId}, #{productNo}, now(), 1)
+    </insert>
+
+    <!-- 있으면 날짜는 오늘날짜로, clickCount +1 update  -->
+    <update id="updateClickHistory" parameterType="map">
+        update thehouse.clickproduct set clickDate=now(), clickCount=clickCount+1 where memberId=#{memberId} and productNo=#{productNo}
+    </update>
+
+    <!-- 상품페이지 클릭시 product테이블 clickTotalCount+1 update -->
+    <update id="updateClickTotalCount" parameterType="String">
+        update thehouse.product set clickTotalCount=clickTotalCount+1 where productNo=#{productNo}
+    </update>
+
+</mapper>

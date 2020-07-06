@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="th/layout/defaultLayout">
+<head>
+    <meta charset="UTF-8">
+    <title>질문게시판</title>
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/askBoard.css}">
+    </th:block>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container">
+        <div id="questions-index-page">
+            <section id="questions-header">
+                <div class="container">
+                    <div class="questions-header__title">
+                        <h1 class="text-heading-1 text-black bold">질문과 답변</h1>
+                        <p class="text-heading-1 text-black bold">
+                            니가사는그집 인테리어 고수들과 전문가들에게 조언을 받으세요.
+                        </p>
+                    </div>
+                    <form id="questions-header__form" class="sticky-top" action="/askSearchList" accept-charset="UTF-8" method="get">
+                        <!--<input name="utf8" type="hidden" value="">-->
+                        <div class="sticky-content">
+                            <div class="questions-header__form__wrap row">
+                                <div class="questions-header__form__search col">
+                                    <span class="icon icon-etc-find-sm-gray-dark search" ></span>
+                                    <input type="text" name="keyword" id="keyword"
+                                           class="form-control" placeholder="궁금한 것을 검색해보세요.">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+            <section id="question-filter" class="sticky-top" style="height: auto;">
+                <div class="questions-filter__float sticky-content open" style="position: relative;">
+                    <div class="questions-filter__content container">
+                        <div class="questions-filter__actions">
+                            <button type="button" id="askWrite" name="askWrite" onclick="location.href='/askinsert'"
+                                    class="questions-filter__actions__new-question btn btn-priority btn-sm">글쓰기</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section id="questions-list" class="container">
+                <table class="table table-hover">
+                    <tr>
+                        <th>글번호</th>
+                        <th>제목</th>
+                        <th>작성자</th>
+                        <th>작성일</th>
+                    </tr>
+
+                    <th:block th:each="board : ${list}">
+                        <tr th:onclick="'location.href=\''+@{/askdetail/{askBoardNo}(askBoardNo=${board.askBoardNo})}+'\''">
+                            <td th:text="${board.askBoardNo}"/>
+                            <td>
+                                <th:block th:text="${board.askTitle}"/>
+                            </td>
+                            <td th:text="${board.memberId}"/>
+                            <td th:text="${board.askDate}"/>
+                        </tr>
+                    </th:block>
+                </table>
+            </section>
+            <div class="question-paginator">
+                <nav class="paginator">
+                    <ul class="pagination pagination-sm no-margin pull-right">
+                        <li th:if="${pageMaker.prev} == true" rel="prev" role="button">
+                            <a class="icon icon-pointer-button-square-left" aria-hidden="true"
+                               th:href="@{/askSearchList(page=${pageMaker.startPage}-1, perPageNum=${pageMaker.cri.perPageNum})}" >&laquo;</a>
+                        </li>
+                        <li th:each="idx,iterStat : ${#numbers.sequence(pageMaker.startPage,pageMaker.endPage)}"  th:classappend="${pageMaker.cri.page} == ${idx} ? active : null">
+                            <a th:href="@{/askSearchList(page=${idx},perPageNum=${pageMaker.cri.perPageNum})}" th:text="${idx}"></a>
+                        </li>
+                        <li th:if="${pageMaker.next} == true and ${pageMaker.endPage > 0}" rel="next" role="button">
+                            <a class="icon icon-pointer-button-square-right" aria-hidden="true"
+                               th:href="@{/askSearchList(page=${pageMaker.endPage}+1,perPageNum=${pageMaker.cri.perPageNum})}">&raquo;</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+

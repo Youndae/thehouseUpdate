@@ -1,0 +1,62 @@
+spring:
+  #chat(redis)
+  profiles:
+    active: local
+  redis:
+    host: localhost
+    port: 6379
+  #mybatis
+  datasource:
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    url: jdbc:log4jdbc:mysql://localhost:3306/thehouse?serverTimezone=UTC&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull
+    username: root
+    password: 1234
+
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
+    view-names: th/*
+
+  #devtools
+  devtools:
+    livereload:
+      enabled: true
+
+  #oauth2
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 932323453386-c35qir2hsql97gji2b80b34btdja99jl.apps.googleusercontent.com
+            client-secret: _GSWMfIo02A1e-tSkgVidzoW
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+
+custom:
+  oauth2:
+    kakao:
+      client-id: c31c215f87b80a727a35582cd9d5a8df
+      client-secret: kvl9b59Gc2XCTe5Pe2cp0v82vnju223p
+    naver:
+      client-id: bEUVMecxliZdQ5VS6QxI
+      client-secret: ar1yy6uKAb
+
+
+# server port
+server:
+  port: 8080
+
+# mybatis 설정.
+mybatis:
+  mapper-locations: classpath:/mybatis/mapper/*.xml
+  type-aliases-package: com.bit.house.domain
+
+# SQL Log
+logging:
+  file:
+    path: logback-spring.xml

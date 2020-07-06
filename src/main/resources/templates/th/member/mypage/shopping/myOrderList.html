@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="th/layout/defaultLayout">
+<head>
+    <meta charset="UTF-8">
+    <title>메인</title>
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/mainContent.css}">
+    </th:block>
+    <link th:href="@{/css/productPage.css}" rel="stylesheet"/>
+    <link th:href="@{/css/starRating.css}" rel="stylesheet"/>
+
+    <script th:src="@{https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js}"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.check-all').click(function () {
+                $('.check').prop('checked', this.checked);
+            });
+        });
+    </script>
+
+    <script>
+        $("#reviewContent-text").click(function() {
+            alert("test");
+        });
+    </script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container">
+        <th:block th:replace="th/fragments/navBar_myPage"></th:block>
+        <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="orderList-tab" data-toggle="tab" href="#orderList" role="tab"
+                   aria-controls="orderList" aria-selected="true">주문내역</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="myReview-tab" data-toggle="tab" href="#myReview" role="tab"
+                   aria-controls="myReview"
+                   aria-selected="false">나의 리뷰</a>
+            </li>
+        </ul>
+        <div class="tab-content my-4" id="myTabContent">
+            <div class="tab-pane fade show active" id="orderList" role="tabpanel" aria-labelledby="orderList-tab">
+                <table class="table table-bordered">
+                    <thead class="thead-light">
+                    <tr>
+                        <th scope="col">주문일자</th>
+                        <th scope="col">주문 상품 정보</th>
+                        <th scope="col">상품금액(수량)</th>
+                        <th scope="col">배송비</th>
+                        <th scope="col">주문상태</th>
+                        <th scope="col">확인/취소/리뷰</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="orderList, iter: ${orderListVOS}">
+                        <td th:text="${orderList.orderDate}"></td>
+                        <td th:text="${orderList.productName} + '(' + ${orderList.modelName} + '/'+ ${orderList.colorName} + ')'"></td>
+                        <td th:text="${orderList.totalPrice} + '원' + ' ' +'(' + ${orderList.orderQty} + '개' + ')'"></td>
+                        <td th:text="무료"></td>
+                        <td th:text="${orderList.orderType}"></td>
+                        <td>
+                            <div th:if="${orderList.orderCode} eq '30' or ${orderList.orderCode} eq '40'">
+                                <button class="btn btn-primary px-2" type="button" data-toggle="collapse"
+                                        aria-expanded="false"
+                                        aria-controls="collapseExample"
+                                        th:attr="data-target='#conf' + ${iter.count}">구매확정
+                                </button>
+                                <div th:id="'conf' + ${iter.count}" class="collapse">
+                                    <button type="button" class="btn btn-primary px-2" data-toggle="modal"
+                                            th:attr="data-target='#review' + ${iter.count}">
+                                        리뷰작성
+                                    </button>
+                                    <!-- The Modal -->
+                                    <div class="modal fade" th:id="'review' + ${iter.count}">
+                                        <div class="modal-dialog">
+                                            <form th:action="addReview" th:method="post"
+                                                  enctype="multipart/form-data">
+                                                <input th:type="hidden" th:name="orderNo"
+                                                       th:value="${orderList.orderNo}"/>
+                                                <div class="modal-content">
+                                                    <!-- Modal Header -->
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal">
+                                                            &times;
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="form-group">
+                                                            <label class="col-form-label">별점평가</label>
+                                                            <fieldset class="rating"
+                                                                      th:id="'starRating' + ${iter.count}">
+                                                                <input type="radio" th:id="'star5_' + ${iter.count}"
+                                                                       name="rank"
+                                                                       value="5"/><label class="full"
+                                                                                         th:for="'star5_' + ${iter.count}"
+                                                                                         title="Awesome - 5 stars"></label>
+                                                                <input type="radio"
+                                                                       th:id="'star4half_' + ${iter.count}"
+                                                                       name="rank"
+                                                                       value="4,5"/><label class="half"
+                                                                                           th:for="'star4half_' + ${iter.count}"
+                                                                                           title="Pretty good - 4.5 stars"></label>
+                                                                <input type="radio" th:id="'star4_' + ${iter.count}"
+                                                                       name="rank"
+                                                                       value="4"/><label class="full"
+                                                                                         th:for="'star4_' + ${iter.count}"
+                                                                                         title="Pretty good - 4 stars"></label>
+                                                                <input type="radio"
+                                                                       th:id="'star3half_' + ${iter.count}"
+                                                                       name="rank"
+                                                                       value="3,5"/><label class="half"
+                                                                                           th:for="'star3half_' + ${iter.count}"
+                                                                                           title="Meh - 3.5 stars"></label>
+                                                                <input type="radio" th:id="'star3_' + ${iter.count}"
+                                                                       name="rank"
+                                                                       value="3"/><label class="full"
+                                                                                         th:for="'star3_' + ${iter.count}"
+                                                                                         title="Meh - 3 stars"></label>
+                                                                <input type="radio"
+                                                                       th:id="'star2half_' + ${iter.count}"
+                                                                       name="rank"
+                                                                       value="2,5"/><label class="half"
+                                                                                           th:for="'star2half_' + ${iter.count}"
+                                                                                           title="Kinda bad - 2.5 stars"></label>
+                                                                <input type="radio" th:id="'star2_' + ${iter.count}"
+                                                                       name="rank"
+                                                                       value="2"/><label class="full"
+                                                                                         th:for="'star2_' + ${iter.count}"
+                                                                                         title="Kinda bad - 2 stars"></label>
+                                                                <input type="radio"
+                                                                       th:id="'star1half_' + ${iter.count}"
+                                                                       name="rank"
+                                                                       value="1,5"/><label class="half"
+                                                                                           th:for="'star1half_' + ${iter.count}"
+                                                                                           title="Meh - 1.5 stars"></label>
+                                                                <input type="radio" th:id="'star1_' + ${iter.count}"
+                                                                       name="rank"
+                                                                       value="1"/><label class="full"
+                                                                                         th:for="'star1_' + ${iter.count}"
+                                                                                         title="Sucks big time - 1 star"></label>
+                                                                <input type="radio"
+                                                                       th:id="'starhalf_' + ${iter.count}"
+                                                                       name="rank"
+                                                                       value="0,5"/><label class="half"
+                                                                                           th:for="'starhalf_' + ${iter.count}"
+                                                                                           title="Sucks big time - 0.5 stars"></label>
+                                                            </fieldset>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="reviewContent-text"
+                                                                   class="col-form-label">리뷰작성</label>
+                                                            <textarea class="form-control"
+                                                                      id="reviewContent-text"
+                                                                      th:name="reviewContent"
+                                                                      placeholder="내용을 입력해주세요"></textarea>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <div class="d-flex flex-row bd-highlight mb-1">
+                                                                <div class="btn btn-file">
+                                                                    <img th:src="@{/uploadImg/errorImg/addPhoto.png}"
+                                                                         class="d-block w-25"><input type="file"
+                                                                                                     th:name="file"
+                                                                                                     id="customFile">
+                                                                </div>
+                                                                <div class="btn btn-file">
+                                                                    <img th:src="@{/uploadImg/errorImg/addPhoto.png}"
+                                                                         class="d-block w-25"><input type="file"
+                                                                                                     th:name="file2"
+                                                                                                     id="customFile2">
+                                                                </div>
+                                                                <div class="btn btn-file">
+                                                                    <img th:src="@{/uploadImg/errorImg/addPhoto.png}"
+                                                                         class="d-block w-25"><input type="file"
+                                                                                                     th:name="file3"
+                                                                                                     id="customFile3">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Modal footer -->
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary py-1 px-3"
+                                                                data-dismiss="modal">
+                                                            취소
+                                                        </button>
+                                                        <button type="submit" th:onclick="myFunction()" class="btn btn-primary py-1 px-3">저장
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <button type="button" class="btn btn-primary px-3" data-toggle="modal"
+                                            th:attr="data-target='#return' + ${iter.count}">반품
+                                    </button>
+
+                                    <!-- The Modal -->
+                                    <div class="modal fade" th:id="'return' + ${iter.count}">
+                                        <div class="modal-dialog">
+
+                                            <form th:action="returnReason" th:method="post">
+                                                <input th:type="hidden" th:name="orderNo"
+                                                       th:value="${orderList.orderNo}"></input>
+                                                <div class="modal-content">
+                                                    <!-- Modal Header -->
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title">반품하시겠습니까?</h4>
+                                                        <button type="button" class="close" data-dismiss="modal">&times;
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="form-group">
+                                                            <label for="confirmReason-text"
+                                                                   class="col-form-label">반품사유</label>
+                                                            <textarea class="form-control"
+                                                                      id="confirmReason-text"
+                                                                      th:name="orderConfirmReason"
+                                                                      placeholder="내용을 입력해주세요"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Modal footer -->
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary py-1 px-3"
+                                                                data-dismiss="modal">
+                                                            취소
+                                                        </button>
+                                                        <button type="submit" class="btn btn-primary py-1 px-3">저장
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div th:if="${orderList.orderCode} eq '10'">
+                                <button type="button" class="btn btn-primary py-1 px-3" data-toggle="modal"
+                                        th:attr="data-target='#cancel' + ${iter.count}">
+                                    취소
+                                </button>
+
+                                <!-- The Modal -->
+                                <div class="modal fade" th:id="'cancel' + ${iter.count}">
+                                    <div class="modal-dialog">
+                                        <form th:action="cancelReason" th:method="post">
+                                            <input th:type="hidden" th:name="orderNo"
+                                                   th:value="${orderList.orderNo}"></input>
+                                            <div class="modal-content">
+                                                <!-- Modal Header -->
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">취소하시겠습니까?</h4>
+                                                    <button type="button" class="close" data-dismiss="modal">
+                                                        &times;
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="form-group">
+                                                        <label for="cancelReason-text"
+                                                               class="col-form-label">취소사유</label>
+                                                        <textarea class="form-control"
+                                                                  id="cancelReason-text" th:name="cancelReason"
+                                                                  placeholder="내용을 입력해주세요"></textarea>
+                                                    </div>
+                                                </div>
+                                                <!-- Modal footer -->
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary py-1 px-3"
+                                                            data-dismiss="modal">
+                                                        취소
+                                                    </button>
+                                                    <button type="submit" class="btn btn-primary py-1 px-3">저장</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tbody>
+                    </tr>
+                </table>
+            </div>
+            <div class="tab-pane fade" id="myReview" role="tabpanel" aria-labelledby="myReview-tab">
+                <form th:method="post" th:action="delete">
+                    <table class="table review">
+                        <thead class="thead-light">
+                        <tr>
+                            <th scope="col">
+                                <div class="form-check">
+                                    <input class="check-all position-static" type="checkbox"
+                                           id="parent" name="All"
+                                           value="option1" aria-label="...">
+                                </div>
+                            </th>
+                            <th scope="col">№</th>
+                            <th scope="col">상품명</th>
+                            <th scope="col">리뷰</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="review, iter:${reviewList}">
+                            <td>
+                                <div class="form-check">
+                                    <input class="check position-static" th:value="${review.orderNo}"
+                                           th:name="orderNo" type="checkbox" aria-label="...">
+                                </div>
+                            </td>
+                            <td th:text="${iter.count}"></td>
+                            <td th:text="${review.productName}">
+                                <label>모델명:</label>
+                                <div th:text="${review.modelName}"></div>
+                                <label>색상:</label>
+                                <div th:text="${review.colorName}"></div>
+                            </td>
+                            <td th:text="${review.reviewContent}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <button type="submit" class="btn btn-primary px-4">삭제</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
