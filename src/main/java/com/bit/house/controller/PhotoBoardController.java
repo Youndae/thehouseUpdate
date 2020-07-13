@@ -2,6 +2,7 @@ package com.bit.house.controller;
 
 import com.bit.house.domain.*;
 import com.bit.house.mapper.PhotoBoardMapper;
+import com.bit.house.service.PhotoBoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,19 +22,29 @@ public class PhotoBoardController {
     @Autowired(required = false)
     PhotoBoardMapper photoBoardMapper;
 
+    @Autowired(required = false)
+    PhotoBoardService photoBoardService;
+
 
     //사진 메인
     @RequestMapping("/communityMain")
-    private String communityMain(Model model) throws Exception{
+    private String communityMain(Model model, HttpSession session) throws Exception{
 
+        MemberVO memberVO = (MemberVO) session.getAttribute("memberVO");
+
+
+        model.addAttribute("member", memberVO);
         model.addAttribute("likerank", photoBoardMapper.communityMain());
 
         return "th/photoBoard/photoBoardMain";
     }
     //사진 목록
     @RequestMapping("/photoBoardList")
-    private String photoBoardList(Model model) throws Exception{
+    private String photoBoardList(Model model, HttpSession session) throws Exception{
 
+        MemberVO memberVO = (MemberVO) session.getAttribute("memberVO");
+
+        model.addAttribute("member", memberVO);
         model.addAttribute("photoList", photoBoardMapper.selectPhotoList());
 
         return "th/photoBoard/photoBoardList";
@@ -119,14 +130,13 @@ public class PhotoBoardController {
     @RequestMapping("/photodetail/{photoBoardNo}")
     private String photoDetail(@PathVariable int photoBoardNo, Model model, HttpSession session) throws Exception{
 
-
         MemberVO memberVO = (MemberVO) session.getAttribute("memberVO");
 
         PhotoBoardVO detail=photoBoardMapper.photoDetail(photoBoardNo);
 
-        model.addAttribute("member", photoBoardMapper.myProfileImg(memberVO.getMemberId()));
         model.addAttribute("photodetail", detail);
         model.addAttribute("userphoto", photoBoardMapper.userPhoto(detail.getMemberId()));
+        model.addAttribute("member", photoBoardMapper.myProfileImg(memberVO.getMemberId()));
         model.addAttribute("likestat", photoBoardMapper.likeStat(memberVO.getMemberId(), photoBoardNo));
         model.addAttribute("scrapstat", photoBoardMapper.scrapStat(memberVO.getMemberId(), photoBoardNo));
         model.addAttribute("photoComment", photoBoardMapper.photoComment(photoBoardNo));
@@ -220,6 +230,9 @@ public class PhotoBoardController {
 
         return "redirect:/photoBoardList";
     }
+
+
+
     //좋아요
     @RequestMapping("/like")
     @ResponseBody

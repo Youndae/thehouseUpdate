@@ -8,7 +8,6 @@
 
     <select id="photoBoardList" resultType="PhotoBoardVO">
        SELECT * FROM photoboard ORDER BY photoBoardNo desc
-
    </select>
 
     <insert id="insertPhoto" parameterType="PhotoBoardVO">
@@ -78,7 +77,7 @@
         WHERE photoBoardNo = #{photoBoardNo}
     </update>
 
-    <select id="likeStat" resultType="int">
+    <select id="likeStat" parameterType="String" resultType="int">
         SELECT count(*) FROM thehouse.like WHERE memberId = #{memberId} AND photoBoardNo = #{photoBoardNo}
     </select>
 
@@ -88,7 +87,7 @@
         VALUES(#{memberId}, #{photoBoardNo})
     </insert>
 
-    <delete id="cancelScrap" parameterType="ScrapVO">
+    <delete id="cancelScrap"  parameterType="ScrapVO">
         DELETE FROM scrap WHERE memberId = #{memberId} AND photoBoardNo = #{photoBoardNo}
     </delete>
 
@@ -104,7 +103,7 @@
         WHERE photoBoardNo = #{photoBoardNo}
     </update>
 
-    <select id="scrapStat" resultType="int">
+    <select id="scrapStat" parameterType="String" resultType="int">
         SELECT count(*) FROM scrap WHERE memberId = #{memberId} AND photoBoardNo = #{photoBoardNo}
     </select>
 
@@ -121,11 +120,11 @@
         VALUES(#{memberId}, curdate(), #{commentContent}, #{photoBoardNo})
     </insert>
 
-    <select id="commentCount" resultType="int">
+    <select id="commentCount"  resultType="int">
         SELECT count(*) FROM comment WHERE photoBoardNo = #{photoBoardNo}
     </select>
 
-    <select id="myProfileImg" resultType="memberVO">
+    <select id="myProfileImg" resultType="MemberVO">
         SELECT memberId, memberImg
         FROM member
         WHERE memberId = #{memberId}

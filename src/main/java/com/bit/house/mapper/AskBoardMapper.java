@@ -14,7 +14,7 @@ public interface AskBoardMapper {
     public List<AskBoardVO> askBoardList(Criteria cri) throws Exception;
     int listCountCriteria(Criteria cri) throws Exception;
     //검색
-    public List<AskBoardVO> searchList(String keyword, int pageStart, int perPageNum ) throws Exception;
+    public List<AskBoardVO> searchList(String keyword, int pageStart, int perPageNum) throws Exception;
     int searchListCountCriteria(Criteria cri, String keyword) throws Exception;
 
     //게시글 상세

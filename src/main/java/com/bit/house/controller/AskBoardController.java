@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Member;
 import java.text.SimpleDateFormat;
 import java.util.UUID;
 
@@ -30,10 +31,13 @@ public class AskBoardController {
     MyPageMapper myPageMapper;
     //게시판 리스트 화면 호출
     @RequestMapping("/askBoardList")
-    private String askBoardList(@ModelAttribute("cri") Criteria cri, Model model) throws Exception {
+    private String askBoardList(@ModelAttribute("cri") Criteria cri, Model model, HttpSession session) throws Exception {
+
+        MemberVO memberVO = (MemberVO) session.getAttribute("memberVO");
 
         System.out.println("cri : "+cri.toString());
 
+        model.addAttribute("member", memberVO);
         model.addAttribute("list", askBoardMapper.askBoardList(cri));
         PageMaker pageMaker = new PageMaker();
         pageMaker.setCri(cri);
@@ -46,13 +50,17 @@ public class AskBoardController {
     }
     //검색 리스트
     @RequestMapping("/askSearchList")
-    private String askSearchList(@ModelAttribute("cri") Criteria cri, Model model, HttpServletRequest request) throws Exception{
+    private String askSearchList(@ModelAttribute("cri") Criteria cri, Model model, HttpServletRequest request, HttpSession session) throws Exception{
 
-
+        MemberVO memberVO = (MemberVO) session.getAttribute("memberVO");
 
         String keyword = "%"+request.getParameter("keyword")+"%";
 
-        model.addAttribute("keyword", keyword);
+
+        System.out.println("pageStart : "+cri.getPageStart());
+
+
+        model.addAttribute("member", memberVO);
         model.addAttribute("list", askBoardMapper.searchList(keyword, cri.getPageStart(), cri.getPerPageNum()));
         PageMaker pageMaker = new PageMaker();
         pageMaker.setCri(cri);

@@ -54,7 +54,8 @@
                     </tr>
 
                     <th:block th:each="board : ${list}">
-                        <tr th:onclick="'location.href=\''+@{/askdetail/{askBoardNo}(askBoardNo=${board.askBoardNo})}+'\''">
+                        <tr th:if="${member?.memberId} == null" th:href="@{/customLogin}">
+                        <tr th:if="${member?.memberId} != null" th:onclick="'location.href=\''+@{/askdetail/{askBoardNo}(askBoardNo=${board.askBoardNo})}+'\''">
                             <td th:text="${board.askBoardNo}"/>
                             <td>
                                 <th:block th:text="${board.askTitle}"/>
