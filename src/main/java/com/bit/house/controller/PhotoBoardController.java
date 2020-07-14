@@ -2,7 +2,6 @@ package com.bit.house.controller;
 
 import com.bit.house.domain.*;
 import com.bit.house.mapper.PhotoBoardMapper;
-import com.bit.house.service.PhotoBoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,17 +21,12 @@ public class PhotoBoardController {
     @Autowired(required = false)
     PhotoBoardMapper photoBoardMapper;
 
-    @Autowired(required = false)
-    PhotoBoardService photoBoardService;
-
-
     //사진 메인
     @RequestMapping("/communityMain")
     private String communityMain(Model model, HttpSession session) throws Exception{
 
         MemberVO memberVO = (MemberVO) session.getAttribute("memberVO");
-
-
+        
         model.addAttribute("member", memberVO);
         model.addAttribute("likerank", photoBoardMapper.communityMain());
 
@@ -88,7 +82,6 @@ public class PhotoBoardController {
             mf.transferTo(new File(saveFile));
 
         }
-
 
         int filesSize=photoImgArray.size();
         if( filesSize !=0){
@@ -296,7 +289,7 @@ public class PhotoBoardController {
         photoBoardMapper.scrapCountSub(photoBoardNo);
 
     }
-
+    //댓글작성
     @RequestMapping("/insertPhotoComment")
     @ResponseBody
     private void insertComment(@RequestParam("commentContent") String commentContent, CommentVO commentVO, HttpSession session, @RequestParam("photoBoardNo") int photoBoardNo) throws Exception{
@@ -310,7 +303,7 @@ public class PhotoBoardController {
         photoBoardMapper.insertPhotoComment(commentVO);
 
     }
-
+    //무한스크롤
     @GetMapping("/photoScrollDown")
     @ResponseBody
     public Map<String, List<PhotoBoardVO>> photoScrollDown(){
