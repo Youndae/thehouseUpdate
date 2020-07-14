@@ -126,9 +126,6 @@ public class AskBoardController {
 
         MemberVO memberVO = (MemberVO) session.getAttribute("memberVO");
 
-
-
-
         askBoardVO.setAskTitle(request.getParameter("askTitle"));
         askBoardVO.setMemberId(memberVO.getMemberId());
         askBoardVO.setAskContent(request.getParameter("askContent"));
@@ -170,10 +167,8 @@ public class AskBoardController {
 
         askBoardMapper.askDelete(askBoardNo);
 
-
         return "redirect:/askBoardList";
     }
-
 
     // 다중파일업로드 에디터
     @RequestMapping(value = "/file_uploader_html5.do", method = RequestMethod.POST)

@@ -52,13 +52,12 @@
                         <th>작성자</th>
                         <th>작성일</th>
                     </tr>
-
                     <th:block th:each="board : ${list}">
-                        <tr th:if="${member?.memberId} == null" th:href="@{/customLogin}">
-                        <tr th:if="${member?.memberId} != null" th:onclick="'location.href=\''+@{/askdetail/{askBoardNo}(askBoardNo=${board.askBoardNo})}+'\''">
+                        <tr>
                             <td th:text="${board.askBoardNo}"/>
                             <td>
-                                <th:block th:text="${board.askTitle}"/>
+                                <a th:text="${board.askTitle}" th:if="${member?.memberId} == null" th:href="@{/customLogin}" />
+                                <a th:text="${board.askTitle}" th:if="${member?.memberId} != null" th:onclick="'location.href=\''+@{/askdetail/{askBoardNo}(askBoardNo=${board.askBoardNo})}+'\''"/>
                             </td>
                             <td th:text="${board.memberId}"/>
                             <td th:text="${board.askDate}"/>
