@@ -17,14 +17,14 @@
     </update>
 
     <select id="follower" resultType="FollowVO">
-        SELECT f.memberId, f.followId, m.memberImg
+        SELECT f.memberId, f.followId, m.memberImg, m.nickName
         FROM follow f INNER JOIN member m
         ON m.memberId = f.followId
         WHERE f.memberId = #{memberId}
     </select>
 
     <select id="following" resultType="FollowVO">
-        SELECT f.memberId, f.followId, m.memberImg
+        SELECT f.memberId, f.followId, m.memberImg, m.nickName
         FROM follow f INNER JOIN member m
         ON m.memberId = f.memberId
         WHERE f.followId = #{memberId}
@@ -75,17 +75,25 @@
     </select>
 
     <select id="sendNote" resultType="MsgVO">
-        SELECT msgNo, receiveId, msgContent, msgDate
-        FROM msg
-        WHERE memberId = #{memberId}
+        SELECT ms.msgNo, ms.memberId, ms.msgContent, ms.msgDate, me.nickName
+        FROM msg ms INNER JOIN member me
+        ON ms.receiveId = me.memberId
+        WHERE ms.memberId = #{memberId}
         ORDER BY msgNo desc
     </select>
 
     <select id="receiveNote" resultType="MsgVO">
-        SELECT msgNo, memberId, msgContent, msgDate
-        FROM msg
-        WHERE receiveId = #{memberId}
+        SELECT ms.msgNo, ms.memberId, ms.msgContent, ms.msgDate, me.nickName
+        FROM msg ms INNER JOIN member me
+        ON ms.memberId = me.memberId
+        WHERE ms.receiveId = #{memberId}
         ORDER BY msgNo desc
+    </select>
+
+    <select id="receive" resultType="MsgVO">
+        SELECT memberId, nickName
+        FROM member
+        WHERE memberId = #{receiveId}
     </select>
 
     <insert id="noteSending" parameterType="MsgVO">

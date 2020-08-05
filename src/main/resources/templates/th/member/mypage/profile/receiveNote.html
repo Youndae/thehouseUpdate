@@ -50,7 +50,10 @@
                                    th:data-sendId="${receive.memberId}"/>
                         </td>
                         <td th:onclick="" th:text="${receive.msgContent}"/></td>
-                        <td th:text="${receive.memberId}"/>
+                        <td>
+                            <th:block th:if="${receive.nickName == null}" th:text="${receive.memberId}"/>
+                            <th:block th:if="${receive.nickName != null}" th:text="${receive.nickName}"/>
+                        </td>
                     </tr>
                 </th:block>
             </table>

@@ -33,7 +33,10 @@
                                       @{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 3x|">
                 <div class="user-header__info">
                     <p class="user-header__name">
-                        <a th:href="@{/member/memberProfile/{memberId}(memberId=${member.memberId})}" th:text="${member.memberId}"></a>
+                        <a th:href="@{/member/memberProfile/{memberId}(memberId=${member.memberId})}">
+                            <th:block th:if="${member.nickName == null}" th:text="${member.memberId}"/>
+                            <th:block th:if="${member.nickName != null}" th:text="${member.nickName}"/>
+                        </a>
                     </p>
                     <p class="user-header-desc" th:text="${member.memberIntro}"></p>
                     <p class="user-header__follow">
@@ -78,7 +81,8 @@
                                                       @{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 2x,
                                                       @{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 3x|">
                             </div>
-                            <div class="name" th:text="${follow.followId}"></div>
+                            <div th:if="${follow.nickName == null}" class="name" th:text="${follow.followId}"></div>
+                            <div th:if="${follow.nickName != null}" class="name" th:text="${follow.nickName}"></div>
                         </a>
                     </div>
                 </div>

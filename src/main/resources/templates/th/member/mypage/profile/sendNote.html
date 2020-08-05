@@ -54,7 +54,10 @@
                             <textarea id="sub" name="sub" th:text="${send.msgContent}"
                                       style="width:500px; height:150px; /*display: none*/" readonly></textarea>
                         </td>
-                        <td th:text="${send.receiveId}"/>
+                        <td>
+                            <th:block th:if="${send.nickName == null}" th:text="${send.receiveId}"/>
+                            <th:block th:if="${send.nickName != null}" th:text="${send.nickName}"/>
+                        </td>
                     </tr>
                 </th:block>
             </table>

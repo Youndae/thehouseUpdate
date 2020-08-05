@@ -37,7 +37,8 @@
                                     </div>
                                     <div class="profile-info">
                                         <div class="profile-info__name">
-                                            <span th:text="${memprofile?.memberId}"></span>
+                                            <span th:if="${memprofile?.nickName == null}" th:text="${memprofile?.memberId}"></span>
+                                            <span th:if="${memprofile?.nickName != null}" th:text="${memprofile?.nickName}"></span>
                                         </div>
                                         <div class="profile-info__follow-state">
                                             <div class="profile-info__follow-state__text">

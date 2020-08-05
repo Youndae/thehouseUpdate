@@ -45,6 +45,9 @@ public interface MyPageMapper {
     //받은쪽지함
     public List<MsgVO> receiveNote(String memberId) throws Exception;
 
+    //쪽지 보내는 닉네임
+    public MsgVO receive(String receiveId) throws Exception;
+
     //쪽지 보내기
     public void noteSending(MsgVO msgVO) throws Exception;
 

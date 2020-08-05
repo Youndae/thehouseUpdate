@@ -59,7 +59,10 @@
                                 <a th:text="${board.askTitle}" th:if="${member?.memberId} == null" th:href="@{/customLogin}" />
                                 <a th:text="${board.askTitle}" th:if="${member?.memberId} != null" th:onclick="'location.href=\''+@{/askdetail/{askBoardNo}(askBoardNo=${board.askBoardNo})}+'\''"/>
                             </td>
-                            <td th:text="${board.memberId}"/>
+                            <td>
+                                <th:block th:if="${board.nickName == null}" th:text="${board.memberId}"/>
+                                <th:block th:if="${board.nickName != null}" th:text="${board.nickName}"/>
+                            </td>
                             <td th:text="${board.askDate}"/>
                         </tr>
                     </th:block>

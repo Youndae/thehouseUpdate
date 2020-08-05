@@ -83,14 +83,14 @@
                                                 <div class="image-single-input-wrap">
                                                     <ul class="image-single-input">
                                                         <li class="image-single-input__entry">
-                                                            <div id="preview">
+                                                            <div id="preview" style="width:200px; height:200px;">
                                                                 <img th:if="${myprofile?.memberImg != null}"
                                                                      th:src="@{'/uploadImg'+${myprofile.memberImg}}" class="file_input_button"
                                                                      alt="open" style="width:200px; height: 200px;"/>
                                                                 <img th:if="${myprofile?.memberImg == null}"
                                                                      th:src="@{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'}"
                                                                      style="width:200px; height: 200px;"/></div>
-                                                            <input type="file" id="uploadFile" name="uploadFile" class="file_input_hidden"/>
+                                                            <input type="file" id="uploadFile" name="uploadFile" class="file_input_hidden" />
                                                         </li>
                                                     </ul>
                                                 </div>

@@ -21,28 +21,6 @@
                     <a class="qna-detail__content__header-subtitle" href="/askBoardList">질문과 답변</a>
                 </div>
                 <h1 class="qna-detail__content__header-title" th:text="${detail.askTitle}"></h1>
-                <address class="qna-detail-author qna-detail__content__header-author-section">
-                    <a class="qna-detail-author__profile-link" th:href="@{/member/memberProfile/{memberId}(memberId=${detail.memberId})}">
-                        <div class="qna-detail-author__profile-link__image">
-                            <img th:if="${detail?.memberImg != null}" class="card-detail-writer__image"
-                                 th:src="@{'/uploadImg'+${detail?.memberImg}}" style="width: 50px; height: 50px;"
-                                 th:attr="srcset=|@{'/uploadImg'+${detail?.memberImg}} 1.5x,
-                                                  @{'/uploadImg'+${detail?.memberImg}} 2x,
-                                                  @{'/uploadImg'+${detail?.memberImg}} 3x|">
-                            <img th:if="${detail?.memberImg == null}" class="card-detail-writer__image"
-                                 th:src="@{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'}" style="width: 50px; height: 50px;"
-                                 th:attr="srcset=|@{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 1.5x,
-                                                  @{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 2x,
-                                                  @{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 3x|">
-                        </div>
-                        <div class="qna-detail-author__profile-link__summary">
-                            <div class="qna-detail-author__profile-link__summary-section">
-                                <span class="qna-detail-author__profile-link__summary-nickname" th:text="${detail.memberId}"></span>
-                            </div>
-                            <div class="qna-detail-author__profile-link__summary-introduction"></div>
-                        </div>
-                    </a>
-                </address>
             </header>
             <section class="qna-detail__content__body">
                 <th:block th:utext="${detail.askContent}"/>
@@ -100,7 +78,8 @@
                                              th:attr="srcset=|@{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 1.5x,
                                                               @{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 2x,
                                                               @{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 3x|">
-                                        <span class="comment-feed__item__content__author__name" th:text="${aComment.memberId}"></span>
+                                        <span th:if="${aComment.nickName == null}" class="comment-feed__item__content__author__name" th:text="${aComment.memberId}"></span>
+                                        <span th:if="${aComment.nickName != null}" class="comment-feed__item__content__author__name" th:text="${aComment.nickName}"></span>
                                     </a>
                                     <span class="comment-feed__item__content__content" th:text="${aComment.commentContent}"></span>
                                 </p>
@@ -131,7 +110,8 @@
                                 </div>
                                 <div class="qna-detail-author__profile-link__summary">
                                     <div class="qna-detail-author__profile-link__summary-section">
-                                        <span class="qna-detail-author__profile-link__summary-nickname" th:text="${detail.memberId}"></span>
+                                        <span th:if="${detail.nickName == null}" class="qna-detail-author__profile-link__summary-nickname" th:text="${detail.memberId}"></span>
+                                        <span th:if="${detail.nickName != null}" class="qna-detail-author__profile-link__summary-nickname" th:text="${detail.nickName}"></span>
                                     </div>
                                     <div class="qna-detail-author__profile-link__summary-introduction"></div>
                                 </div>

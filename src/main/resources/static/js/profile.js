@@ -191,13 +191,13 @@ $(document).ready(function (e){
             if(f.type.match('image.*')){
                 var reader = new FileReader();
                 reader.onload = function (e) {
-                    str += '<img src="'+e.target.result+'" title="'+f.name+'" width=300 height=300 />';
+                    str += '<img src="'+e.target.result+'" title="'+f.name+'" width=200 height=200 />';
                     str += '</li></div>';
                     $(str).appendTo('#preview');
                 }
                 reader.readAsDataURL(f);
             }else{
-                str += '<img src="/resources/img/fileImg.png" title="'+f.name+'" width=300 height=300 />';
+                str += '<img src="/resources/img/fileImg.png" title="'+f.name+'" width=200 height=200 />';
                 $(str).appendTo('#preview');
             }
         });

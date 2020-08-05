@@ -108,7 +108,7 @@
     </select>
 
     <select id="photoComment" resultType="CommentVO">
-        SELECT c.commentNo, c.memberId, c.commentupDate, c.commentContent, c.photoBoardNo, m.memberImg
+        SELECT c.commentNo, c.memberId, c.commentupDate, c.commentContent, c.photoBoardNo, m.memberImg, m.nickName
         FROM comment c INNER JOIN member m
         ON c.memberId = m.memberId
         WHERE c.photoBoardNo = #{photoBoardNo}

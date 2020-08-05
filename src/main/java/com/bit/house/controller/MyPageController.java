@@ -212,9 +212,10 @@ public class MyPageController {
 
     //쪽지보내기 폼
     @RequestMapping("/noteSending")
-    private String noteSending(Model model, @RequestParam(required = false) String receiveId){
+    private String noteSending(Model model, @RequestParam(required = false) String receiveId) throws Exception{
 
-        model.addAttribute("sending", receiveId);
+
+        model.addAttribute("sending", myPageMapper.receive(receiveId));
 
         return "th/member/mypage/profile/noteSending";
     }

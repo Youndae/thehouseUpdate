@@ -3,9 +3,10 @@
 <mapper namespace="com.bit.house.mapper.AskBoardMapper">
 
     <select id="askBoardList" resultType="com.bit.house.domain.AskBoardVO">
-        SELECT askBoardNo, askContent, memberId, CONCAT(REPEAT("　", askIndent), askTitle) as askTitle, askDate,
-        askGroupNo, askIndent, askStep
-        FROM askboard
+        SELECT a.askBoardNo, a.askContent, a.memberId, CONCAT(REPEAT("　", a.askIndent), a.askTitle) as askTitle, a.askDate,
+        a.askGroupNo, a.askIndent, a.askStep, m.nickName
+        FROM askboard a INNER JOIN member m
+        ON a.memberId = m.memberId
         WHERE askBoardNo > 0
         order by askGroupNo desc, askStep asc, askIndent asc
         LIMIT #{pageStart}, #{perPageNum}
@@ -17,9 +18,10 @@
     </select>
 
     <select id="searchList" resultType="com.bit.house.domain.AskBoardVO">
-        SELECT askBoardNo, askContent, memberId, CONCAT(REPEAT("　", askIndent), askTitle) as askTitle, askDate,
-        askGroupNo, askIndent, askStep
-        FROM askboard
+        SELECT a.askBoardNo, m.nickName, a.askContent, a.memberId, CONCAT(REPEAT("　", a.askIndent), a.askTitle) as askTitle, a.askDate,
+        a.askGroupNo, a.askIndent, a.askStep
+        FROM askboard a INNER JOIN member m
+        ON a.memberId = m.memberId
         WHERE askTitle like #{keyword}
         order by askGroupNo desc, askStep asc, askIndent asc
         LIMIT #{pageStart}, #{perPageNum}
@@ -31,7 +33,7 @@
     </select>
 
     <select id="askDetail" parameterType="int" resultType="AskBoardVO">
-        SELECT a.askBoardNo, a.memberId, a.askTitle, a.askContent, a.askDate, a.askGroupNo, a.askIndent, a.askStep, m.memberImg
+        SELECT a.askBoardNo, m.nickName, a.memberId, a.askTitle, a.askContent, a.askDate, a.askGroupNo, a.askIndent, a.askStep, m.memberImg
         FROM askboard a  INNER JOIN member m
         ON a.memberId = m.memberId
         WHERE askBoardNo = #{askBoardNo}
@@ -70,7 +72,10 @@
     </insert>
 
     <select id="askComment" resultType="CommentVO">
-        SELECT * FROM comment WHERE askBoardNo = #{askBoardNo}
+        SELECT c.commentNo, c.memberId, c.commentupDate, c.commentContent, c.askBoardNo, m.memberImg, m.nickName
+        FROM comment c INNER JOIN member m
+        ON c.memberId = m.memberId
+        WHERE askBoardNo = #{askBoardNo}
     </select>
 
     <insert id="insertAskComment" parameterType="CommentVO">

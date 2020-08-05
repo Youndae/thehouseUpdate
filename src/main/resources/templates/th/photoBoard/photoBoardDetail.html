@@ -138,7 +138,8 @@
                                                          th:attr="srcset=|@{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 1.5x,
                                                                         @{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 2x,
                                                                         @{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 3x|">
-                                                    <span class="comment-feed__item__content__author__name" th:text="${pComment?.memberId}"></span>
+                                                    <span th:if="${pComment?.nickName == null}" class="comment-feed__item__content__author__name" th:text="${pComment?.memberId}"></span>
+                                                    <span th:if="${pComment?.nickName != null}" class="comment-feed__item__content__author__name" th:text="${pComment?.nickName}"></span>
                                                 </a>
                                                 <span class="comment-feed__item__content__content" th:text="${pComment?.commentContent}"></span>
                                             </p>
@@ -204,7 +205,8 @@
                                                      th:attr="srcset=|@{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 1.5x,
                                                                         @{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 2x,
                                                                         @{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 3x|">
-                                                <span class="card-detail-writer__name" th:text="${photodetail.memberId}"></span>
+                                                <span th:if="${photodetail.nickName == null}" class="card-detail-writer__name" th:text="${photodetail.memberId}"></span>
+                                                <span th:if="${photodetail.nickName != null}" class="card-detail-writer__name" th:text="${photodetail.nickName}"></span>
                                             </a>
                                         </div>
                                         <form action="/member/noteSending" method="post" id="sending" name="sending">
