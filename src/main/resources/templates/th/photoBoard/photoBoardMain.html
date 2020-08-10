@@ -23,7 +23,7 @@
             <tr th:each="rank : ${likerank}">
                 <div class="col-6 col-md-3 product-item-wrap">
                     <article class="production-item">
-                        <a class="production-item__overlay" th:if="${member?.memberId} == null" th:href="@{/customLogin}"></a>
+                        <a class="production-item__overlay" th:if="${member?.memberId} == null" th:href="@{/photodetailnonmem/{photoBoardNo}(photoBoardNo=${rank.photoBoardNo})}"></a>
                         <a class="production-item__overlay" th:if="${member?.memberId} != null" th:href="@{/photodetail/{photoBoardNo}(photoBoardNo=${rank.photoBoardNo})}"></a>
                         <div class="production-item-image production-item__image">
                             <img class="image" alt="" th:src="@{'/uploadImg'+${rank.photoImg1}}" srcset="">

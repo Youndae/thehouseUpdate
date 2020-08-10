@@ -88,6 +88,21 @@ public class AskBoardController {
 
         return "th/askBoard/askBoardDetail";
     }
+
+    //비회원 글 상세보기
+    @RequestMapping("/askdetailnonmem/{askBoardNo}")
+    private String askDetailNonMem(@PathVariable int askBoardNo, Model model) throws Exception {
+
+        AskBoardVO detail=askBoardMapper.askDetail(askBoardNo);
+
+        model.addAttribute("detail", detail);
+        model.addAttribute("askComment", askBoardMapper.askComment(askBoardNo));
+        model.addAttribute("commentCount", askBoardMapper.askCommentCount(askBoardNo));
+
+
+        return "th/askBoard/askBoardDetailNonMem";
+    }
+
     //게시글 작성 폼 호출
     @RequestMapping("/askinsert")
     private String insertAsk() {

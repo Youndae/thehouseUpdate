@@ -38,12 +38,7 @@
                     </h1>
                     <form class="comment-feed__form" id="comment">
                         <div class="comment-feed__form__user">
-                            <img th:if="${member?.memberImg != null}" class="comment-feed__item__content__author__image" alt=""
-                                 th:src="@{'/uploadImg'+${member?.memberImg}}"
-                                 th:attr="srcset=|@{'/uploadImg'+${member?.memberImg}} 1.5x,
-                                                  @{'/uploadImg'+${member?.memberImg}} 2x,
-                                                  @{'/uploadImg'+${member?.memberImg}} 3x|">
-                            <img th:if="${member?.memberImg == null}" class="comment-feed__item__content__author__image" alt=""
+                            <img class="comment-feed__item__content__author__image" alt=""
                                  th:src="@{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'}"
                                  th:attr="srcset=|@{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 1.5x,
                                                   @{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 2x,
@@ -53,12 +48,11 @@
                             <div class="comment-feed__form__content">
                                 <div class="comment-content-input">
                                     <input class="comment-content-input__text comment-feed__form__content__text"
-                                           id="commentContent" name="commentContent" placeholder="댓글을 작성해주세요" contenteditable="true"/>
+                                           id="commentContent" name="commentContent" placeholder="로그인 후 댓글을 작성해주세요" contenteditable="true"/>
                                 </div>
                             </div>
                             <div class="comment-feed__form__actions">
-                                <button class="comment-feed__form__submit" aria-label="등록" type="submit" id="aCommentInsert">등록</button>
-                                <input type="hidden" id="askBoardNo" name="askBoardNo" th:value="${detail.askBoardNo}"/>
+                                <button class="comment-feed__form__submit" aria-label="등록" type="submit" id="aCommentInsert" disabled>등록</button>
                             </div>
                         </div>
                     </form>
@@ -116,34 +110,7 @@
                                     <div class="qna-detail-author__profile-link__summary-introduction"></div>
                                 </div>
                             </a>
-                            <div th:if="${member.memberId} != ${detail.memberId}">
-                                <form action="/member/noteSending" method="post" id="sending" name="sending">
-                                <button th:if="${fcount == 0}"
-                                        class="button button--color-gray-4 button--size-30 button--shape-4 card-detail-writer__follow"
-                                        id="follow" name="follow">팔로우</button>
-                                <button th:if="${fcount == 1}"
-                                        class="button button--color-gray-4 button--size-30 button--shape-4 card-detail-writer__follow"
-                                        id="followcancel" name="followcancel">팔로우취소</button>
-                                <button class="button button--color-gray-4 button--size-30 button--shape-4 card-detail-writer__follow"
-                                        id="notesend" name="notesend">쪽지보내기</button>
-                                <input type="hidden" id="memberId" name="memberId" th:value="${detail.memberId}"/>
-                                <input type="hidden" id="receiveId" name="receiveId" value=""/>
-                                </form>
-                            </div>
                         </address>
-                        <aside class="qna-detail-aside qna-detail__container__sidebar__aside">
-                            <div class="qna-detail-aside__section">
-                                <button class="button button--color-gray-4 button--size-30 button--shape-4 card-detail-writer__follow"
-                                        type="button" id="askreply" name="askreply"
-                                        th:onclick="'javascript:reply('+${detail.askBoardNo}+');'">답글달기</button>
-                                <button class="button button--color-gray-4 button--size-30 button--shape-4 card-detail-writer__follow"
-                                        type="button" th:if="${member.memberId} == ${detail.memberId}" id="askUp" name="askUp"
-                                        th:onclick="'javascript:update('+${detail.askBoardNo}+');'">수정</button>
-                                <button class="button button--color-gray-4 button--size-30 button--shape-4 card-detail-writer__follow"
-                                        type="button" th:if="${member.memberId} == ${detail.memberId}" id="askdel" name="askdel"
-                                        th:onclick="'javascript:del('+${detail.askBoardNo}+');'">삭제</button>
-                            </div>
-                        </aside>
                     </div>
                 </div>
             </div>

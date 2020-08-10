@@ -42,6 +42,12 @@ $(function(){
     });
 });
 
+$(function(){
+    $("#likeNon").click(function(){
+        location.href="/customLogin";
+    })
+})
+
 //스크랩버튼
 $(function(){
     $("#scrap").click(function(){
@@ -82,6 +88,12 @@ $(function(){
         });
     });
 });
+
+$(function(){
+    $("#scrapNon").click(function(){
+        location.href="/customLogin";
+    })
+})
 
 $(function(){
     $("#notesend").click(function(){

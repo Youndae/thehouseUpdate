@@ -138,6 +138,24 @@ public class PhotoBoardController {
 
         return "th/photoBoard/photoBoardDetail";
     }
+
+    //사진 상세
+    @RequestMapping("/photodetailnonmem/{photoBoardNo}")
+    private String photoDetailNonMem(@PathVariable int photoBoardNo, Model model) throws Exception{
+
+
+
+        PhotoBoardVO detail=photoBoardMapper.photoDetail(photoBoardNo);
+
+        model.addAttribute("photodetail", detail);
+        model.addAttribute("userphoto", photoBoardMapper.userPhoto(detail.getMemberId()));
+        model.addAttribute("photoComment", photoBoardMapper.photoComment(photoBoardNo));
+        model.addAttribute("commentCount", photoBoardMapper.commentCount(photoBoardNo));
+
+
+        return "th/photoBoard/photoBoardDetailNonMem";
+    }
+
     //사진 수정
     @RequestMapping("/photoupdate/{photoBoardNo}")
     private String photoUpdate(@PathVariable int photoBoardNo, Model model) throws Exception{
