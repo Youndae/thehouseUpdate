@@ -43,12 +43,18 @@ public class MyPageController {
     //프로필수정
     @RequestMapping("/modifyProfile")
     private String modifyProfile(MemberVO memberVO, HttpServletRequest request, MultipartHttpServletRequest mreq,
-                                 HttpSession session) throws Exception{
+                                 HttpSession session) throws Exception {
 
         memberVO = (MemberVO) session.getAttribute("memberVO");
 
         memberVO.setNickName(request.getParameter("nickName"));
         memberVO.setMemberIntro(request.getParameter("memberIntro"));
+
+
+
+        /*myPageService.profilemodify(mreq, request, memberVO);*/
+
+
 
         StringBuffer sb = new StringBuffer();
 
@@ -56,22 +62,33 @@ public class MyPageController {
         MultipartFile mf = mreq.getFile("uploadFile");
 
         String oldName = mf.getOriginalFilename();
+
         String saveName = sb.append(new SimpleDateFormat("yyyyMMddHHmmss").format(System.currentTimeMillis()))
-                            .append(UUID.randomUUID().toString())
-                            .append(oldName.substring(oldName.lastIndexOf("."))).toString();
+                .append(UUID.randomUUID().toString())
+                .append(oldName.substring(oldName.lastIndexOf("."))).toString();
 
         String filePath = request.getSession().getServletContext().getRealPath("image/profileImg/");
-        File dest = new File(filePath+saveName);
+        File dest = new File(filePath + saveName);
         mf.transferTo(dest);
 
 
-        memberVO.setMemberImg("/profileImg/"+saveName);
-
+        memberVO.setMemberImg("/profileImg/" + saveName);
 
         myPageMapper.modifyProfile(memberVO);
 
+
         return "redirect:/member/settings";
     }
+
+    //프로필 사진 삭제
+    @RequestMapping("/deletePhoto")
+    @ResponseBody
+    private void deletePhoto(@RequestParam("memberId") String userId) throws Exception{
+
+        myPageMapper.deletePhoto(userId);
+
+    }
+
    //팔로워목록
     @RequestMapping("/allFollow/{memberId}")
     private String allFollow(Model model, @PathVariable String memberId, HttpSession session) throws Exception{

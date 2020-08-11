@@ -14,6 +14,9 @@ public interface MyPageMapper {
     //프로필수정
     public void modifyProfile(MemberVO memberVO) throws Exception;
 
+    //프로필 사진 삭제
+    public void deletePhoto(String memberId) throws Exception;
+
     //팔로워
     public List<FollowVO> follower(String memberId) throws Exception;
 

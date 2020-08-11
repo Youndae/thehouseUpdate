@@ -1,3 +1,23 @@
+//이미지삭제 버튼
+$(function(){
+    $("#delPhoto").click(function(){
+        var userId = {
+            memberId : $("#memberId").val(),
+        };
+        console.log(userId);
+        $.ajaxSettings.traditional = true;
+        $.ajax({
+            type: "post",
+            url: "/member/deletePhoto",
+            data: userId,
+            success : function(data){
+                location.reload();
+            },
+        });
+    });
+});
+
+
 //쪽지 체크박스 전체 선택
 $(function(){
     $("#allcheck").click(function(){
@@ -203,4 +223,5 @@ $(document).ready(function (e){
         });
     }
 });
+
 

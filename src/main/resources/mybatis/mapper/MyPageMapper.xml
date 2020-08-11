@@ -16,6 +16,12 @@
         WHERE memberId = #{memberId}
     </update>
 
+    <update id="deletePhoto" parameterType="MemberVO">
+        UPDATE member SET
+        memberImg = null
+        WHERE memberId = #{memberId}
+    </update>
+
     <select id="follower" resultType="FollowVO">
         SELECT f.memberId, f.followId, m.memberImg, m.nickName
         FROM follow f INNER JOIN member m
