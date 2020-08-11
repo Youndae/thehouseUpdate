@@ -50,23 +50,28 @@ public class AskBoardController {
     }
     //검색 리스트
     @RequestMapping("/askSearchList")
-    private String askSearchList(@ModelAttribute("cri") Criteria cri, Model model, HttpServletRequest request, HttpSession session) throws Exception{
+    private String askSearchList(@ModelAttribute("cri") Criteria cri, @RequestParam(required = false) String keyword,Model model, HttpServletRequest request, HttpSession session) throws Exception{
 
         MemberVO memberVO = (MemberVO) session.getAttribute("memberVO");
 
-        String keyword = "%"+request.getParameter("keyword")+"%";
+        System.out.println("////////keyword//////"+keyword);
 
 
         System.out.println("pageStart : "+cri.getPageStart());
 
 
         model.addAttribute("member", memberVO);
-        model.addAttribute("list", askBoardMapper.searchList(keyword, cri.getPageStart(), cri.getPerPageNum()));
-        PageMaker pageMaker = new PageMaker();
-        pageMaker.setCri(cri);
-        pageMaker.setTotalCount(askBoardMapper.searchListCountCriteria(cri, keyword));
 
-        model.addAttribute("pageMaker", pageMaker);
+        Search search = new Search();
+        search.setKeyword(keyword);
+        search.setCri(cri);
+        search.setTotalCount(askBoardMapper.searchListCountCriteria(cri, keyword));
+        model.addAttribute("list", askBoardMapper.searchList(keyword, cri.getPageStart(), cri.getPerPageNum()));
+        /*PageMaker pageMaker = new PageMaker();
+        pageMaker.setCri(cri);
+        pageMaker.setTotalCount(askBoardMapper.searchListCountCriteria(cri, keyword));*/
+
+        model.addAttribute("pageMaker", search);
 
         return "th/askBoard/askBoardSearchList";
     }

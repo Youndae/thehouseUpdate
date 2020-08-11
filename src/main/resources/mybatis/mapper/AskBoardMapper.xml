@@ -22,14 +22,14 @@
         a.askGroupNo, a.askIndent, a.askStep
         FROM askboard a INNER JOIN member m
         ON a.memberId = m.memberId
-        WHERE askTitle like #{keyword}
+        WHERE askTitle like CONCAT('%', #{keyword}, '%')
         order by askGroupNo desc, askStep asc, askIndent asc
         LIMIT #{pageStart}, #{perPageNum}
 
     </select>
 
     <select id="searchListCountCriteria" resultType="int">
-        SELECT count(*) FROM askboard WHERE askTitle like #{keyword}
+        SELECT count(*) FROM askboard WHERE askTitle like CONCAT('%', #{keyword}, '%')
     </select>
 
     <select id="askDetail" parameterType="int" resultType="AskBoardVO">

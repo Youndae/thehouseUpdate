@@ -21,7 +21,7 @@
             <label for="askTitle">제목<span class="text-muted"/></label>
             <input type="text" th:value="${detail.askTitle}" id="askTitle" name="askTitle"/>
         </div>
-        div class="mt-4 mb-3">
+        <div class="mt-4 mb-3">
         <label for="askContent">내용<span class="text-muted"/></label>
             <textarea name="askContent" id="askContent" style="width: 700px; height: 400px; ">
                 <th:block th:utext="${detail.askContent}"/></textarea>
