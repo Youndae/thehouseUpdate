@@ -18,7 +18,9 @@
 <div layout:fragment="content">
     <div class="container store-index-section store-index-product-list"><h1>사진</h1>
         <div class="form-group">
-            <button class="button button--color-gray-4 button--size-30 button--shape-4 card-detail-writer__follow"
+            <button th:if="${member?.memberId == null}" class="button button--color-gray-4 button--size-30 button--shape-4 card-detail-writer__follow"
+                    onclick="location.href='/customLogin'" type="button">글쓰기</button>
+            <button th:if="${member?.memberId != null}" class="button button--color-gray-4 button--size-30 button--shape-4 card-detail-writer__follow"
                     onclick="location.href='/photoInsert'" type="button">글쓰기</button>
         </div>
         <div th:id="autoScroll" class="virtualized-list row" style="padding-top:0px; transform: translateY(0px);">

@@ -38,7 +38,9 @@
                 <div class="questions-filter__float sticky-content open" style="position: relative;">
                     <div class="questions-filter__content container">
                         <div class="questions-filter__actions">
-                            <button type="button" id="askWrite" name="askWrite" onclick="location.href='/askinsert'"
+                            <button th:if="${member?.memberId == null}" type="button" onclick="location.href='/customLogin'"
+                                    class="questions-filter__actions__new-question btn btn-priority btn-sm">글쓰기</button>
+                            <button th:if="${member?.memberId != null}" type="button" id="askWrite" name="askWrite" onclick="location.href='/askinsert'"
                                     class="questions-filter__actions__new-question btn btn-priority btn-sm">글쓰기</button>
                         </div>
                     </div>
