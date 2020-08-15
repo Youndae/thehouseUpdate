@@ -1,6 +1,6 @@
 # thehouseUpdate
 프로젝트 수정
-thehouse Project 수정.
+thehouse Project 수정본.
 
 수정 전 문제점
 
