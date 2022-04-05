@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="th/layout/defaultLayout">
+<head>
+    <meta charset="UTF-8">
+    <title>사진 업로드</title>
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/mainContent.css}">
+        <link rel="stylesheet" th:href="@{/css/myInfoSettings.css}">
+        <link rel="stylesheet" th:href="@{/css/myPage.css}">
+    </th:block>
+    <script type="text/javascript" th:src="@{/js/profile.js}"></script>
+    <link th:href="@{/css/productPage.css}" rel="stylesheet"/>
+    <script type="text/javascript" th:src="@{/js/photoBoard.js}"></script>
+
+    <style>
+        .preview_area{
+            display: flex;
+            margin-top: 10px;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        .preview_area div{
+            width: 100%;
+            height: 260px;
+            flex: 0 0 33.33333%;
+        }
+
+        .preview_img img{
+            width: 250px;
+            height: 250px;
+        }
+
+        .edit-user-info__form-item__delete{
+            right: 80px;
+        }
+    </style>
+
+</head>
+<body>
+<h2>사진</h2>
+<div layout:fragment="content">
+    <div class="container">
+        <form action="/photoInsertProc" method="post" id="insertphoto" name="insertphoto" enctype="multipart/form-data">
+            <div class="input-group">
+                <select class="custom-select col-md-2" th:id="inputGroupSelect01" name="areaCode">
+                    <option th:value selected disabled>평수(필수)</option>
+                    <option id="areaSelect" th:each="area : ${areaCode}"
+                            th:value="${area.areaCode}"
+                            th:utext="${area.areaType}"/>
+                    <input type="hidden" id="area" name="area" value=""/>
+                </select>
+                <select class="custom-select col-md-2" id="houseGroup" name="houseCode">
+                    <option th:value selected disabled>주거형태(필수)</option>
+                    <option id="houseSelect" th:each="house : ${houseCode}"
+                            th:value="${house.houseCode}"
+                            th:utext="${house.houseType}"/>
+                    <input type="hidden" id="house" name="house" value=""/>
+                </select>
+                <select class="custom-select col-md-2" id="styleGroup" name="styleCode">
+                    <option th:value selected disabled>스타일(필수)</option>
+                    <option id="styleSelect" th:each="style : ${styleCode}"
+                            th:value="${style.styleCode}"
+                            th:utext="${style.styleType}"/>
+                    <input type="hidden" id="style" name="style" value=""/>
+                </select>
+            </div><br>
+            <div class="form-group">
+                <select class="custom-select col-md-3" id="placeGroup" name="placeCode">
+                    <option th:value selected disabled>공간(필수)</option>
+                    <option id="placeSelect" th:each="place : ${placeCode}"
+                            th:value="${place.placeCode}"
+                            th:utext="${place.placeType}"/>
+                    <input type="hidden" id="place" name="place" value=""/>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="photoContent"></label>
+                <textarea id="photoContent" name="photoContent" style="width: 700px; height: 400px;" placeholder="사진에 대해 설명해주세요"></textarea>
+            </div>
+            <div class="form-group">
+                <input type="file" id="files" name="files" value="사진 선택" multiple/>
+                <div class="preview_area">
+                </div>
+            </div>
+            <input type="button" id="photoinsert" name="photoinsert" value="등록"/>
+        </form>
+    </div>
+</div>
+</body>
+</html>

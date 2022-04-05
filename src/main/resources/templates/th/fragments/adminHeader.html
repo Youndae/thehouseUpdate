@@ -1,0 +1,69 @@
+
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<div th:fragment="headerFragment" class="header">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12 xs-12 md-auto">
+                <nav class="navbar navbar-icon-top navbar-expand-lg navbar-light" style="background-color: white;">
+                    <a class="navbar-brand logo-font" th:href="@{/}"><img th:src="@{/icon/thehouse.png}" class="rounded-circle" width=50px
+                                                          height=50px /> <b>니가사는그집</b></a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse sub-font" id="navbarSupportedContent">
+                        <ul class="navbar-nav ml-auto">
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link" th:href="@{/admin/spendingPattern}" id="navbarDropdown" role="button" aria-haspopup="true"
+                                   aria-expanded="false">회원관리
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" th:href="@{/admin/spendingPattern}">회원소비패턴</a>
+                                    <a class="dropdown-item" th:href="@{/admin/memberInfo}">회원정보</a>
+                                    <a class="dropdown-item" th:href="@{/admin/memberOrderList}">회원주문내역</a>
+                                    <a class="dropdown-item" th:href="@{/admin/chatList}">채팅</a>
+                                    <a class="dropdown-item" th:href="@{/admin/training}">추천트레이닝</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link" th:href="@{/admin/}" id="navbarDropdown" role="button" aria-haspopup="true"
+                                   aria-expanded="false">제품관리
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" th:href="@{/admin/productManagement}">제품등록내역</a>
+                                    <a class="dropdown-item" th:href="@{/admin/productSalesVolume}">제품판매관리</a>
+                                    <a class="dropdown-item" th:href="@{/admin/popularityProduct}">인기상품</a>
+                                </div>
+                            </li>
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link" href="#" id="navbarDropdown" role="button" aria-haspopup="true"
+                                   aria-expanded="false">업체관리
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" th:href="@{/admin/sellerManagement}">거래처현황</a>
+                                    <a class="dropdown-item" th:href="@{/admin/applySeller}">업체신청 승인</a>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <ul class="navbar-nav">
+                            <form class="form-inline my-2 my-lg-0" form-method="post" th:action="@{/customLogout}">
+                                <input sec:authorize="isAuthenticated()" type="submit" class="button-css  ml-2 mr-3" style="border: 1px solid red; color:red;" value="로그아웃">
+<!--                                <button sec:authorize="isAuthenticated()" class="btn btn-outline-danger my-2 my-sm-0 btn-sm" type="submit">로그아웃</button>-->
+                            </form>
+                        </ul>
+
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="th/layout/defaultLayout">
+<head>
+    <meta charset="UTF-8">
+    <title><th:block th:text="${memprofile.memberId}"/>님의 프로필</title>
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/profile.css}">
+    </th:block>
+    <script type="text/javascript" th:src="@{/js/profile.js}"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="user-show-layout">
+        <div class="container">
+            <th:block th:replace="th/fragments/navBar_myPage"></th:block>
+            <th:block th:replace="th/fragments/navBar_myPage_profile"></th:block>
+            <div class="row">
+                <div class="col-12 col-lg-3 wrap--profile">
+                    <div data-sticky-enabled="false" data-sticky-always="false" data-direction="top" data-offset="81" class="sticky-container"
+                         style="position: sticky; top: 81px;">
+                        <div class="sticky-child" style="position: relative">
+                            <div class="user-profile">
+                                <div class="user-profile__container">
+                                    <div class="user-profile__profile-image">
+                                        <img th:if="${memprofile?.memberImg != null}"
+                                             th:src="@{'/uploadImg'+${memprofile?.memberImg}}"
+                                             th:attr="srcset=|@{'/uploadImg'+${memprofile?.memberImg}} 1.5x,
+                                                              @{'/uploadImg'+${memprofile?.memberImg}} 2x,
+                                                              @{'/uploadImg'+${memprofile?.memberImg}} 3x|">
+                                        <img th:if="${memprofile?.memberImg == null}" class="comment-feed__item__content__author__image" alt=""
+                                             th:src="@{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'}"
+                                             th:attr="srcset=|@{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 1.5x,
+                                                              @{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 2x,
+                                                              @{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 3x|">
+                                    </div>
+                                    <div class="profile-info">
+                                        <div class="profile-info__name">
+                                            <span th:if="${memprofile?.nickName == null}" th:text="${memprofile?.memberId}"></span>
+                                            <span th:if="${memprofile?.nickName != null}" th:text="${memprofile?.nickName}"></span>
+                                        </div>
+                                        <div class="profile-info__follow-state">
+                                            <div class="profile-info__follow-state__text">
+                                                <a th:href="@{/member/allFollow/{memberId}(memberId=${memprofile?.memberId})}">
+                                                <span>팔로워
+                                                    <span class="highlight" th:text="${followCount}"></span>
+                                                </span>
+                                                </a>
+                                            </div>
+                                            <div class="profile-info__follow-state__vertical-bar"></div>
+                                            <div class="profile-info__follow-state__text">
+                                                <a th:href="@{/member/allFollowing/{memberId}(memberId=${memprofile?.memberId})}">
+                                                <span>팔로잉
+                                                    <span class="highlight" th:text="${followingCount}"></span>
+                                                </span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="profile-info__actions" th:if="${member} != ${memprofile.memberId}">
+                                            <button th:if="${fcount == 0}"
+                                                    class="profile-info__btn profile-info__btn--secondary"
+                                                    id="follow" name="follow" type="button">팔로우</button>
+                                            <button th:if="${fcount == 1}"
+                                                    class="profile-info__btn profile-info__btn--secondary"
+                                                    id="followcancel" name="followcancel" type="button">팔로우취소</button>
+                                        </div><br>
+                                        <div class="profile-info__actions" th:if="${member} != ${memprofile.memberId}">
+                                            <form action="/member/noteSending" method="post" id="sending" name="sending">
+                                            <button class="profile-info__btn profile-info__btn--secondary"
+                                                    id="notesend" name="notesend" type="button">쪽지보내기</button>
+                                                <input type="hidden" id="memberId" name="memberId" th:value="${memprofile.memberId}"/>
+                                                <input type="hidden" id="receiveId" name="receiveId" value=""/>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="user-profile__empty"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="horizontal-line"></div>
+                <div class="col-12 offset-lg-1 col-lg-8 wrap--contents">
+                    <div class="contents">
+                        <section class="post post--collection">
+                            <h5 class="post__title">
+                                사진
+                                <strong th:text="${photoCount}"></strong>
+                                <a class="posts__title__show-all" th:href="@{/member/allPhoto/{memberId}(memberId=${memprofile.memberId})}">전체보기</a>
+                            </h5>
+                            <div class="row post--cards__list">
+                                <th:block th:each="photo : ${memphoto}">
+                                    <div class="col-4 col-md-3">
+                                        <div class="post--cards__item">
+                                            <a th:href="@{/photodetail/{photoBoardNo}(photoBoardNo=${photo.photoBoardNo})}">
+                                                <img class="post--cards__item__img" th:src="@{'/uploadImg'+${photo.photoImg1}}"
+                                                     th:attr="srcset=|@{'/uploadImg'+${photo?.photoImg1}} 1.5x,
+                                                              @{'/uploadImg'+${photo?.photoImg1}} 2x,
+                                                              @{'/uploadImg'+${photo?.photoImg1}} 3x|">
+                                            </a>
+                                        </div>
+                                    </div>
+                                </th:block>
+                            </div>
+                        </section>
+                        <section class="post post--collection">
+                            <h5 class="post__title">
+                                스크랩북
+                                <strong th:text="${scrapCount}"></strong>
+                                <a class="posts__title__show-all" th:href="@{/member/allScrap/{memberId}(memberId=${memprofile.memberId})}">전체보기</a>
+                            </h5>
+                            <div class="row post--cards__list">
+                                <th:block th:each="scrap : ${memberscrap}">
+                                    <div class="col-4 col-md-3">
+                                        <div class="post--cards__item">
+                                            <a th:href="@{/photodetail/{photoBoardNo}(photoBoardNo=${scrap.photoBoardNo})}">
+                                                <img class="post--cards__item__img" th:src="@{'/uploadImg'+${scrap.photoImg1}}"
+                                                     th:attr="srcset=|@{'/uploadImg'+${scrap?.photoImg1}} 1.5x,
+                                                                      @{'/uploadImg'+${scrap?.photoImg1}} 2x,
+                                                                      @{'/uploadImg'+${scrap?.photoImg1}} 3x|">
+                                            </a>
+                                        </div>
+                                    </div>
+                                </th:block>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

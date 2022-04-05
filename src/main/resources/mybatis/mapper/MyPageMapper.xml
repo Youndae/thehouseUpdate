@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bit.house.mapper.MyPageMapper">
+
+
+    <select id="selectProfile" resultType="MemberVO">
+        SELECT nickName
+            , memberImg
+            , memberIntro
+            , memberId
+        FROM member
+        WHERE memberId = #{memberId}
+    </select>
+
+
+    <update id="modifyProfile" parameterType="MemberVO">
+        UPDATE member SET
+            nickName = #{nickName}
+            , memberImg = #{memberImg}
+            , memberIntro = #{memberIntro}
+        WHERE memberId = #{memberId}
+    </update>
+
+    <update id="deletePhoto" parameterType="MemberVO">
+        UPDATE member SET
+            memberImg = null
+        WHERE memberId = #{memberId}
+    </update>
+
+    <select id="follower" resultType="FollowVO">
+        SELECT f.memberId
+            , f.followId
+            , m.memberImg
+            , m.nickName
+        FROM follow f
+            INNER JOIN member m
+            ON m.memberId = f.followId
+        WHERE f.memberId = #{memberId}
+    </select>
+
+    <select id="following" resultType="FollowVO">
+        SELECT f.memberId
+            , f.followId
+            , m.memberImg
+            , m.nickName
+        FROM follow f
+            INNER JOIN member m
+            ON m.memberId = f.memberId
+        WHERE f.followId = #{memberId}
+    </select>
+
+    <insert id="follow" parameterType="FollowVO">
+        INSERT INTO follow(
+            memberId
+            , followId
+            , followNo)
+        VALUES (
+            #{memberId}
+            , #{followId}
+            , #{followNo}
+            )
+    </insert>
+
+    <delete id="cancelFollow" parameterType="FollowVO">
+        DELETE FROM follow
+        WHERE followId = #{followId}
+            AND memberId = #{memberId}
+    </delete>
+
+    <select id="myProfile" resultType="MemberVO">
+        SELECT nickName
+            , memberImg
+            , memberIntro
+            , memberId
+        FROM member
+        WHERE memberId = #{memberId}
+    </select>
+
+    <select id="profilePhoto" resultType="PhotoBoardVO">
+        SELECT photoBoardNo
+            , PhotoImg1
+        FROM photoboard
+        WHERE memberId = #{memberId}
+            ORDER BY photoBoardNo desc
+            LIMIT 4;
+    </select>
+
+    <select id="profileScrap" resultType="ScrapVO">
+        SELECT s.scrapNo
+            , p.memberId
+            , p.photoBoardNo
+            , p.photoImg1
+        FROM scrap s
+            INNER JOIN photoboard p
+            ON s.photoBoardNo = p.photoBoardNo
+        WHERE s.memberId = #{memberId}
+            ORDER BY s.scrapNo desc
+            LIMIT 4;
+    </select>
+
+    <select id="allPhoto" resultType="PhotoBoardVO">
+        SELECT *
+        FROM photoboard
+         WHERE memberId = #{memberId}
+    </select>
+
+    <select id="allScrap" resultType="ScrapVO">
+        SELECT s.scrapNo
+            , p.photoBoardNo
+            , p.photoImg1
+        FROM scrap s
+            INNER JOIN photoboard p
+            ON s.photoBoardNo = p.photoBoardNo
+        WHERE s.memberId = #{memberId}
+    </select>
+
+    <select id="sendNote" resultType="MsgVO">
+        SELECT ms.msgNo
+            , ms.memberId
+            , ms.msgContent
+            , ms.msgDate
+            , me.nickName
+        FROM msg ms
+            INNER JOIN member me
+            ON ms.receiveId = me.memberId
+        WHERE ms.memberId = #{memberId}
+            ORDER BY msgNo desc
+    </select>
+
+    <select id="receiveNote" resultType="MsgVO">
+        SELECT ms.msgNo
+            , ms.memberId
+            , ms.msgContent
+            , ms.msgDate
+            , me.nickName
+        FROM msg ms
+            INNER JOIN member me
+            ON ms.memberId = me.memberId
+        WHERE ms.receiveId = #{memberId}
+            ORDER BY msgNo desc
+    </select>
+
+    <select id="receive" resultType="MsgVO">
+        SELECT memberId
+            , nickName
+        FROM member
+        WHERE memberId = #{receiveId}
+    </select>
+
+    <insert id="noteSending" parameterType="MsgVO">
+        INSERT INTO msg(
+            memberId
+            , receiveId
+            , msgContent
+            , msgDate)
+        VALUES (
+            #{memberId}
+            , #{receiveId}
+            , #{msgContent}
+            , curdate()
+            )
+    </insert>
+
+    <delete id="deleteNote" parameterType="int">
+        DELETE FROM msg
+        WHERE msgNo = #{msgNo}
+    </delete>
+
+    <!--팔로우 카운트-->
+    <select id="followCount" resultType="int">
+        SELECT count(*)
+        FROM thehouse.follow
+        WHERE memberId=#{memberId}
+    </select>
+
+    <!--팔로잉 카운트-->
+    <select id="followingCount" resultType="int">
+        SELECT count(*)
+        FROM thehouse.follow
+        WHERE followId=#{memberId}
+    </select>
+
+    <select id="photoCount" resultType="int">
+        SELECT count(*)
+        FROM photoboard
+        WHERE memberId = #{memberId}
+    </select>
+
+    <select id="scrapCount" resultType="int">
+        SELECT count(*)
+        FROM scrap
+        WHERE memberId=#{memberId}
+    </select>
+
+    <select id="followerCount" resultType="int">
+        SELECT count(*)
+        FROM follow
+        WHERE memberId = #{memberId}
+            AND followId = #{followId}
+    </select>
+</mapper>

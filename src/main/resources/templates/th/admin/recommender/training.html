@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="th/layout/adminLayout">
+<head>
+    <meta charset="UTF-8">
+    <title>트레이닝페이지</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div style="position:relative;left: 500px;">
+    <a th:href="@{/admin/trainingStart}"><h1>추천시스템 트레이닝</h1></a>
+    누르지마시오
+    </div>
+</div>
+</body>
+</html>

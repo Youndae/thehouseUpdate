@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="th/layout/adminLayout">
+<head>
+    <meta charset="UTF-8">
+    <title>업체관리</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container">
+        <h2>거래처 상세</h2>
+        <div class="login_wrapper">
+            <div class="row justify-content-center">
+                <div class="col-md-5 col-xs-10 md-auto">
+                    <div class="mt-4 mb-3">
+                        <label for="sellerId">업체아이디<span class="text-muted"></span></label>
+                        <input type="text" class="form-control" id="sellerId" name="sellerId"
+                               th:value="${sellerDetail.sellerId}" style="background-color: #FFFFFF;" readonly>
+                    </div>
+                    <div class="mb-4">
+                        <label for="sellerName">업체명<span class="text-muted"></span></label> <input
+                            type="text" class="form-control" id="sellerName" name="sellerName"
+                            th:value="${sellerDetail.sellerName}" style="background-color: #FFFFFF;" readonly>
+                    </div>
+                    <div class="mb-4">
+                        <label for="sellerRes">사업자등록번호<span class="text-muted"></span></label> <input
+                            type="text" class="form-control" id="sellerRes" name="sellerRes"
+                            th:value="${sellerDetail.sellerRes}" style="background-color: #FFFFFF;" readonly>
+                    </div>
+                    <div class="mb-4">
+                        <label for="sellerUrl">업체홈페이지<span class="text-muted"></span></label> <input
+                            type="text" class="form-control" id="sellerUrl" name="sellerUrl"
+                            th:value="${sellerDetail.sellerUrl}" style="background-color: #FFFFFF;" readonly>
+                    </div>
+                    <div class="mb-4">
+                        <label for="Manager">영업담당자<span class="text-muted"></span></label> <input
+                            type="text" class="form-control" id="Manager" name="Manager"
+                            th:value="${sellerDetail.sellerManager}" style="background-color: #FFFFFF;" readonly>
+                    </div>
+                    <div class="mb-4">
+                        <label for="managerTel">전화번호<span class="text-muted"></span></label> <input
+                            type="text" class="form-control" id="managerTel" name="managerTel"
+                            th:value="${sellerDetail.managerTel}" style="background-color: #FFFFFF;" readonly>
+                    </div>
+                    <div class="mb-4">
+                        <label for="managerEmail">이메일<span class="text-muted"></span></label> <input
+                            type="text" class="form-control" id="managerEmail" name="managerEmail"
+                            th:value="${sellerDetail.managerEmail}" style="background-color: #FFFFFF;" readonly>
+                    </div>
+                    <div class="mb-4">
+                        <label for="sellerAddr">주소<span class="text-muted"></span></label> <input
+                            type="text" class="form-control" id="sellerAddr" name="sellerAddr"
+                            th:value="${sellerDetail.sellerAddr}" style="background-color: #FFFFFF;" readonly>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

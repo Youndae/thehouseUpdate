@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="th/layout/defaultLayout">
+<head>
+    <meta charset="UTF-8">
+    <title>커뮤니티메인</title>
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/mainContent.css}">
+        <link rel="stylesheet" th:href="@{/css/photoBoard.css}">
+    </th:block>
+
+    <script type="text/javascript" th:src="@{/js/photoBoard.js}"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container store-index-section store-index-product-list"><h1>인기 사진</h1>
+        <div class="form-group">
+            <button class="button button--color-gray-4 button--size-30 button--shape-4 card-detail-writer__follow"
+                    onclick="location.href='/photoBoardList'" type="button">전체보기</button>
+        </div>
+        <div class="virtualized-list row" style="padding-top: 0px; transform: translateY(0px);">
+            <tr th:each="rank : ${likerank}">
+                <div class="col-6 col-md-3 product-item-wrap">
+                    <article class="production-item">
+                        <a class="production-item__overlay" th:if="${member?.memberId} == null" th:href="@{/photodetailnonmem/{photoBoardNo}(photoBoardNo=${rank.photoBoardNo})}"></a>
+                        <a class="production-item__overlay" th:if="${member?.memberId} != null" th:href="@{/photodetail/{photoBoardNo}(photoBoardNo=${rank.photoBoardNo})}"></a>
+                        <div class="production-item-image production-item__image">
+                            <img class="image" alt="" th:src="@{'/uploadImg'+${rank.photoImg1}}" srcset="">
+                            <input type="hidden" id="memberId" name="memberId" th:value="${rank.memberId}"/>
+                        </div>
+                        <div class="production-item__content">
+                            <h1 class="production-item__header">
+                                <span class="production-item__header__name" th:text="${rank.photoTitle}"></span>
+                            </h1>
+                        </div>
+                    </article>
+                </div>
+            </tr>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="th/layout/adminLayout">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link th:href="@{/plugins/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet">
+</head>
+<body>
+<div id="wrapper">
+    <div layout:fragment="content">
+        <div class="container">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- DataTales Example -->
+                    <div class="card card-info">
+                        <div class="card-body">
+                            <div class="table table-hover">
+                                회원 정보
+                                <table id="userTable">
+                                    <thead>
+                                    <tr>
+                                        <th>count</th>
+                                        <th>이름</th>
+                                        <th>아이디</th>
+                                        <th>주소</th>
+                                        <th>이메일</th>
+                                        <th>주문 수량</th>
+                                        <th>총액</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="userInfo, userStat : ${userInfo}">
+                                        <td th:text="${userStat.count}">1</td>
+                                        <td th:text="${userInfo.memberName}">마</td>
+                                        <td th:text="${userInfo.memberId}">마</td>
+                                        <td th:text="${userInfo.memberAddr}">마</td>
+                                        <td th:text="${userInfo.memberEmail}">마</td>
+                                        <td th:text="${userInfo.orderListVO.getOrderQty()}">마</td>
+                                        <td th:text="${userInfo.orderListVO.getTotalPrice()}">마</td>
+
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

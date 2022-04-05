@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="th/layout/adminLayout">
+<head>
+    <meta charset="UTF-8">
+    <title>채팅리스트</title>
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/secondaryMenu.css}">
+    </th:block>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container">
+        <div class="layout-navigation-bar">
+        <div class="layout-navigation-secondary-wrap">
+            <div class="layout-navigation-secondary" style="position: relative;">
+                <div class="layout-navigation-secondary__content">
+                    <nav class="layout-navigation-secondary__menu">
+                        <a class="layout-navigation-secondary__menu__item" th:href="@{/admin/chatList}">채팅리스트</a>
+                        <a class="layout-navigation-secondary__menu__item" th:href="@{/admin/chatHistory}">회원 채팅이력</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <h4>채팅리스트</h4>
+            </div>
+        </div>
+        <table class="table table-hover">
+            <thead>
+            <tr class="list-group list-group-horizontal">
+                <th style="width:60%">회원아이디</th>
+                <th style="width:30%">입장시간</th>
+                <th style="width:10%">상담시작</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="list-group list-group-horizontal" th:each="roomList: ${roomLists}">
+                <td th:text="${roomList.memberId}" style="width:60%"></td>
+                <td th:text="${roomList.time}" style="width:30%"></td>
+                <td style="width:10%">
+                    <input th:if="${roomList.count}==1" type="button" class="btn btn-primary" th:value="상담시작"
+                           th:data-id="${roomList.chatId}" id="createRoom" onclick="enterRoom()"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <script th:inline="javascript" type="text/javascript">
+            var chatId = $('#createRoom').attr('data-id');
+
+            function enterRoom() {
+                var url = "/enter/" + chatId;
+                window.open(url, "new_popup", "scrollbars=no, width=400, height=450, menubar=false, location=false");
+            }
+        </script>
+    </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="th/layout/SellerLayout">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <form class="needs-validation" th:method="POST" th:action="@{/seller/addProduct}" enctype="multipart/form-data">
+        <div class="wrapper">
+
+            <aside class="main-sidebar sidebar-dark-green elevation-4">
+
+                <!-- Sidebar -->
+                <div class="sidebar">
+                    <!-- Sidebar user panel (optional) -->
+                    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                        <div th:each="sellerInfo : ${sellerInfo}">
+                            <div class="image">
+                                <!--                                <img th:src="${sellerInfo.sellerImg}"-->
+                                <img th:src="@{'/uploadImg/'+${sellerInfo.sellerImg}}"
+                                     class="img-circle elevation-2" style="width:40px; height:40px;"
+                                     alt="User Image">
+                                <a th:text="${sellerInfo.sellerName}" th:href="@{/seller/sellerInfo}"></a>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Sidebar Menu -->
+                    <nav class="mt-2">
+                        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                            data-accordion="false">
+                            <li class="nav-item has-treeview menu-open">
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a th:href="@{/seller/category}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>상품 등록</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a th:href="@{/seller/productList}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>상품 리스트</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                    <!-- /.sidebar-menu -->
+                </div>
+                <!-- /.sidebar -->
+            </aside>
+
+            <!-- Content Wrapper. Contains page content -->
+            <div class="content-wrapper">
+                <!-- Content Header (Page header) -->
+                <div class="content-header">
+                    <div class="container-fluid">
+                        <div class="row mb-2">
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main content -->
+                <section class="content">
+                    <div class="container-fluid">
+                        <!-- Small boxes (Stat box) -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card card-info">
+                                    <div class="card-header">
+                                        <h3 class="card-title">카테고리</h3>
+                                    </div>
+                                    <!-- /.card-header -->
+                                    <div class="card-body">
+                                        <form role="form">
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <!-- Select multiple-->
+                                                    <div class="form-group">
+                                                        <label>대분류</label>
+                                                        <select multiple class="optionCategory1 form-control">
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-4">
+                                                    <!-- Select multiple-->
+                                                    <div class="form-group">
+                                                        <label>중분류</label>
+                                                        <select multiple class="optionCategory2 form-control">
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-4">
+                                                    <!-- Select multiple-->
+                                                    <div class="form-group">
+                                                        <label>소분류</label>
+                                                        <select multiple class="optionCategory3 form-control"
+                                                                name="categoryCode">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <!-- general form elements -->
+                                <div class="card card-info">
+                                    <div class="card-header">
+                                        <h3 class="card-title">상품정보</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="form-group col-md-6">
+                                                <label for="productName">상품명</label>
+                                                <input type="text" class="form-control" name="productName"
+                                                       id="productName"
+                                                       placeholder="productName">
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="modelName">모델명</label>
+                                                <input type="text" class="form-control" name="modelName" id="modelName"
+                                                       placeholder="modelName">
+                                            </div>
+                                            <div class="form-group col-md-6" th:each="sellerInfo : ${sellerInfo}">
+                                                <label for="sellerName">업체명</label>
+                                                <input type="text" class="form-control" name="sellerName"
+                                                       id="sellerName"
+                                                       th:value="${sellerInfo.sellerName}" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-md-6">
+                                                <label for="customerPrice">판매가</label>
+                                                <input type="text" class="form-control" name="customerPrice"
+                                                       id="customerPrice"
+                                                       placeholder="customPrice">
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="sellPrice">소비자가</label>
+                                                <input type="text" class="form-control" name="sellPrice" id="sellPrice"
+                                                       placeholder="sellPrice">
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label for="purchasePrice">매입가</label>
+                                                <input type="text" class="form-control" name="purchasePrice"
+                                                       id="purchasePrice"
+                                                       placeholder="purchasePrice">
+                                            </div>
+                                        </div>
+                                        <div class="addOptional">
+                                            <div class="row">
+                                                <div class="form-group col-md-3">
+                                                    <label for="optionColor">색상</label>
+
+                                                    <select class="optionColor form-control" id="optionColor"
+                                                            name="optionColor">
+
+                                                    </select>
+
+                                                </div>
+                                                <div class="form-group col-md-3 ">
+                                                    <label for="productQty">재고</label>
+                                                    <input class="form-control" type="text" name="productQty"
+                                                           id="productQty" value="0">
+                                                </div>
+                                                <div>
+                                                    <i class="fas fa-plus-circle addOptionalColor"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>상품 메인 이미지 등록</label>
+                                            <div class="input-group row">
+
+                                                <div class="custom-file col-md-11">
+                                                    <input type="file" class="custom-file-input"
+                                                           name="productMainImgUrl"
+                                                           id="productMainImgUrl"
+                                                           multiple>
+                                                    <label class="custom-file-label" for="productMainImgUrl">Choose
+                                                        file</label>
+                                                </div>
+                                                <div class="col-md-12" style="text-align: center;">
+                                                    <img id="MainImgView" class="col-md-5 mb-3 mt-4">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>상품 서브 이미지 등록(3개까지 가능 합니다.)</label>
+                                            <div class="input-group row">
+                                                <div class="custom-file col-md-11">
+                                                    <input type="file" class="custom-file-input" name="productSubImgUrl"
+                                                           id="productSubImgUrl"
+                                                           multiple>
+                                                    <label class="custom-file-label" for="productSubImgUrl">Choose
+                                                        file</label>
+                                                </div>
+                                                <div class="col-md-12 subImg">
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <!-- general form elements -->
+                                <div class="card card-info">
+
+                                    <div class="card-header">
+                                        <h3 class="card-title">게시글 이미지</h3>
+                                    </div>
+                                    <div class="form-group row justify-content-center">
+
+                                        <div class="custom-file col-md-11 mt-3">
+                                            <input type="file" class="custom-file-input" name="productExpImgUrl"
+                                                   id="productExpImgUrl"
+                                                   multiple>
+                                            <label class="custom-file-label" for="productExpImgUrl"></label>
+                                            <!--                                               th:text="${sellerInfo.sellerImg}"></label>-->
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12" style="text-align: center;">
+                                        <img id="ExpImgView" class="col-md-12 mb-3">
+                                    </div>
+                                    <div>
+                                        <button type="submit" class="btn btn-info mr-4 mb-4" style="float:right;">
+                                            상품 등록
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </section>
+            </div>
+        </div>
+    </form>
+
+
+    <script th:inline="javascript">
+        $(document).ready(function () {
+
+            var jsonColor = [[${jsonColor}]];
+            var jsonDataColor = JSON.parse(jsonColor);
+            console.log(jsonColor);
+
+            var colorArr = new Array();
+            var colorObj = new Object();
+
+            var colorSelect = $(".optionColor");
+
+            for (var i = 0; i < jsonDataColor.length; i++) {
+
+                colorObj = new Object();
+                colorObj.colorCode = jsonDataColor[i].colorCode;
+                colorObj.colorType = jsonDataColor[i].colorType;
+                colorArr.push(colorObj);
+            }
+            for (var j = 0; j < colorArr.length; j++) {
+                colorSelect.append("<option value='" + colorArr[j].colorCode + "'>" + colorArr[j].colorType + "</option>");
+            }
+
+
+            $('.addOptionalColor').on('click', function () {
+                $('.addOptional').append('<div class="row">\n' +
+                    '                                                <div class="form-group col-md-3">\n' +
+                    '                                                    <label for="optionColor">색상</label>\n' +
+                    '\n' +
+                    '                                                    <select class="optionColor form-control" id="optionColor" name="optionColor">\n' +
+
+                    '                                                    </select>\n' +
+                    '\n' +
+                    '                                                </div>\n' +
+                    '                                                <div class="form-group col-md-3 ">\n' +
+                    '                                                    <label for="productQty">재고</label>\n' +
+                    '                                                    <input class="form-control" type="text" name="productQty"\n' +
+                    '                                                           id="productQty"\n' +
+                    '                                                           value="0">\n' +
+                    '                                                </div>\n' +
+
+                    '                                            </div>');
+
+
+                for (var j = 0; j < colorArr.length; j++) {
+                    $('.optionColor').append("<option value='" + colorArr[j].colorCode + "'>" + colorArr[j].colorType + "</option>");
+
+                }
+                console.log("success");
+            });
+
+
+        });
+
+    </script>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            bsCustomFileInput.init();
+        });
+    </script>
+
+
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            $('.form-group').on('click', '.optionCategory3', function (event) {
+                $('optionCategory3').attr('name', '');
+                $(event.target).attr('name', 'categoryCode');
+                console.log($(event.target).val());
+            });
+
+            var json = [[${jsonText}]];
+            var jsonData = JSON.parse(json);
+
+            var cate1Select = $(".optionCategory1");
+            var cate2Select = $(".optionCategory2");
+            var cate3Select = $(".optionCategory3");
+
+            var Num;
+
+            var cate1Arr = new Array();
+            var cate1Obj = new Object();
+
+
+            for (var i = 0; i < jsonData.length; i++) {
+                Num = Number(jsonData[i].categoryCode);
+
+                if (Num % 100000000 == 0) {
+
+                    cate1Obj = new Object();
+                    cate1Obj.categoryCode = jsonData[i].categoryCode;
+                    cate1Obj.categoryType = jsonData[i].categoryType;
+                    cate1Arr.push(cate1Obj);
+                }
+            }
+
+            for (var j = 0; j < cate1Arr.length; j++) {
+
+                cate1Select.append("<option value='" + cate1Arr[j].categoryCode + "'>" + cate1Arr[j].categoryType + "</option>");
+            }
+
+
+            $(document).on("change", "select.optionCategory1", function () {
+
+                var cate2Arr = new Array();
+                var cate2Obj = new Object();
+
+                for (var k = 0; k < jsonData.length; k++) {
+                    Num = Number(jsonData[k].categoryCode);
+
+                    if ((Num / 100000) % 1000 > 0 && Num % 100000 == 0) {
+                        cate2Obj = new Object();
+                        cate2Obj.categoryCode = jsonData[k].categoryCode;
+                        cate2Obj.categoryType = jsonData[k].categoryType;
+                        cate2Arr.push(cate2Obj);
+                    }
+                }
+
+                cate2Select.children().remove();
+
+                $(cate1Select.find("option:selected"), this).each(function () {
+                    var selectVal = $(this).val();
+
+                    for (var l = 0; l < cate2Arr.length; l++) {
+                        if (selectVal / 1000000 == Math.floor(cate2Arr[l].categoryCode / 1000000)) {
+                            cate2Select.append("<option value='" + cate2Arr[l].categoryCode + "'>" + cate2Arr[l].categoryType + "</option>");
+
+                        }
+                    }
+                });
+            });
+
+
+            $(document).on("change", "select.optionCategory2", function (e) {
+
+                var cate3Arr = new Array();
+                var cate3Obj = new Object();
+                for (var m = 0; m < jsonData.length; m++) {
+                    Num = Number(jsonData[m].categoryCode);
+                    if ((Num / 100000) % 1000 > 0 && Num % 100000 > 0) {
+                        cate3Obj = new Object();
+                        cate3Obj.categoryCode = jsonData[m].categoryCode;
+                        cate3Obj.categoryType = jsonData[m].categoryType;
+                        cate3Arr.push(cate3Obj);
+                    }
+                }
+
+                cate3Select.children().remove();
+
+                $(cate2Select.find("option:selected"), this).each(function () {
+                    var selectVal2 = $(this).val();
+                    // console.log(selectVal2);
+
+                    for (var n = 0; n < cate3Arr.length; n++) {
+                        if (selectVal2 / 1000 == Math.floor(cate3Arr[n].categoryCode / 1000)) {
+                            cate3Select.append("<option value='" + cate3Arr[n].categoryCode + "'>" + cate3Arr[n].categoryType + "</option>");
+
+                        }
+                    }
+
+                });
+            });
+
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            bsCustomFileInput.init();
+        });
+    </script>
+
+
+    <script type="text/javascript">
+        function readURLExp(input) {
+            if (input.files && input.files[0]) {
+                var readerExp = new FileReader();
+                readerExp.onload = function (e) {
+                    $('#ExpImgView').attr('src', e.target.result);
+                }
+                readerExp.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#productExpImgUrl").change(function () {
+            readURLExp(this);
+        });
+    </script>
+
+    <script type="text/javascript">
+
+        var sel_files = [];
+
+        $(document).ready(function () {
+            $("#productSubImgUrl").on("change", handleImgsFilesSelect);
+        });
+
+        function handleImgsFilesSelect(e) {
+            var files = e.target.files;
+            var filesArr = Array.prototype.slice.call(files);
+
+            filesArr.forEach(function (f) {
+
+                sel_files.push(f);
+
+                var readerSub = new FileReader();
+                readerSub.onload = function (e) {
+                    var img_html = "<img src=\"" + e.target.result + "\" width='150px' height='150px' style='margin-right: 40px; margin-top:20px'/>";
+                    $('.subImg').append(img_html);
+                }
+                readerSub.readAsDataURL(f);
+            });
+        }
+    </script>
+
+
+    <script type="text/javascript">
+        function readURLMain(input) {
+            if (input.files && input.files[0]) {
+                var readerExp = new FileReader();
+                readerExp.onload = function (e) {
+                    $('#MainImgView').attr('src', e.target.result);
+                }
+                readerExp.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#productMainImgUrl").change(function () {
+            readURLMain(this);
+        });
+    </script>
+
+</div>
+</body>
+
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="th/layout/defaultLayout">
+<head>
+    <meta charset="UTF-8">
+    <title>글 수정</title>
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/mainContent.css}">
+        <link rel="stylesheet" th:href="@{/css/myInfoSettings.css}">
+        <link rel="stylesheet" th:href="@{/css/myPage.css}">
+    </th:block>
+    <script type="text/javascript" th:src="@{/js/profile.js}"></script>
+    <script type="text/javascript" th:src="@{/js/photoBoard.js}"></script>
+
+    <style>
+        .preview_area{
+            display: flex;
+            margin-top: 10px;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        .preview_area div{
+            width: 100%;
+            height: 260px;
+            flex: 0 0 33.33333%;
+        }
+
+        .preview_img img{
+            width: 250px;
+            height: 250px;
+        }
+
+        .edit-user-info__form-item__delete{
+            right: 80px;
+        }
+    </style>
+
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container">
+        <form action="/photoupdateProc" method="post" id="updatephoto" name="updatephoto" enctype="multipart/form-data">
+            <div class="input-group">
+                <select class="custom-select col-md-2" id="areaGroup" name="areaCode" th:field="${photodetail.areaCode}" th:value="${photodetail.areaType}">
+                    <option th:value selected disabled>평수</option>
+                    <option id="areaSelect" th:each="area : ${areaCode}"
+                            th:value="${area.areaCode}"
+                            th:utext="${area.areaType}"
+                    />
+                    <input type="hidden" id="area" name="area" th:value="${photodetail.areaCode}"/>
+                </select>
+                <select class="custom-select col-md-2" id="houseGroup" name="houseCode" th:field="${photodetail.houseCode}" th:value="${photodetail.houseType}">
+                    <option th:value selected disabled>주거형태</option>
+                    <option id="houseSelect" th:each="house : ${houseCode}"
+                            th:value="${house.houseCode}"
+                            th:utext="${house.houseType}"></option>
+                    <input type="hidden" id="house" name="house" th:value="${photodetail.houseCode}"/>
+                </select>
+                <select class="custom-select col-md-2" id="styleGroup" name="styleCode" th:field="${photodetail.styleCode}" th:value="${photodetail.styleType}">
+                    <option th:value selected disabled>스타일</option>
+                    <option id="styleSelect" th:each="style : ${styleCode}"
+                            th:value="${style.styleCode}"
+                            th:utext="${style.styleType}"/>
+                    <input type="hidden" id="style" name="style" th:value="${photodetail.styleCode}"/>
+                </select>
+            </div><br>
+            <div class="form-group">
+                <select class="custom-select col-md-3" id="placeGroup" name="placeCode" th:field="${photodetail.placeCode}" th:value="${photodetail.placeType}">
+                    <option th:value selected disabled>공간(필수)</option>
+                    <option id="placeSelect" th:each="place : ${placeCode}"
+                            th:value="${place.placeCode}"
+                            th:utext="${place.placeType}"/>
+                    <input type="hidden" id="place" name="place" th:value="${photodetail.placeCode}"/>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="photoContent"></label>
+                <textarea id="photoContent" name="photoContent" style="width: 700px; height: 400px;" th:text="${photodetail.photoContent}" placeholder="사진에 대해 설명해주세요"></textarea>
+            </div>
+            <div class="form-group">
+                <input type="file" id="files" name="files" multiple/>
+                <div class="preview_area">
+                    <div class="expert-form-group edit-user-info__form-item__group" th:value="1" th:if="${photodetail.photoImg1 != null}" >
+                        <div class="expert-form-group__content">
+                            <div class="expert-form-group__input">
+                                <div class="edit-user-info__form-item__field edit-user-info__form-item__field--profile">
+                                    <div id="preview_box1">
+                                        <div class="image-single-input-wrap">
+                                            <ul class="image-single-input">
+                                                <li class="image-single-input__entry">
+                                                    <div class="preview_img">
+                                                        <img th:src="'/uploadImg'+${photodetail?.photoImg1}"/>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <button class="button button--color-blue button--size-30 button--shape-4 edit-user-info__form-item__delete"  type="button" th:value="1" th:data="${photodetail.photoImg1}" onclick="deleteOldPhoto(this)" >
+                                        삭제
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="expert-form-group edit-user-info__form-item__group" th:value="2" th:if="${photodetail.photoImg2 != null}" >
+                        <div class="expert-form-group__content">
+                            <div class="expert-form-group__input">
+                                <div class="edit-user-info__form-item__field edit-user-info__form-item__field--profile">
+                                    <div id="preview_box2">
+                                        <div class="image-single-input-wrap">
+                                            <ul class="image-single-input">
+                                                <li class="image-single-input__entry">
+                                                    <div class="preview_img">
+                                                        <img th:src="'/uploadImg'+${photodetail?.photoImg2}"/>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <button class="button button--color-blue button--size-30 button--shape-4 edit-user-info__form-item__delete"  type="button" th:value="2" th:data="${photodetail.photoImg2}" onclick="deleteOldPhoto(this)" >
+                                        삭제
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="expert-form-group edit-user-info__form-item__group" th:value="3" th:if="${photodetail.photoImg3 != null}" >
+                        <div class="expert-form-group__content">
+                            <div class="expert-form-group__input">
+                                <div class="edit-user-info__form-item__field edit-user-info__form-item__field--profile">
+                                    <div id="preview_box3">
+                                        <div class="image-single-input-wrap">
+                                            <ul class="image-single-input">
+                                                <li class="image-single-input__entry">
+                                                    <div class="preview_img">
+                                                        <img th:src="'/uploadImg'+${photodetail?.photoImg3}"/>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <button class="button button--color-blue button--size-30 button--shape-4 edit-user-info__form-item__delete"  type="button" th:value="3" th:data="${photodetail.photoImg3}" onclick="deleteOldPhoto(this)" >
+                                        삭제
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="expert-form-group edit-user-info__form-item__group" th:value="4" th:if="${photodetail.photoImg4 != null}" >
+                        <div class="expert-form-group__content">
+                            <div class="expert-form-group__input">
+                                <div class="edit-user-info__form-item__field edit-user-info__form-item__field--profile">
+                                    <div id="preview_box4">
+                                        <div class="image-single-input-wrap">
+                                            <ul class="image-single-input">
+                                                <li class="image-single-input__entry">
+                                                    <div class="preview_img">
+                                                        <img th:src="'/uploadImg'+${photodetail?.photoImg4}"/>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <button class="button button--color-blue button--size-30 button--shape-4 edit-user-info__form-item__delete"  type="button" th:value="4" th:data="${photodetail.photoImg4}" onclick="deleteOldPhoto(this)" >
+                                        삭제
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="expert-form-group edit-user-info__form-item__group" th:value="5" th:if="${photodetail.photoImg5 != null}" >
+                        <div class="expert-form-group__content">
+                            <div class="expert-form-group__input">
+                                <div class="edit-user-info__form-item__field edit-user-info__form-item__field--profile">
+                                    <div id="preview_box5">
+                                        <div class="image-single-input-wrap">
+                                            <ul class="image-single-input">
+                                                <li class="image-single-input__entry">
+                                                    <div class="preview_img">
+                                                        <img th:src="'/uploadImg'+${photodetail?.photoImg5}"/>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <button class="button button--color-blue button--size-30 button--shape-4 edit-user-info__form-item__delete"  type="button" th:value="5" th:data="${photodetail.photoImg5}" onclick="deleteOldPhoto(this)" >
+                                        삭제
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                   <!-- <img th:if="${photodetail.photoImg1 != null}" th:src="'/uploadImg'+${photodetail?.photoImg1}" style="width: 300px; height: 300px;"/>
+                    <img th:if="${photodetail.photoImg2 != null}" th:src="'/uploadImg'+${photodetail?.photoImg2}" style="width: 300px; height: 300px;"/>
+                    <img th:if="${photodetail.photoImg3 != null}" th:src="'/uploadImg'+${photodetail?.photoImg3}" style="width: 300px; height: 300px;"/>
+                    <img th:if="${photodetail.photoImg4 != null}" th:src="'/uploadImg'+${photodetail?.photoImg4}" style="width: 300px; height: 300px;"/>
+                    <img th:if="${photodetail.photoImg5 != null}" th:src="'/uploadImg'+${photodetail?.photoImg5}" style="width: 300px; height: 300px;"/>-->
+            </div>
+            <input type="button" id="photoupdate" name="photoupdate" value="등록"/>
+            <input type="hidden" id="photoBoardNo" name="photoBoardNo" th:value="${photodetail.photoBoardNo}"/>
+        </form>
+    </div>
+</div>
+</body>
+</html>

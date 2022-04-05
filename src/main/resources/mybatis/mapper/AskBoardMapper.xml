@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bit.house.mapper.AskBoardMapper">
+
+    <!--수정 전 계층형 쿼리
+    <select id="askBoardList" resultType="com.bit.house.domain.AskBoardVO">
+        SELECT a.askBoardNo, a.askContent, a.memberId, CONCAT(REPEAT("　", a.askIndent), a.askTitle) as askTitle, a.askDate,
+        a.askGroupNo, a.askIndent, a.askStep, m.nickName
+        FROM askboard a INNER JOIN member m
+        ON a.memberId = m.memberId
+        WHERE askBoardNo > 0
+        order by askGroupNo desc, askStep asc, askIndent asc
+        LIMIT #{pageStart}, #{perPageNum}
+
+    </select>-->
+
+    <sql id="search">
+            <if test="keyword != null">WHERE askTitle like CONCAT('%', #{keyword}, '%')</if>
+    </sql>
+
+    <select id="askBoardList" resultType="com.bit.house.domain.AskBoardVO">
+        WITH RECURSIVE board_CTE AS(
+            SELECT askBoardno
+                , memberId
+                , askTitle
+                , askUpperNo
+                , askIndent
+                , CAST(askBoardno AS CHAR(100)) lvl
+                , askGroupNo
+                , askDate
+            FROM askboard
+            WHERE askUpperNo = 0
+            UNION ALL
+            SELECT b.askBoardno
+                , b.memberId
+                , b.askTitle
+                , b.askUpperNo
+                , b.askIndent
+                , CONCAT(c.lvl, ',', b.askBoardno) lvl
+                , b.askGroupNo
+                , b.askDate
+            FROM askboard b
+                INNER JOIN board_CTE c
+                ON b.askUpperNo = c.askBoardno
+        )
+        SELECT a.askBoardno
+            , CONCAT(REPEAT('     ', a.askIndent), '', a.askTitle) AS askTitle
+            , a.lvl
+            , a.askUpperNo
+            , a.askIndent
+            , a.askGroupNo
+            , a.memberId
+            , a.askDate
+            , m.nickName
+        FROM board_CTE a
+            INNER JOIN member m
+            ON a.memberId = m.memberId
+        ORDER BY askGroupNo desc, lvl
+        LIMIT #{pageStart}, #{perPageNum}
+
+    </select>
+
+    <select id="listCountCriteria" resultType="int">
+        SELECT count(*)
+        FROM askboard
+        WHERE askBoardNo > 0
+    </select>
+
+    <!--수정 전 계층형 쿼리
+    <select id="searchList" resultType="com.bit.house.domain.AskBoardVO">
+        SELECT a.askBoardNo, m.nickName, a.askContent, a.memberId, CONCAT(REPEAT("　", a.askIndent), a.askTitle) as askTitle, a.askDate,
+        a.askGroupNo, a.askIndent, a.askStep
+        FROM askboard a INNER JOIN member m
+        ON a.memberId = m.memberId
+        WHERE askTitle like CONCAT('%', #{keyword}, '%')
+        order by askGroupNo desc, askStep asc, askIndent asc
+        LIMIT #{pageStart}, #{perPageNum}
+
+    </select>-->
+
+    <select id="searchList" resultType="com.bit.house.domain.AskBoardVO">
+        WITH RECURSIVE board_CTE AS(
+            SELECT askBoardno
+                , memberId
+                , askTitle
+                , askUpperNo
+                , askIndent
+                , CAST(askBoardno AS CHAR(100)) lvl
+                , askGroupNo
+                , askDate
+            FROM askboard
+            WHERE askUpperNo = 0
+            UNION ALL
+            SELECT b.askBoardno
+                , b.memberId
+                , b.askTitle
+                , b.askUpperNo
+                , b.askIndent
+                , CONCAT(c.lvl, ',', b.askBoardno) lvl
+                , b.askGroupNo
+                , b.askDate
+            FROM askboard b
+                INNER JOIN board_CTE c
+                ON b.askUpperNo = c.askBoardno
+        )
+        SELECT a.askBoardno
+            , CONCAT(REPEAT('   ', a.askIndent), '', a.askTitle) AS askTitle
+            , lvl
+            , a.askUpperNo
+            , a.askIndent
+            , a.askGroupNo
+            , a.memberId
+            , a.askDate
+            , m.nickName
+        FROM board_CTE a
+            INNER JOIN member m
+            ON a.memberId = m.memberId
+        <include refid="search"></include>
+        ORDER BY askGroupNo desc, lvl
+        LIMIT #{pageStart}, #{perPageNum}
+
+    </select>
+
+    <select id="searchListCountCriteria" resultType="int">
+        SELECT count(*)
+        FROM askboard
+        <include refid="search"></include>
+    </select>
+
+    <select id="askDetail" parameterType="int" resultType="AskBoardVO">
+        SELECT a.askBoardNo
+            , m.nickName
+            , a.memberId
+            , a.askTitle
+            , a.askContent
+            , a.askDate
+            , a.askGroupNo
+            , a.askIndent
+            , m.memberImg
+        FROM askboard a
+            INNER JOIN member m
+            ON a.memberId = m.memberId
+        WHERE askBoardNo = #{askBoardNo}
+    </select>
+
+    <select id="askCommentCount" resultType="int">
+        SELECT count(*)
+        FROM comment
+        WHERE askBoardNo = #{askBoardNo}
+    </select>
+
+    <insert id="insertAsk" parameterType="com.bit.house.domain.AskBoardVO">
+        INSERT INTO askboard (
+            askTitle
+            , askContent
+            , memberId
+            , askDate
+            , askGroupNo
+            )
+        values (
+            #{askTitle}
+            , #{askContent}
+            , #{memberId}
+            , now()
+            , (select ifnull (max(askBoardNo)+1, 1) from askboard b)
+            )
+    </insert>
+
+    <update id="askUpdate" parameterType="AskBoardVO">
+        UPDATE askboard SET
+            askTitle = #{askTitle}
+            , askContent=#{askContent}
+        WHERE askBoardNo = #{askBoardNo}
+    </update>
+
+    <delete id="askDelete" parameterType="int">
+        DELETE FROM askboard
+        WHERE askBoardno = #{askBoardno}
+    </delete>
+
+    <!--계층형 재귀쿼리로 수정하면서 필요없어짐.
+        기존 step 형태에서 들어가야하는 부분 이후의 데이터들 step값 증가시켜주는 쿼리.
+    <update id="askReplyUp" parameterType="AskBoardVO">
+        update askboard SET askStep = askStep+1 WHERE askGroupNo = #{askGroupNo} AND askStep > #{askStep};
+    </update>-->
+
+    <insert id="askReply" parameterType="AskBoardVO">
+        INSERT INTO askboard(
+            askTitle
+            , askContent
+            , memberId
+            , askDate
+            , askGroupNo
+            , askIndent
+            , askUpperNo)
+        values (
+            #{askTitle}
+            , #{askContent}
+            , #{memberId}
+            , curdate()
+            , #{askGroupNo}
+            , #{askIndent}+1
+            , #{askUpperNo}
+            )
+    </insert>
+
+    <select id="askComment" resultType="CommentVO">
+        SELECT c.commentNo
+            , c.memberId
+            , c.commentupDate
+            , c.commentContent
+            , c.askBoardNo
+            , m.memberImg
+            , m.nickName
+        FROM comment c
+            INNER JOIN member m
+            ON c.memberId = m.memberId
+        WHERE askBoardNo = #{askBoardNo}
+    </select>
+
+    <insert id="insertAskComment" parameterType="CommentVO">
+        INSERT INTO comment(
+            memberId
+            , commentupDate
+            , commentContent
+            , askBoardNo)
+        VALUES (
+            #{memberId}
+            , curdate()
+            , #{commentContent}
+            , #{askBoardNo}
+            )
+    </insert>
+
+</mapper>

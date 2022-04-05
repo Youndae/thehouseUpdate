@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="th/layout/adminLayout">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link th:href="@{/plugins/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet">
+</head>
+<body>
+<div id="wrapper">
+    <div layout:fragment="content">
+        <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- DataTales Example -->
+                        <div class="card card-info">
+                            <div class="card-body">
+                                <div class="table-responsive" style="font-size: x-small">
+                                    제품관리
+                                    <table class="table table-hover" style="font-size: x-small">
+                                        <thead>
+                                        <tr>
+
+                                            <th>상품번호</th>
+                                            <th>업체</th>
+                                            <th>상품</th>
+                                            <th>모델명</th>
+                                            <th>업체가</th>
+                                            <th>판매가</th>
+                                            <th>구매가</th>
+                                            <th>만든날짜</th>
+
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="list, stat : ${productVOList}">
+
+                                            <td th:text="${list.productNo}">마</td>
+                                            <td th:text="${list.sellerName}">마</td>
+                                            <td th:text="${list.productName}">마</td>
+                                            <td th:text="${list.modelName}">마</td>
+                                            <td th:text="${list.customerPrice}">마</td>
+                                            <td th:text="${list.sellPrice}">마</td>
+                                            <td th:text="${list.purchasePrice}">마</td>
+                                            <td th:text="${list.productCreateDate}">마</td><!--
+        <td th:text="${orderList.payCode}">마</td>
+        <td th:text="${orderList.orderCode}">마</td>-->
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

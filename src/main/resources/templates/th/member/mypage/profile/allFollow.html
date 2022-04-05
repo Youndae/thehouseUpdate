@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="th/layout/defaultLayout">
+<head>
+    <meta charset="UTF-8">
+    <title>팔로워</title>
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/profile.css}">
+        <link rel="stylesheet" th:href="@{/css/photoBoard.css}">
+    </th:block>
+
+    <script type="text/javascript" th:src="@{/js/profile.js}"></script>
+
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container">
+    <th:block th:replace="th/fragments/navBar_myPage"></th:block>
+    <th:block th:replace="th/fragments/navBar_myPage_profile"></th:block>
+        <div id="body" class="users follower"  style="padding-bottom: 0px;">
+            <header id="user-header" class="user-header">
+                <div class="user-header__cover" style="background-image: url('https://image.ohou.se/image/resize/bucketplace-v2-development/uploads-default_images-default_user_cover4.jpg/2560/none')"></div>
+                <img th:if="${member?.memberImg != null}" class="user-header__profile"
+                     th:src="@{'/uploadImg'+${member?.memberImg}}"
+                     th:attr="srcset=|@{'/uploadImg'+${member?.memberImg}} 1.5x,
+                                      @{'/uploadImg'+${member?.memberImg}} 2x,
+                                      @{'/uploadImg'+${member?.memberImg}} 3x|">
+                <img th:if="${member?.memberImg == null}" class="user-header__profile"
+                     th:src="@{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'}"
+                     th:attr="srcset=|@{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 1.5x,
+                                      @{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 2x,
+                                      @{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 3x|">
+                <div class="user-header__info">
+                    <p class="user-header__name">
+                        <a th:href="@{/member/memberProfile/{memberId}(memberId=${member.memberId})}">
+                            <th:block th:if="${member.nickName == null}" th:text="${member.memberId}"/>
+                            <th:block th:if="${member.nickName != null}" th:text="${member.nickName}"/>
+                        </a>
+                    </p>
+                    <p class="user-header-desc" th:text="${member.memberIntro}"></p>
+                    <p class="user-header__follow">
+                        팔로우<span class="user-header__follow__follower" th:text="${followCount}"/>|팔로잉<span class="user-header__follow__follower" th:text="${followingCount}"/>
+                    </p>
+                    <div th:if="${mem} != ${member.memberId}">
+                    <button th:if="${fcount == 0}" class="btn user-header__btn user-header__btn--follow"
+                            id="follow" name="follow">팔로우</button>
+                    <button th:if="${fcount == 1}" class="btn user-header__btn user-header__btn--follow"
+                            id="followcancel" name="followcancel">팔로우취소</button>
+                    <input type="hidden" id="memberId" name="memberId" th:value="${member.memberId}"/>
+                    </div>
+                </div>
+            </header>
+            <div class="myhome-nav">
+                <nav class="page-navigation myhome-nav__contents">
+                    <ul>
+                        <li class="page-navigation__item  page-navigation__item--active">
+                            <a target="_self" th:href="@{/member/allFollow/{memberId}(memberId=${member.memberId})}">팔로워</a>
+                        </li>
+                        <li class="page-navigation__item">
+                            <a target="_self" th:href="@{/member/allFollowing/{memberId}(memberId=${member.memberId})}">팔로잉</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div id="content">
+                <div class="title">팔로워</div>
+                <div id="users" th:each="follow : ${follower}">
+                    <div th:if="${followCount == 0}" id="empty_message">팔로워가 없습니다.</div>
+                    <div th:if="${followCount != 0}" class="user" th:id="${follow.followId}">
+                        <a target="_blank" th:href="@{/member/memberProfile/{memberId}(memberId=${follow.followId})}">
+                            <div class="comment-feed__item__content" >
+                                <img th:if="${follow?.memberImg != null}" class="image"
+                                     th:src="@{'/uploadImg'+${follow?.memberImg}}"
+                                     th:attr="srcset=|@{'/uploadImg'+${follow?.memberImg}} 1.5x,
+                                                      @{'/uploadImg'+${follow?.memberImg}} 2x,
+                                                      @{'/uploadImg'+${follow?.memberImg}} 3x|">
+                                <img th:if="${follow?.memberImg == null}" class="image"
+                                     th:src="@{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'}"
+                                     th:attr="srcset=|@{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 1.5x,
+                                                      @{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 2x,
+                                                      @{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 3x|">
+                            </div>
+                            <div th:if="${follow.nickName == null}" class="name" th:text="${follow.followId}"></div>
+                            <div th:if="${follow.nickName != null}" class="name" th:text="${follow.nickName}"></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

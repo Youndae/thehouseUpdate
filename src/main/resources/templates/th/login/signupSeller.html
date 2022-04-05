@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="th/layout/defaultLayout">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <title>입점신청</title>
+</head>
+<body>
+<div layout:fragment="content">
+<div class="container">
+    <div class="login_wrapper">
+        <div class="text-center logo-font">
+            <div class="col-md-12 md-auto mt-4 mb-3">
+                <img th:src="@{/icon/thehouse.png}" class="rounded-circle" width="70px" height="70px">
+            </div>
+
+
+            <h2>
+                <b>니가사는 그집</b>
+            </h2>
+
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-5 col-xs-10 md-auto">
+                <form class="needs-validation" th:action="@{/signupSellerToSU}" method="post"
+                      novalidate>
+                    <hr>
+
+                    <b>업체 회원가입</b>
+                    <div class="mt-4 mb-3">
+                        <label for="sellerId">업체 아이디<span class="text-muted"></span></label> <input
+                            type="text" class="form-control" id="sellerId" name="sellerId"
+                            placeholder="Seller id">
+                        <div class="invalid-feedback">업체 아이디를 입력하세요.</div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="sellerPw">업체 비밀번호<span class="text-muted"></span></label> <input
+                            type="password" class="form-control" id="sellerPw" name="sellerPw"
+                            placeholder="Seller password">
+                        <div class="invalid-feedback">업체 비밀번호를를 입력하세요.</div>
+                    </div>
+
+                    <hr>
+
+                    <b>업체 정보</b>
+                    <div class="mb-4 mt-4">
+                        <label for="sellerName">업체 이름<span class="text-muted"></span></label> <input
+                            type="text" class="form-control" id="sellerName" name="sellerName"
+                            placeholder="Seller name">
+                        <div class="invalid-feedback">업체 이름</div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="sellerRes">사업자 등록번호<span class="text-muted"></span></label> <input
+                            type="text" class="form-control" id="sellerRes" name="sellerRes"
+                            placeholder="Seller registration number">
+                        <div class="invalid-feedback">이메일을 입력하세요.</div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="sellerUrl">홈페이지<span class="text-muted"></span></label> <input
+                            type="text" class="form-control" id="sellerUrl" name="sellerUrl"
+                            placeholder="Seller url">
+                        <div class="invalid-feedback">홈페이지</div>
+                    </div>
+
+                    <hr>
+
+                    영업담당자 정보
+                    <div class="mb-4">
+                        <label for="sellerManager"><span class="text-muted"></span></label> <input
+                            type="text" class="form-control" id="sellerManager" name="sellerManager"
+                            placeholder="Seller manager name">
+                        <div class="invalid-feedback">이름</div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="managerTel">담당자 연락처<span class="text-muted"></span></label> <input
+                            type="text" class="form-control" id="managerTel" name="managerTel"
+                            placeholder="Seller manger tel">
+                        <div class="invalid-feedback">전화번호</div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="managerEmail">담당자 이메일<span class="text-muted"></span></label> <input
+                            type="text" class="form-control" id="managerEmail" name="managerEmail"
+                            placeholder="Seller manger email">
+                        <div class="invalid-feedback">이메일</div>
+                    </div>
+
+                    <hr>
+
+                    <button class="btn btn-block btn-info btn-sm mb-3" id="signupMember" type="submit">
+                        입점신청</button>
+
+
+                </form>
+
+                <form>
+                    <div class="text-center">
+                        <div class="row">
+                            <a class="col-md-12 xs-12" th:href="@{/customLogin}">로그인 페이지</a>
+                        </div>
+                    </div>
+                    <hr>
+
+
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="th/layout/defaultLayout">
+<head>
+    <meta charset="UTF-8">
+    <title>글 수정</title>
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/askBoard.css}">
+    </th:block>
+
+    <script type="text/javascript" th:src="@{/editor/js/HuskyEZCreator.js}" charset="utf-8"></script>
+    <script type="text/javascript" th:src="@{/js/askBoard.js}"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container">
+    <h2>글 수정</h2>
+    <form action="/askupdateProc" method="post" id="updateBoardFrm" enctype="multipart/form-data">
+        <div class="mt-4 mb-3">
+            <label for="askTitle">제목<span class="text-muted"/></label>
+            <input type="text" th:value="${detail.askTitle}" id="askTitle" name="askTitle"/>
+        </div>
+        <div class="mt-4 mb-3">
+        <label for="askContent">내용<span class="text-muted"/></label>
+            <textarea name="askContent" id="askContent" style="width: 700px; height: 400px; ">
+                <th:block th:utext="${detail.askContent}"/></textarea>
+        </div>
+        <input type="hidden" name="askBoardNo" th:value="${detail.askBoardNo}"/>
+        <button type="button" id="updateBoard"
+                class="button button--color-gray-4 button--size-30 button--shape-4 card-detail-writer__follow">등록</button>
+    </form>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<div th:fragment="headerFragment" class="header">
+    <script th:inline="javascript">
+        $(document).ready(function() {
+            $("#index").focus(function () {
+                $.ajax({
+                    url:"/productions/searchBox",
+                    type: "get",
+                    success:function (data) {
+                        $( function() {
+                            var availableTags =data.jsonText;
+                            var jsonData = JSON.parse(availableTags);
+                            $( "#index" ).autocomplete({
+                                source: jsonData
+                            });
+                        } );
+                    },
+                })
+            });
+        });
+    </script>
+<div th:fragment="headerFragment" class="header">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12 xs-12 md-auto">
+                <nav class="navbar navbar-icon-top navbar-expand-lg navbar-light" style="background-color: white;">
+                    <a class="navbar-brand logo-font" th:href="@{/}"><img th:src="@{/icon/thehouse.png}" class="rounded-circle" width=50px
+                                                        height=50px /><b>니가사는그집</b></a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse sub-font" id="navbarSupportedContent">
+                        <ul class="navbar-nav ml-auto">
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link" th:href="@{/communityMain}" id="navbarDropdown" role="button" aria-haspopup="true"
+                                   aria-expanded="false">
+
+                                    커뮤니티
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" th:href="@{/communityMain}">커뮤니티홈</a>
+                                    <a class="dropdown-item" th:href="@{/askBoardList}">질문</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link" th:href="@{/}" id="navbarDropdown" role="button" aria-haspopup="true"
+                                   aria-expanded="false">
+
+                                    스토어
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" th:href="@{/}">스토어홈</a>
+                                    <a class="dropdown-item" th:href="@{/productions/category}">카테고리</a>
+                                    <a class="dropdown-item" th:href="@{/storeBest}">베스트</a>
+                                </div>
+
+
+                            </li>
+
+                            <div class="nav-wrapper">
+                                <div class="searchBar">
+                                <form class="form-inline ml-3 ml-md-3n" action="/productions/searchlist" method="get">
+                                    <div class="input-group input-group-sm">
+                                        <input hidden="hidden" />
+
+
+                                        <input class="form-control form-control-navbar" type="search"
+                                               placeholder="Search" aria-label="Search" style="width:230px; height:40px; font-size: 15px;"
+                                               name="index" id="index" th:value="${index?:''}" onfocus="this.value=''">
+
+
+
+
+                                        <div class="input-group-append">
+                                            <button class="btn btn-navbar mr-2" type="submit">
+                                                <i class="fas fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            </div>
+                        </ul>
+
+                        <ul class="navbar-nav">
+                            <div sec:authorize="!hasAnyRole('ROLE_ADMIN', 'ROLE_SELLER')">
+                                <li class="nav-item">
+                                    <a class="nav-link" th:href="@{/basket}">
+                                    <span class="asdf" style="font-size: 20px; color: black;">
+                                        <i class="fas fa-shopping-cart mr-2"></i>
+                                    </span>
+                                    </a>
+                                </li>
+                            </div>
+
+                            <form class="form-inline my-2 my-lg-0" form-method="post" th:action="@{/customLogin}">
+                                <input sec:authorize="isAnonymous()" type="submit" class="button-css mr-3" value="로그인">
+
+                            </form>
+                            <form class="form-inline my-2 my-lg-0" form-method="post" th:action="@{/customLogout}">
+                                <input sec:authorize="isAuthenticated()" type="submit" class="button-css mr-3" style="border: 1px solid red; color:red;" value="로그아웃">
+<!--                                <button sec:authorize="isAuthenticated()" class="btn btn-outline-danger my-2 my-sm-0 btn-sm" type="submit">로그아웃</button>-->
+                            </form>
+                            <form class="form-inline my-2 my-lg-0" form-method="post" th:action="@{/signup}">
+                                <input sec:authorize="isAnonymous()" type="submit" class="button-css mr-3" value="회원가입">
+<!--                                <button sec:authorize="isAnonymous()" class="btn btn-outline-info my-2 my-sm-0 btn-sm" type="submit">회원가입</button>-->
+                            </form>
+                            <form class="form-inline my-2 my-lg-0" form-method="post" th:action="@{/member/myBoard}">
+                                <input sec:authorize="hasAnyRole('ROLE_MEMBER', 'ROLE_USER')"  type="submit" class="button-css mr-3" style="border: 1px solid red; color:red;" value="마이페이지">
+<!--                                <button sec:authorize="hasAnyRole('ROLE_MEMBER', 'ROLE_USER')" class="btn btn-outline-danger my-2 my-sm-0 btn-sm" type="submit">마이페이지</button>-->
+                            </form>
+                            <form class="form-inline my-2 my-lg-0" th:action="@{/admin/spendingPattern}">
+                                <input sec:authorize="hasRole('ROLE_ADMIN')"  type="submit" class="button-css mr-3" style="border: 1px solid red; color:red;" value="관리자홈">
+<!--                                <button sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-outline-danger my-2 my-sm-0 btn-sm">관리자홈</button>-->
+                            </form>
+                            <form class="form-inline my-2 my-lg-0" th:action="@{/seller/sellerInfo}">
+                                <input sec:authorize="hasRole('ROLE_SELLER')"  type="submit" class="button-css mr-3" style="border: 1px solid red; color:red;"value="업체홈">
+<!--                                <button sec:authorize="hasRole('ROLE_SELLER')" class="btn btn-outline-danger my-2 my-sm-0 btn-sm">업체홈</button>-->
+                            </form>
+                        </ul>
+
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+</html>

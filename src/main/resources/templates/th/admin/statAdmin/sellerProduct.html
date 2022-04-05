@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="th/layout/adminLayout">
+<head>
+    <meta charset="UTF-8">
+    <title>업체관리</title>
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/mainContent.css}">
+    </th:block>
+    <th:block layout:fragment="js">
+        <script type="text/javascript" th:src="@{/js/storeMain.js}"></script>
+    </th:block>
+
+    <script type="text/javascript" th:inline="javascript">history.scrollRestoration = "auto"</script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container store-index-section store-index-product-list"><h2>판매글&nbsp;&nbsp;&nbsp;<th:block th:text="${productCount}"></th:block></h2>
+        <div th:id="autoScroll" class="virtualized-list row" style="padding-top: 0px; transform: translateY(0px);">
+            <tr th:each="sellerProduct : ${product}">
+                <div class="col-6 col-md-3 product-item-wrap">
+                    <article class="production-item">
+                        <a class="production-item__overlay"
+                        th:href="@{/productions/productDetails(productNo=${sellerProduct.productNo})}"></a>
+                        <div class="production-item-image production-item__image">
+                            <img class="image" alt="" th:src="@{'/uploadImg/'+${sellerProduct.productMainImg}}">
+                        </div>
+                        <div class="production-item__content">
+                            <h1 class="production-item__header">
+                                <span class="production-item__header__brand"
+                                      th:text="${sellerProduct.sellerName}"></span>
+                                <span class="production-item__header__name"
+                                      th:text="${sellerProduct.productName}"></span>
+                            </h1>
+                            <span class="production-item-price__price"
+                                  th:text="${#numbers.formatInteger(sellerProduct.customerPrice, 3, 'COMMA')}"></span>
+                        </div>
+                    </article>
+                </div>
+            </tr>
+        </div>
+    </div>
+</div>
+</body>
+</html>

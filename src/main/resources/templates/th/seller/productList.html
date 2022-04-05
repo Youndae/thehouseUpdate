@@ -1,0 +1,119 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="th/layout/SellerLayout">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div id="wrapper">
+        <aside class="main-sidebar sidebar-dark-green elevation-4">
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Sidebar user panel (optional) -->
+                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                    <div th:each="sellerInfo : ${sellerInfo}">
+                        <div class="image">
+                            <!--                                <img th:src="${sellerInfo.sellerImg}"-->
+                            <img th:src="@{'/uploadImg/'+${sellerInfo.sellerImg}}"
+                                 class="img-circle elevation-2" style="width:40px; height:40px;"
+                                 alt="User Image">
+                            <a th:text="${sellerInfo.sellerName}" th:href="@{/seller/sellerInfo}"></a>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Sidebar Menu -->
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                        data-accordion="false">
+                        <li class="nav-item has-treeview menu-open">
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a th:href="@{/seller/category}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>상품 등록</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a th:href="@{/seller/productList}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>상품 리스트</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- /.sidebar-menu -->
+            </div>
+            <!-- /.sidebar -->
+        </aside>
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+
+                    </div>
+                </div>
+            </div>
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- DataTales Example -->
+                            <div class="card card-info">
+                                <div class="card-header">
+                                    <h3 class="card-title">상품 등록 현황</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                            <thead>
+                                            <tr>
+                                                <th>상품번호</th>
+                                                <th>업체이름</th>
+                                                <th>상품이름</th>
+                                                <th>모델이름</th>
+                                                <th>소비자가</th>
+                                                <th>판매가</th>
+                                            </tr>
+                                            </thead>
+
+                                            <tbody>
+                                            <tr th:each="productListInfo : ${productListInfo}">
+                                                <td th:onclick="'location.href=\''+@{/seller/{productNo}(productNo=${productListInfo.productNo})}+'\''"
+                                                        th:value="${productListInfo.productNo}"
+                                                    th:text="${productListInfo.productNo}"></td>
+                                                <td th:value="${productListInfo.sellerName}"
+                                                    th:text="${productListInfo.sellerName}"></td>
+                                                <td th:value="${productListInfo.productName}"
+                                                    th:text="${productListInfo.productName}"></td>
+                                                <td th:value="${productListInfo.modelName}"
+                                                    th:text="${productListInfo.modelName}"></td>
+                                                <td th:value="${productListInfo.customerPrice}"
+                                                    th:text="${productListInfo.customerPrice}"></td>
+                                                <td th:value="${productListInfo.sellPrice}"
+                                                    th:text="${productListInfo.sellPrice}"></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

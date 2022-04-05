@@ -1,0 +1,32 @@
+@media all and (min-width: 100px) {
+    #spendingPatternGraph {
+        width: 100%;
+        height: 100%;
+        float: none;
+    }
+}
+@media all and (min-width: 100px) {
+    .spendingPatternDiv {
+        position: -webkit-sticky;
+        position: sticky;
+        top: 90%;
+        /*float: left;*/
+        width: 500%;
+        height: 400px;
+        left: 300px;
+        z-index: 99999;
+        padding: 13px;
+        border-radius: 100px;
+        float: left;
+    }
+}
+#myChart2{
+    float: left;
+    width: 35%;
+    height: 100%;
+}
+#myChart3{
+    float: left;
+    width: 35%;
+    height: 100%;
+}

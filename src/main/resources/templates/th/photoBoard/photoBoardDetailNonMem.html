@@ -1,0 +1,177 @@
+<!--
+  photoDetail과 합침.
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="th/layout/defaultLayout">
+<head>
+    <meta charset="UTF-8">
+    <title>사진 상세보기</title>
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/photoBoard.css}">
+    </th:block>
+    <script type="text/javascript" th:src="@{/js/photoBoard.js}"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="card-detail">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-lg-8 card-detail__content">
+                    <header class="card-detail-header">
+                        <div class="card-detail-header__prop-list">
+                            <span class="card-detail-header__prop" th:text="${photodetail?.areaType}">&nbsp;</span>
+                            <span class="card-detail-header__prop" th:text="${photodetail?.houseType}">&nbsp;</span>
+                            <span class="card-detail-header__prop" th:text="${photodetail?.styleType}">&nbsp;</span>
+                            <span class="card-detail-header__prop" th:text="${photodetail?.placeType}">&nbsp;</span>
+                        </div>
+                    </header>
+                    <article class="card-detail-card" th:if="${photodetail?.photoImg1 != null}">
+                        <div class="card-detail-card-image-wrap card-detail-card__image">
+                            <div class="card-detail-card-image" style="padding-bottom: 100%;">
+                                <img class="card-detail-card-image__image"  th:src="'/uploadImg'+${photodetail?.photoImg1}" style="width: 500px; height: 500px;"/>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="card-detail-card" th:if="${photodetail?.photoImg2 != null}">
+                        <div class="card-detail-card-image-wrap card-detail-card__image">
+                            <div class="card-detail-card-image" style="padding-bottom: 70%;">
+                                <img class="card-detail-card-image__image"  th:src="'/uploadImg'+${photodetail?.photoImg2}" style="width: 500px; height: 500px;"/>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="card-detail-card" th:if="${photodetail?.photoImg3 != null}">
+                        <div class="card-detail-card-image-wrap card-detail-card__image">
+                            <div class="card-detail-card-image" style="padding-bottom: 70%;">
+                                <img class="card-detail-card-image__image"  th:src="'/uploadImg'+${photodetail?.photoImg3}" style="width: 500px; height: 500px;"/>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="card-detail-card" th:if="${photodetail?.photoImg4 != null}">
+                        <div class="card-detail-card-image-wrap card-detail-card__image">
+                            <div class="card-detail-card-image" style="padding-bottom: 70%;">
+                                <img class="card-detail-card-image__image"  th:src="'/uploadImg'+${photodetail?.photoImg4}" style="width: 500px; height: 500px;"/>
+                            </div>
+                        </div>
+                    </article>
+                    <article  class="card-detail-card">
+                        <div th:if="${photodetail?.photoImg5 != null}" class="card-detail-card-image-wrap card-detail-card__image">
+                            <div class="card-detail-card-image" style="padding-bottom: 70%;">
+                                <img class="card-detail-card-image__image"  th:src="'/uploadImg'+${photodetail?.photoImg5}" style="width: 500px; height: 500px;"/>
+                            </div>
+                        </div>
+                        <p class="card-detail-card__description" th:text="${photodetail?.photoContent}"></p>
+                    </article>
+                    <div class="card-detail-comment-section">
+                        <section class="comment-feed">
+                            <h1 class="comment-feed__header">
+                                댓글&nbsp;
+                                <span class="comment-feed__header__count" th:text="${commentCount}"></span>
+                            </h1>
+                            <form class="comment-feed__form"  id="comment">
+                                <div class="comment-feed__form__user">
+                                    <img class="comment-feed__item__content__author__image" alt="" th:src="@{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'}"
+                                         th:attr="srcset=|@{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 1.5x,
+                                                          @{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 2x,
+                                                          @{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 3x|">
+                                </div>
+                                <div class="comment-feed__form__input">
+                                    <div class="comment-feed__form__content">
+                                        <div class="comment-content-input">
+                                            <input class="comment-content-input__text comment-feed__form__content__text"
+                                                id="commentContent" name="commentContent" placeholder="로그인 후 댓글을 작성해주세요" contenteditable="true"/>
+                                        </div>
+                                    </div>
+                                    <div class="comment-feed__form__actions">
+                                        <button class="comment-feed__form__submit" aria-label="등록" id="pCommentInsert" type="submit" disabled>등록</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <ul class="comment-feed__list">
+                                <th:block th:each="pComment : ${photoComment}">
+                                    <li class="comment-feed__list__item">
+                                        <article class="comment-feed__item">
+                                            <p class="comment-feed__item__content">
+                                                <a th:href="@{/member/memberProfile/{memberId}(memberId=${pComment?.memberId})}" class="comment-feed__item__content__author">
+                                                    <img th:if="${pComment?.memberImg != null}" class="comment-feed__item__content__author__image" alt="" th:src="@{'/uploadImg'+${pComment?.memberImg}}"
+                                                         th:attr="srcset=|@{'/uploadImg'+${pComment?.memberImg}} 1.5x,
+                                                                        @{'/uploadImg'+${pComment?.memberImg}} 2x,
+                                                                        @{'/uploadImg'+${pComment?.memberImg}} 3x|">
+                                                    <img th:if="${pComment?.memberImg == null}" class="comment-feed__item__content__author__image" alt="" th:src="@{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'}"
+                                                         th:attr="srcset=|@{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 1.5x,
+                                                                        @{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 2x,
+                                                                        @{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 3x|">
+                                                    <span th:if="${pComment?.nickName == null}" class="comment-feed__item__content__author__name" th:text="${pComment?.memberId}"></span>
+                                                    <span th:if="${pComment?.nickName != null}" class="comment-feed__item__content__author__name" th:text="${pComment?.nickName}"></span>
+                                                </a>
+                                                <span class="comment-feed__item__content__content" th:text="${pComment?.commentContent}"></span>
+                                            </p>
+                                        </article>
+                                    </li>
+                                </th:block>
+                            </ul>
+                        </section>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-4 card-detail__sidebar">
+                    <div class="card-detail-sidebar-wrap">
+                        <div data-sticky-enabled="false" data-sticky-always="false" data-direction="top" data-offset="131" class="sticky-container card-detail-sidebar"
+                             style="position: sticky; top: 131px;">
+                            <div class="sticky-child card-detail-sidebar__inner" style="position: relative; box-sizing: border-box; height: 838px;">
+                                <div class="card-detail-sidebar__action-list">
+                                    <button class="button button&#45;&#45;color-gray-4 button&#45;&#45;size-50 button&#45;&#45;shape-8 card-detail-sidebar__action-item" id="likeNon" type="button">
+                                        <svg class="icon icon&#45;&#45;stroke" aria-label="좋아요" width="24" height="24" fill="currentColor" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
+                                            <path d="M23.22 7.95c.4 4.94-2.92 9.71-10.92 13.85a.47.47 0 0 1-.42 0C3.88 17.66.56 12.9.96 7.93 1.54 2.48 8.28.3 12.1 4.7c3.8-4.4 10.55-2.22 11.13 3.25z"></path>
+                                        </svg>
+                                        <span class="count" th:text="${photodetail?.likeCount}"></span>
+                                    </button>
+                                    <button class="button button&#45;&#45;color-gray-4 button&#45;&#45;size-50 button&#45;&#45;shape-8 card-detail-sidebar__action-item" id="scrapNon" type="button">
+                                        <svg class="icon icon&#45;&#45;stroke" aria-label="스크랩" width="24" height="24" fill="currentColor" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet">
+                                            <path d="M11.53 18.54l-8.06 4.31A1 1 0 0 1 2 21.97V3.5A1.5 1.5 0 0 1 3.5 2h17A1.5 1.5 0 0 1 22 3.5v18.47a1 1 0 0 1-1.47.88l-8.06-4.31a1 1 0 0 0-.94 0z"></path>
+                                        </svg>
+                                        <span class="count" th:text="${photodetail?.scrapCount}"></span>
+                                    </button>
+                                </div>
+                                <div class="card-detail-sidebar__content">
+                                    <div class="card-detail-writer">
+                                        <div class="card-detail-writer__user">
+                                            <a class="card-detail-writer__link" th:href="@{/member/memberProfile/{memberId}(memberId=${photodetail.memberId})}">
+                                                <img th:if="${photodetail?.memberImg != null}" class="card-detail-writer__image" th:src="@{'/uploadImg'+${photodetail?.memberImg}}" style="width: 50px; height: 50px;"
+                                                     th:attr="srcset=|@{'/uploadImg'+${photodetail?.memberImg}} 1.5x,
+                                                                        @{'/uploadImg'+${photodetail?.memberImg}} 2x,
+                                                                        @{'/uploadImg'+${photodetail?.memberImg}} 3x|">
+                                                <img th:if="${photodetail?.memberImg == null}" class="card-detail-writer__image" th:src="@{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'}" style="width: 50px; height: 50px;"
+                                                     th:attr="srcset=|@{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 1.5x,
+                                                                        @{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 2x,
+                                                                        @{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 3x|">
+                                                <span th:if="${photodetail.nickName == null}" class="card-detail-writer__name" th:text="${photodetail.memberId}"></span>
+                                                <span th:if="${photodetail.nickName != null}" class="card-detail-writer__name" th:text="${photodetail.nickName}"></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="card-detail-pc-related-card-list">
+                                        <ul class="card-detail-pc-related-card-list__list" >
+                                            <th:block th:each="photo : ${userphoto}">
+                                            <li class="card-detail-pc-related-card-list__item">
+                                                <a class="card-detail-pc-related-card-list__item__link" th:href="@{/photodetailnonmem/{photoBoardNo}(photoBoardNo=${photo.photoBoardNo})}">
+                                                    <img class="card-detail-pc-related-card-list__item__image" alt th:src="@{'/uploadImg'+${photo?.photoImg1}}"
+                                                        th:attr="srcset=|@{'/uploadImg'+${photo?.photoImg1}} 1.5x,
+                                                                        @{'/uploadImg'+${photo?.photoImg1}} 2x,
+                                                                        @{'/uploadImg'+${photo?.photoImg1}} 3x|">
+                                                </a>
+                                            </li>
+                                            </th:block>
+                                        </ul>
+                                           <a class="card-detail-pc-related-card-list__more" th:href="@{/member/allPhoto/{memberId}(memberId=${photodetail.memberId})}">더보기</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>-->

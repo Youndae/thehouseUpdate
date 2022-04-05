@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="th/layout/defaultLayout">
+<head>
+    <meta charset="UTF-8">
+    <title>Member장바구니</title>
+    <link href="/img/theHouseLogo.png" rel="shortcut icon" type="image/x-icon">
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/mainContent.css}">
+        <link rel="stylesheet" th:href="@{/css/basket.css}">
+    </th:block>
+   <!--<link rel="stylesheet" media="screen"
+          href="https://d1nyaccf3kuclt.cloudfront.net/dist/css/templates-Commerce-Cart-7a3e77c9.chunk.css">
+   --> </head>
+<body>
+
+<div layout:fragment="content">
+    <div class="layout">
+
+        <div class="commerce-cart-wrap">
+            <div class="container" id="SExist" style="display: block">
+                <div class="commerce-cart row">
+                    <div class="commerce-cart__content-wrap col-12 col-md-7 col-lg-8">
+                        <div class="commerce-cart__content">
+                            <div data-sticky-enabled="false" data-sticky-always="false" data-direction="top"
+                                 data-offset="0" class="sticky-container commerce-cart__header-wrap">
+                                <div class="sticky-child commerce-cart__header" style="position:relative">
+                                    <span class="commerce-cart__header__left" onclick="checkAll(this.form);">
+                                       <div class="round-checkbox-input round-checkbox-input--blue">
+                                            <label class="round-checkbox-input__label">
+                             <!--모두선택체크박스--><input type="checkbox" id="th_checkAll"name="outerCheckbox" class="round-checkbox-input__input" autocomplete="off" checked="">
+                                                <span class="round-checkbox-input__icon">
+                                                    <svg class="check" width="24" height="24" viewBox="0 0 24 24"
+                                                         preserveAspectRatio="xMidYMid meet">
+                                                        <path fill="#FFF"
+                                                              d="M9.9 14.6l7-7.3 1.5 1.4-8.4 8.7-5-4.6 1.4-1.5z">
+
+                                                        </path>
+                                                    </svg>
+                                                </span>
+                                                <span class="caption">모두선택 (1개)
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </span>
+                                    <span class="commerce-cart__header__right">
+                                        <button class="button button--color-blue button--size-20 button--shape-4 commerce-cart__side-bar__order__btn" type="button"
+                                                name="delCheckBox"
+                                        onclick="checkBoxIsCheckedMember()">선택삭제
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <ul>
+                                    <!--<th:block th:each="list : ${basketList}">
+                                        <li th:text="${list}"></li>
+                                        셀러네임
+                                        <h1 th:text="${list.getProductVO()}"></h1>
+                                        <h2 th:text="${list.getProductVO().getSellerName()}"></h2>
+                                    </th:block>-->
+                                </ul>
+                            </div>
+                            <!-- 셀러네임안듬 -->
+                            <!-- 상품 전체 -->
+
+                            <ul class="commerce-cart__content__group-list">
+                                <!-- 상품 한개당 li 한개-->
+
+                                <li class="commerce-cart__content__group-item" th:each="list, listStat : ${basketList2}">
+
+                                    <article class="commerce-cart__group"><h1 class="commerce-cart__group__header" th:text="${list.getProductVO().getSellerName()}">                                        <!-- --> 배송</h1>
+                                        <ul class="commerce-cart__group__item-list">
+                                            <li class="commerce-cart__group__item">
+                                                <article class="commerce-cart__delivery-group">
+                                                    <ul class="commerce-cart__delivery-group__product-list">
+                                                        <li class="commerce-cart__delivery-group__product-item">
+                                                            <!-- 선택된 상품 in basket -->
+                                                            <article class="carted-product">
+                                                                <div class="round-checkbox-input round-checkbox-input--blue carted-product__select">
+                                                                    <label class="round-checkbox-input__label">
+                                                                        <!-- 내부 체크박스 --><input type="checkbox"
+                                                                                               name="innerCheckbox" th:id="'innerCheckbox'+${listStat.index}"
+                                                                                               class="round-checkbox-input__input"
+                                                                                               checked=""
+                                                                                               th:aria-label="${list.productNo}"
+                                                                                               autocomplete="off" th:data-cartNum="${list.basketNo}">
+                                                                        <span class="round-checkbox-input__icon">
+                                                                            <svg class="check" width="24" height="24"
+                                                                                 viewBox="0 0 24 24"
+                                                                                 preserveAspectRatio="xMidYMid meet">
+                                                                                <path fill="#FFF"
+                                                                                      d="M9.9 14.6l7-7.3 1.5 1.4-8.4 8.7-5-4.6 1.4-1.5z"></path>
+                                                                            </svg>
+                                                                            <!-- 1. outer 체크박스 체크 ? inner 체크박스 == true -->
+                                                                        </span>
+                                                                    </label>
+                                                                </div>
+                                                                <!-- 상품 간단 상세 --><a
+                                                                    class="product-small-item product-small-item--clickable"
+                                                                    th:href="@{/productions/productDetails(productNo=${list.productNo})}">
+                                                                <div class="product-small-item__image"><img
+                                                                        th:src="@{'/uploadImg/'+${list.getProductVO().getProductMainImg()}}"
+                                                                        alt=""></div>
+                                                                <div class="product-small-item__content"><h1
+                                                                        class="product-small-item__title" th:text="${list.productName}" name="productName" th:value="${list.productName}">
+
+                                                                </h1>
+                                                                    <p class="product-small-item__caption">무료배송 |
+                                                                        일반택배</p></div>
+                                                            </a>
+                                                                <!--th:class="delete_${list.basketNo}_btn"-->
+                                                                <button class="carted-product__delete" type="button"
+                                                                        aria-label="삭제"  th:data-cartNum="${list.basketNo}">
+                                                                    <svg width="12" height="12" viewBox="0 0 12 12"
+                                                                         fill="currentColor"
+                                                                         preserveAspectRatio="xMidYMid meet">
+                                                                        <path fill-rule="nonzero"
+                                                                              d="M6 4.6L10.3.3l1.4 1.4L7.4 6l4.3 4.3-1.4 1.4L6 7.4l-4.3 4.3-1.4-1.4L4.6 6 .3 1.7 1.7.3 6 4.6z"></path>
+                                                                    </svg>
+                                                                </button>
+                                                                <ul class="carted-product__option-list">
+                                                                    <li class="carted-product__option-list__item">
+                                                                        <article class="selling-option-item">
+                                                                            <h2 class="selling-option-item__name" th:text="${list.getProductColor()}"></h2>
+                                                                            <input type="hidden" th:id="'productNo'+${listStat.index}" th:value="${list.productNo}">
+                                                                            <input type="hidden" th:id="'productColor'+${listStat.index}" th:value="${list.productColor}">
+                                                                            <div class="selling-option-item__controls">
+                                                                                <div class="selling-option-item__quantity">
+                                                                                    <div class="input-group select-input option-count-input">
+                                                                                        <select class="form-control">
+
+                                                                                            <option value="1">1</option>
+                                                                                            <option value="2">2</option>
+                                                                                            <option value="3">3</option>
+                                                                                            <option value="4">4</option>
+                                                                                            <option value="5">5</option>
+                                                                                            <option value="6">6</option>
+                                                                                            <option value="7">7</option>
+                                                                                            <option value="8">8</option>
+                                                                                            <option value="9">9</option>
+                                                                                            <option value="10">10</option>
+                                                                                            <option value="${list.qty}" selected th:text="${list.qty}"></option>
+                                                                                            </option>
+                                                                                        </select><span
+                                                                                            class="select-input__icon"><svg
+                                                                                            class="icon" width="10"
+                                                                                            height="10"
+                                                                                            style="fill:currentColor"
+                                                                                            preserveAspectRatio="xMidYMid meet"><path
+                                                                                            fill-rule="evenodd"
+                                                                                            d="M0 3l5 5 5-5z"></path></svg></span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <p class="selling-option-item__price">
+                                                                                    <span class="selling-option-item__price__number" th:price-total="${list.getProductVO().getPurchasePrice()}" th:text="${list.getProductVO().getPurchasePrice()}"></span>원
+                                                                                </p></div>
+                                                                        </article>
+                                                                    </li>
+                                                                </ul>
+
+                                                            </article>
+                                                        </li>
+                                                    </ul>
+                                                    <footer class="commerce-cart__delivery-group__footer"><p
+                                                            class="commerce-cart__delivery-group__total">배송비<!-- -->
+                                                        무료</p></footer>
+                                                </article>
+                                            </li><!-- 상품 LI 끝 -->
+                                        </ul>
+                                    </article>
+                                </li>
+                            </ul>
+
+                        </div>
+                    </div>
+                    <div class="commerce-cart__side-bar-wrap col-12 col-md-5 col-lg-4"> <!--사이드바 전체 상품 가격 등 정보-->
+                        <div data-sticky-enabled="false" data-sticky-always="false" data-direction="top"
+                             data-offset="80.99431610107422" class="sticky-container commerce-cart__side-bar-container"
+                             style="position: sticky; top: 80.9943px;">
+                            <div class="sticky-child commerce-cart__side-bar" style="position:relative">
+                                <dl class="commerce-cart__summary commerce-cart__side-bar__summary">
+                                    <div class="commerce-cart__summary__row">
+                                        <dt>총 상품금액</dt>
+                                        <dd><span class="number" th:id="getTP"></span>원</dd>
+                                    </div>
+                                    <div class="commerce-cart__summary__row">
+                                        <dt>총 배송비</dt>
+                                        <dd>+ <span class="number">0</span>원</dd>
+                                    </div>
+                                    <div class="commerce-cart__summary__row commerce-cart__summary__row--total">
+                                        <dt>결제금액</dt>
+                                        <dd><span class="number" th:id="paymentTP"></span>원</dd>
+                                    </div>
+                                </dl>
+                                <div class="commerce-cart__side-bar__order">
+                                    <a href="/goPayment" >
+                                        <button class="button button--color-blue button--size-50 button--shape-4 commerce-cart__side-bar__order__btn"
+                                                type="submit" >상품 구매하기
+                                        </button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script th:inline="javascript" type="text/javascript">
+                function checkBoxIsCheckedMember(){
+                    console.log("체크박스 함수 실행");
+                    var basketMember = [[${basketList2}]];
+                    console.log("bsM : "+basketMember + "len : " + basketMember.length);
+                    var productNo = new Array();
+                    var productColor = new Array();
+                    var len =basketMember.length;
+                    var checkBox = new Array(len);
+                    var checkBoxResult = new Array(len);
+
+                    for(var i=0;i<len;i++) {
+                        checkBox[i] = document.getElementById('innerCheckbox' + i);
+
+                        checkBoxResult[i] = $(checkBox[i]).prop("checked");
+                        console.log("체크박스 저장 : " + checkBox[i] + "result : " + checkBoxResult[i]);
+                        if(checkBoxResult[i] == true){
+                            console.log("productNo : " + productNo[i] + "productColor : " + productColor[i]);
+                            productNo[i] = $('#productNo'+i).val();
+                            productColor[i] = $('#productColor'+i).val();
+                        }
+                    }
+
+                    /*for(var i=0; i<len;i++){
+
+                    }
+            */                    console.log(productNo+productColor);
+
+
+                    $.ajax({
+                        url: '/delMemberBasket',
+                        type : 'POST',
+                        traditional : true,
+                        data : {
+                            productNo : productNo,
+                            productColor : productColor
+                        },
+                        success : function (e) {
+                            console.log("suc");
+                            window.location.reload();
+                        },error : function (e) {
+                            console.log("err");
+                        }
+
+                    })
+                }
+            </script>
+            <th:block layout:fragment="js">
+                <script type="text/javascript" th:src="@{/js/memberBasket.js}"></script>
+            </th:block>
+        </div>
+
+        <div class="toast-message-root"></div>
+    </div>
+</div>
+
+<div id="output">
+    <!-- 저장된 내용을 출력할 DIV 엘리먼트 -->
+</div>
+
+</body>
+</html>

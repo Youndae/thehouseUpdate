@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="th/layout/defaultLayout">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+
+    <title>니가사는그집</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container">
+        <div class="login_wrapper">
+            <div class="text-center logo-font">
+                <div class="col-md-12 md-auto mt-4 mb-3">
+                    <img th:src="@{/icon/thehouse.png}" class="rounded-circle" width="70px" height="70px">
+                </div>
+
+
+                <h2>
+                    <b>니가사는 그집</b>
+                </h2>
+
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-md-5 col-xs-10 md-auto">
+                    <form class="needs-validation" th:action="@{/signupMember}" method="post"
+                          novalidate>
+                        <hr>
+                        <div class="mt-4 mb-3">
+                            <label for="userid">아이디<span class="text-muted"></span></label> <input
+                                type="text" class="form-control" id="userid" name="userid" placeholder="User id">
+                            <div class="invalid-feedback">아이디를 입력하세요.</div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="userpw">패스워드<span class="text-muted"></span></label> <input
+                                type="password" class="form-control" id="userpw" name="userpw"
+                                placeholder="User password">
+                            <div class="invalid-feedback">아이디를 입력하세요.</div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="userName">이름<span class="text-muted"></span></label> <input
+                                type="userName" class="form-control" id="userName" name="userName"
+                                placeholder="User name">
+                            <div class="invalid-feedback">이름을 입력하세요.</div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="userEmail">이메일<span class="text-muted"></span></label> <input
+                                type="userEmail" class="form-control" id="userEmail" name="userEmail"
+                                placeholder="User email">
+                            <div class="invalid-feedback">이메일을 입력하세요.</div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="userTel">전화번호<span class="text-muted"></span></label> <input
+                                type="userTel" class="form-control" id="userTel" name="userTel"
+                                placeholder="User tel">
+                            <div class="invalid-feedback">전화번호를 입력하세요.</div>
+                        </div>
+
+                        <button class="btn btn-block btn-info btn-sm mb-3" id="loginButton" type="submit">
+                            회원가입
+                        </button>
+
+
+                    </form>
+
+                    <form>
+                        <div class="text-center">
+                            <div class="row">
+                                <a class="col-md-12 xs-12" th:href="@{/customLogin}">로그인 페이지</a>
+                            </div>
+                        </div>
+                        <hr>
+
+
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+</body>
+</html>

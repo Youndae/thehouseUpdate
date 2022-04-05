@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="th/layout/SellerLayout">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <!--    <form class="" >-->
+    <div class="wrapper">
+
+
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar sidebar-dark-green elevation-4">
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Sidebar user panel (optional) -->
+                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                    <div th:each="sellerInfo : ${sellerInfo}">
+                        <div class="image">
+                            <!--                                <img th:src="${sellerInfo.sellerImg}"-->
+                            <img th:src="@{'/uploadImg/'+${sellerInfo.sellerImg}}"
+                                 class="img-circle elevation-2" style="width:40px; height:40px;"
+                                 alt="User Image">
+                            <a th:text="${sellerInfo.sellerName}" th:href="@{/seller/sellerInfo}"></a>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Sidebar Menu -->
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                        data-accordion="false">
+                        <li class="nav-item has-treeview menu-open">
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a th:href="@{/seller/sellerInfo}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>업체 관리</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a th:href="@{/seller/sellerInfoLogin}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>업체 ID 관리</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- /.sidebar-menu -->
+            </div>
+            <!-- /.sidebar -->
+        </aside>
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2"></div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- /.content-header -->
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row justify-content-center">
+                        <div class="col-md-10">
+                            <div class="card card-info">
+                                <div class="card-header">
+                                    <h3 class="card-title">업체 기본 정보</h3>
+                                </div>
+                                <!-- /.card-header -->
+                                <form class="needs-validation" th:action="@{/seller/changeSellerInfo}" th:method="post"
+                                      enctype="multipart/form-data">
+                                    <div th:each="sellerInfo : ${sellerInfo}">
+                                        <div class="card-body">
+                                            <div class="form-group row">
+                                                <label for="sellerName"
+                                                       class="col-sm-2 col-form-label">상호(회사명)</label>
+
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" id="sellerName"
+                                                           name="sellerName" placeholder="회사명"
+                                                           th:value="${sellerInfo.sellerName}">
+                                                </div>
+
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="sellerRes" class="col-sm-2 col-form-label">사업자
+                                                    등록번호</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" id="sellerRes"
+                                                           name="sellerRes"
+                                                           placeholder="사업자등록번호" th:value="${sellerInfo.sellerRes}">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="col-sm-2 mr-2 col-form-label">대표 이미지</label>
+
+                                                <div class="custom-file col-sm-8">
+                                                    <input type="file" class="custom-file-input" name="sellerImgUrl"
+                                                           id="sellerImgUrl"
+                                                           multiple>
+                                                    <label class="custom-file-label" for="sellerImgUrl"
+                                                           th:text="${sellerInfo.sellerImg}"></label>
+
+
+                                                </div>
+                                                <div class="col-md-12" style="text-align: center;">
+                                                    <img id="ImgView" th:src="@{'/uploadImg/'+${sellerInfo.sellerImg}}" width="400px"
+                                                         height="200px">
+                                                    <input type="hidden" name="sellerImgBefore" id="sellerImgBefore" th:value="${sellerInfo.sellerImg}">
+                                                </div>
+
+                                            </div>
+
+
+                                            <div class="form-group row">
+                                                <label for="sellerAddr" class="col-sm-2 col-form-label">회사
+                                                    주소</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" id="sellerAddr"
+                                                           name="sellerAddr" placeholder="Email"
+                                                           th:value="${sellerInfo.sellerAddr}">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="sellerUrl" class="col-sm-2 col-form-label">회사
+                                                    홈페이지</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" id="sellerUrl"
+                                                           name="sellerUrl" placeholder="회사 홈페이지"
+                                                           th:value="${sellerInfo.sellerUrl}">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row" style=" justify-content: center;">
+                                                <button type="submit" class="btn btn-block btn-info col-md-2">정보수정</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-center">
+                        <div class="col-md-10">
+                            <div class="card card-info">
+                                <div class="card-header">
+                                    <h3 class="card-title">업체 담당자 정보</h3>
+                                </div>
+                                <!-- /.card-header -->
+                                <form th:action="@{/seller/changeSellerManagerInfo}" th:method="post">
+                                    <div class="card-body">
+                                        <div class="form-group row">
+                                            <label for="sellerManager" class="col-sm-2 col-form-label">담당자
+                                                이름</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" id="sellerManager"
+                                                       name="sellerManager" placeholder="담당자 이름"
+                                                       th:value="${sellerInfo.sellerManager}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="managerTel" class="col-sm-2 col-form-label">담당자
+                                                연락처</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" id="managerTel"
+                                                       name="managerTel" placeholder="담당자 연락처"
+                                                       th:value="${sellerInfo.managerTel}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="managerEmail" class="col-sm-2 col-form-label">담당자
+                                                이메일</label>
+                                            <div class="col-sm-10">
+                                                <input type="email" class="form-control" id="managerEmail"
+                                                       name="managerEmail" placeholder="담당자 이메일"
+                                                       th:value="${sellerInfo.managerEmail}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row" style=" justify-content: center;">
+                                            <button type="submit" class="btn btn-block btn-info col-md-2">정보수정</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <!--    </form>-->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            bsCustomFileInput.init();
+        });
+    </script>
+
+    <script type="text/javascript">
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#ImgView').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#sellerImgUrl").change(function () {
+            readURL(this);
+        });
+    </script>
+
+
+</div>
+</body>
+
+</html>

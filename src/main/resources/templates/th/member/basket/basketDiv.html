@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="indexListAjax">
+    <th:each items="${list }" var="item" varStatus="status">
+        <div class="wrap">
+            <div>${item.productNo }</div>
+            <div>${item.sellerName }</div>
+            <div>${item.productName }</div>
+            <div>${item.modelName }</div>
+        </div>
+    </th:each>
+</div>
+
+</body>
+</html>

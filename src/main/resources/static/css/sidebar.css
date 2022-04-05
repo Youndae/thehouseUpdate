@@ -1,0 +1,52 @@
+.nav-sidebar{
+    width: 40%;
+    margin: 0;
+    padding: 0;
+    font-family: helvetica, sans-serif;
+}
+.item ul, .nav input[type="checkbox"] {
+    display: none;
+}
+#menu:checked ~ .multi-level, .item input:checked ~ ul {
+    display: block;
+}
+
+/*Styles*/
+label:hover {
+    cursor: pointer;
+}
+label {
+    width: 100%;
+    display: block;
+    z-index: 3;
+    position: relative;
+}
+.nav {
+    width: 100%;
+    background-color: white;
+    overflow-x: hidden;
+    border-bottom: 1px solid gainsboro;
+}
+.nav ul, .nav li, h2 {
+    padding: 0 3px;
+    line-height: 50px;
+    margin: 0;
+    list-style: none;
+    text-decoration: none;
+    color: black;
+    font-weight: 100;
+    width: 100%;
+}
+.nav li a {
+    padding: 0 3px;
+    line-height: 20px;
+    margin: 0;
+    list-style: none;
+    text-decoration: none;
+    color: rgba(0,0,0,.5);
+    font-weight: 100;
+}
+
+h2, h4, h6{
+    color: rgba(0,0,0,.5);;
+}

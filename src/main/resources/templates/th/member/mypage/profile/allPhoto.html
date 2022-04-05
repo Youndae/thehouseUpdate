@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="th/layout/defaultLayout">
+<head>
+    <meta charset="UTF-8">
+    <title>내 게시글</title>
+
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/mainContent.css}">
+    </th:block>
+
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container">
+    <th:block th:replace="th/fragments/navBar_myPage"></th:block>
+    <th:block th:replace="th/fragments/navBar_myPage_profile"></th:block>
+<div class="container store-index-section store-index-product-list"><h1>사진</h1>
+    <div class="virtualized-list row" style="padding-top: 0px; transform: translateY(0px);">
+        <tr th:each="allphoto : ${photo}">
+            <div class="col-6 col-md-3 product-item-wrap">
+                <form th:action="@{/photodetail/{photoBoardNo}(photoBoardNo=${allphoto.photoBoardNo})}">
+                    <article class="production-item"><a class="production-item__overlay" th:href="@{/photodetail/{photoBoardNo}(photoBoardNo=${allphoto.photoBoardNo})}"></a>
+                        <div class="production-item-image production-item__image">
+                            <img class="image" alt="" th:src="@{'/uploadImg'+${allphoto.photoImg1}}" srcset="">
+                            <input type="hidden" id="userId" name="userId" th:value="${allphoto.memberId}"/>
+                        </div>
+                        <div class="production-item__content">
+                            <h1 class="production-item__header">
+                                <span class="production-item__header__name" th:text="${allphoto.photoTitle}"></span>
+                            </h1>
+                        </div>
+                    </article>
+                </form>
+            </div>
+        </tr>
+    </div>
+</div>
+</div>
+</div>
+</body>
+</html>

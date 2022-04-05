@@ -1,0 +1,133 @@
+<!--
+    askBoardDetail과 합침.
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="th/layout/defaultLayout">
+<head>
+    <meta charset="UTF-8">
+    <title>질문 게시판</title>
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/askBoard.css}">
+    </th:block>
+    <script type="text/javascript" th:src="@{/js/askBoard.js}"></script>
+    <script type="text/javascript" th:src="@{/js/profile.js}"></script>
+</head>
+<body>
+<div layout:fragment="content">
+<main class="qna-detail">
+    <article class="qna-detail__container container">
+        <section class="qna-detail__container__content">
+            <header class="qna-detail__content__header-container">
+                <div class="qna-detail__content__header-top">
+                    <a class="qna-detail__content__header-subtitle" href="/askBoardList">질문과 답변</a>
+                </div>
+                <h1 class="qna-detail__content__header-title" th:text="${detail.askTitle}"></h1>
+            </header>
+            <section class="qna-detail__content__body">
+                <th:block th:utext="${detail.askContent}"/>
+            </section>
+            <footer class="qna-detail__footer">
+                <div class="qna-detail__footer__metadata">
+                    <time th:text="${detail.askDate}"></time>
+                </div>
+            </footer>
+            <section class="qna-detail__comment-section">
+                <section class="comment-feed">
+                    <h1 class="comment-feed__header">
+                        댓글&nbsp;
+                        <span class="comment-feed__header__count" th:text="${commentCount}"></span>
+                    </h1>
+                    <form class="comment-feed__form" id="comment">
+                        <div class="comment-feed__form__user">
+                            <img class="comment-feed__item__content__author__image" alt=""
+                                 th:src="@{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'}"
+                                 th:attr="srcset=|@{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 1.5x,
+                                                  @{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 2x,
+                                                  @{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 3x|">
+                        </div>
+                        <div class="comment-feed__form__input">
+                            <div class="comment-feed__form__content">
+                                <div class="comment-content-input">
+                                    <input class="comment-content-input__text comment-feed__form__content__text"
+                                           id="commentContent" name="commentContent" placeholder="로그인 후 댓글을 작성해주세요" contenteditable="true"/>
+                                </div>
+                            </div>
+                            <div class="comment-feed__form__actions">
+                                <button class="comment-feed__form__submit" aria-label="등록" type="submit" id="aCommentInsert" disabled>등록</button>
+                            </div>
+                        </div>
+                    </form>
+                    <ul class="comment-feed__list">
+                        <th:block th:each="aComment : ${askComment}">
+                        <li class="comment-feed__list__item">
+                            <article class="comment-feed__item">
+                                <p class="comment-feed__item__content">
+                                    <a th:href="@{/member/memberProfile/{memberId}(memberId=${aComment.memberId})}" class="comment-feed__item__content__author">
+                                        <img th:if="${aComment?.memberImg != null}" class="comment-feed__item__content__author__image" alt=""
+                                             th:src="@{'/uploadImg'+${aComment?.memberImg}}"
+                                             th:attr="srcset=|@{'/uploadImg'+${aComment?.memberImg}} 1.5x,
+                                                              @{'/uploadImg'+${aComment?.memberImg}} 2x,
+                                                              @{'/uploadImg'+${aComment?.memberImg}} 3x|">
+                                        <img th:if="${aComment?.memberImg == null}" class="comment-feed__item__content__author__image" alt=""
+                                             th:src="@{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'}"
+                                             th:attr="srcset=|@{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 1.5x,
+                                                              @{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 2x,
+                                                              @{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 3x|">
+                                        <span th:if="${aComment.nickName == null}" class="comment-feed__item__content__author__name" th:text="${aComment.memberId}"></span>
+                                        <span th:if="${aComment.nickName != null}" class="comment-feed__item__content__author__name" th:text="${aComment.nickName}"></span>
+                                    </a>
+                                    <span class="comment-feed__item__content__content" th:text="${aComment.commentContent}"></span>
+                                </p>
+                            </article>
+                        </li>
+                        </th:block>
+                    </ul>
+                </section>
+            </section>
+        </section>
+        <nav class="qna-detail__container__sidebar">
+            <div data-sticky-enabled="false" data-sticky-always="false" data-direction="top" data-offset="81" class="sticky-container" style="position: sticky; top: 81px;">
+                <div class="sticky-child" style="position: relative">
+                    <div class="qna-detail__container__sidebar__content">
+                        <address class="qna-detail-author qna-detail__container__sidebar__author">
+                            <a class="qna-detail-author__profile-link" th:href="@{/member/memberProfile/{memberId}(memberId=${detail.memberId})}">
+                                <div class="qna-detail-author__profile-link__image">
+                                    <img th:if="${detail?.memberImg != null}" class="card-detail-writer__image"
+                                         th:src="@{'/uploadImg'+${detail?.memberImg}}" style="width: 50px; height: 50px;"
+                                         th:attr="srcset=|@{'/uploadImg'+${detail?.memberImg}} 1.5x,
+                                                          @{'/uploadImg'+${detail?.memberImg}} 2x,
+                                                          @{'/uploadImg'+${detail?.memberImg}} 3x|">
+                                    <img th:if="${detail?.memberImg == null}" class="card-detail-writer__image"
+                                         th:src="@{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'}" style="width: 50px; height: 50px;"
+                                         th:attr="srcset=|@{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 1.5x,
+                                                          @{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 2x,
+                                                          @{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'} 3x|">
+                                </div>
+                                <div class="qna-detail-author__profile-link__summary">
+                                    <div class="qna-detail-author__profile-link__summary-section">
+                                        <span th:if="${detail.nickName == null}" class="qna-detail-author__profile-link__summary-nickname" th:text="${detail.memberId}"></span>
+                                        <span th:if="${detail.nickName != null}" class="qna-detail-author__profile-link__summary-nickname" th:text="${detail.nickName}"></span>
+                                    </div>
+                                    <div class="qna-detail-author__profile-link__summary-introduction"></div>
+                                </div>
+                            </a>
+                        </address>
+                        <aside class="qna-detail-aside qna-detail__container__sidebar__aside">
+                            <div class="qna-detail-aside__section">
+                                <button class="button button&#45;&#45;color-gray-4 button&#45;&#45;size-30 button&#45;&#45;shape-4 card-detail-writer__follow"
+                                        type="button" id="askreply" name="askreply"
+                                        onclick="location.href='/customLogin'">답글달기</button>
+                            </div>
+                        </aside>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </article>
+</main>
+</div>
+</body>
+</html>
+
+-->

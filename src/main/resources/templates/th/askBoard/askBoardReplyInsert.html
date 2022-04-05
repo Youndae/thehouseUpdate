@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="th/layout/defaultLayout">
+<head>
+    <meta charset="UTF-8">
+    <title>답변작성</title>
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/askBoard.css}">
+    </th:block>
+
+    <script type="text/javascript" th:src="@{/editor/js/HuskyEZCreator.js}" charset="utf-8"></script>
+    <script type="text/javascript" th:src="@{/js/askBoard.js}"></script>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="container">
+    <h2>답글 작성</h2>
+    <form action="/askreplyProc" method="post" id="replyInsertBoardFrm" enctype="multipart/form-data">
+        <div class="mt-4 mb-3">
+            <label for="askTitle">제목<span class="text-muted"/></label>
+            <input type="text" th:value="'RE: '+${detail.askTitle}" id="askTitle" name="askTitle" readonly/>
+        </div>
+        <div class="mt-4 mb-3">
+            <label for="askContent">내용<span class="text-muted"/></label>
+            <textarea name="askContent" id="askContent" style="width: 700px; height: 400px;"></textarea>
+        </div>
+        <input type="hidden" id="askGroupNo" name="askGroupNo" th:value="${detail.askGroupNo}"/>
+        <input type="hidden" id="askIndent" name="askIndent" th:value="${detail.askIndent}"/>
+        <input type="hidden" id="askUpperNo" name="askUpperNo" th:value="${detail.askBoardNo}"/>
+        <button type="button" id="replyInsertBoard"
+                class="button button--color-gray-4 button--size-30 button--shape-4 card-detail-writer__follow">등록</button>
+    </form>
+</div>
+</div>
+</body>

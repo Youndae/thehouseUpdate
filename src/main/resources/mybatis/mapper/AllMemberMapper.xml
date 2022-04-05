@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bit.house.mapper.AllMemberMapper">
+
+    <resultMap type="com.bit.house.domain.AllMemberVO" id="memberMap">
+        <id property="userid" column="userid"/>
+        <result property="userid" column="userid"/>
+        <result property="userpw" column="userpw"/>
+        <result property="authCode" column="authCode"/>
+        <result property="enabled" column="enabled" />
+        <collection property="authList" resultMap="authMap">
+        </collection>
+    </resultMap>
+
+    <resultMap type="com.bit.house.domain.AuthVO" id="authMap">
+        <result property="authCode" column="authCode"/>
+        <result property="roleType" column="roleType"/>
+    </resultMap>
+
+    <select id="read" resultMap="memberMap">
+        SELECT
+        *
+        FROM
+        allmember mem LEFT OUTER JOIN auth auth on mem.authCode = auth.authCode
+        WHERE mem.userid = #{userid}
+    </select>
+
+    <select id="searchSocial" resultType="com.bit.house.domain.AllMemberVO">
+        SELECT
+        *
+        FROM
+        allmember
+        WHERE userid = #{userid}
+    </select>
+
+    <insert id="insertUser" parameterType="com.bit.house.domain.AllMemberVO">
+        INSERT INTO allmember (userid, userpw, authCode)
+        VALUES (#{userid}, #{userpw}, '1')
+
+    </insert>
+
+    <insert id="insertSocialToUser" parameterType="com.bit.house.domain.AllMemberVO">
+        INSERT INTO allmember (userid, authCode, socialType)
+        VALUES (#{userid}, '1', #{socialType})
+
+    </insert>
+</mapper>

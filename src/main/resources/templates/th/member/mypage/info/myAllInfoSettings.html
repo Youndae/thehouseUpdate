@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="th/layout/defaultLayout">
+<head>
+    <meta charset="UTF-8">
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/mainContent.css}">
+        <link rel="stylesheet" th:href="@{/css/myInfoSettings.css}">
+        <link rel="stylesheet" th:href="@{/css/myPage.css}">
+    </th:block>
+    <script type="text/javascript" th:src="@{/js/profile.js}"></script>
+    <link th:href="@{/css/productPage.css}" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script>
+        $(() => {
+            $('#inputNewPassword, #inputConfirmPassword').on('keyup', function () {
+                if ($('#inputNewPassword').val() == "" && $('#inputConfirmPassword').val() == "") {
+                    $('#submit-pass').prop('disabled', true);
+                    $('#message').hide();
+                } else if ($('#inputNewPassword').val() == $('#inputConfirmPassword').val()) {
+                    $('#submit-pass').prop('disabled', false);
+                    $('#message').show().html('Password Match').css('color', 'green');
+                } else {
+                    $('#submit-pass').prop('disabled', true);
+                    $('#message').show().html('Password do not match').css('color', 'red');
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div class="container">
+        <th:block th:replace="th/fragments/navBar_myPage"></th:block>
+        <div th:class="conteiner-nav">
+            <nav>
+                <div class="nav nav-tabs justify-content-center" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-myProfile-tab" data-toggle="tab"
+                       href="#nav-myProfile" role="tab"
+                       aria-controls="nav-myProfile" aria-selected="true">마이프로필</a>
+                    <a class="nav-item nav-link" id="nav-myInfoSettings-tab" data-toggle="tab"
+                       href="#nav-myInfoSettings" role="tab"
+                       aria-controls="nav-myInfoSettings" aria-selected="false">회원정보수정</a>
+                    <a class="nav-item nav-link" id="nav-myPasswordSettings-tab" data-toggle="tab"
+                       href="#nav-myPasswordSettings" role="tab"
+                       aria-controls="nav-myPasswordSettings" aria-selected="false">비밀번호변경</a>
+                </div>
+            </nav>
+            <div class="tab-content my-4" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-myProfile" role="tabpanel"
+                     aria-labelledby="nav-myProfile-tab">
+                    <div class="container">
+                        <form action="/member/modifyProfile" method="post" enctype="multipart/form-data" class="frm">
+                            <div class="edit-user-info__form-item">
+                                <div class="edit-user-info__form-item__title">닉네임</div>
+                                <div class="expert-form-group edit-user-info__form-item__group">
+                                    <div class="expert-form-group__content">
+                                        <div class="expert-form-group__input">
+                                            <div class="edit-user-info__form-item__field">
+                                                <div class="edit-user-info__input">
+                                                    <input type="text" id="nickName" name="nickName" th:value="${myprofile?.nickName}"
+                                                           placeholder="입력하지 않을 시 아이디로 출력됩니다."/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="edit-user-info__form-item">
+                                <div class="edit-user-info__form-item__title">프로필 이미지</div>
+                                <div class="expert-form-group edit-user-info__form-item__group">
+                                    <div class="expert-form-group__content">
+                                        <div class="expert-form-group__input">
+                                            <div class="edit-user-info__form-item__field edit-user-info__form-item__field--profile">
+                                                <div class="image-single-input-wrap">
+                                                    <ul class="image-single-input">
+                                                        <li class="image-single-input__entry">
+                                                            <div id="preview" style="width:200px; height:200px;">
+                                                                <img th:if="${myprofile?.memberImg != null}"
+                                                                     th:src="@{'/uploadImg'+${myprofile.memberImg}}" class="file_input_button"
+                                                                     alt="open" style="width:200px; height: 200px;"/>
+                                                                <img th:if="${myprofile?.memberImg == null}"
+                                                                     th:src="@{'/uploadImg/profileImg/2020062511233324595ed8-2c5c-4fb0-9167-30b9fe6751fc.jpg'}"
+                                                                     style="width:200px; height: 200px;"/>
+                                                            </div>
+                                                            <input type="file" id="uploadFile" name="uploadFile" class="file_input_hidden" />
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <button class="button button--color-blue button--size-30 button--shape-4 edit-user-info__form-item__delete"  type="button" id="delPhoto" >
+                                                    삭제
+                                                </button>
+                                                <input type="hidden" id="memberId" th:value="${member.memberId}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="edit-user-info__form-item">
+                                <div class="edit-user-info__form-item__title">한줄소개</div>
+                                <div class="expert-form-group edit-user-info__form-item__group">
+                                    <div class="expert-form-group__content">
+                                        <div class="expert-form-group__input">
+                                            <div class="edit-user-info__form-item__field">
+                                                <input maxlength="41" class="form-control" type="text" id="memberIntro" name="memberIntro"
+                                                       th:value="${myprofile?.memberIntro}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="button button--color-blue button--size-50 button--shape-4 edit-user-info__submit" type="submit">프로필 등록</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="nav-myInfoSettings" role="tabpanel"
+                     aria-labelledby="nav-myInfoSettings-tab">
+                    <div class="container">
+                        <form class="form-group-all col-md-4" th:method="post" th:action="updateInfo">
+                            <input th:type="hidden" th:name="memberId" th:value="${member.memberId}"/>
+                            <div class="form-group">
+                                <label for="inputName">이름</label>
+                                <input type="text" th:name="memberName" class="form-control" id="inputName"
+                                       th:value="${member.memberName}" th:readonly="true">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail">이메일</label>
+                                <input type="email" th:name="memberEmail" class="form-control" id="exampleInputEmail"
+                                       th:placeholder="${member.memberEmail?:''}" th:value="${member.memberEmail?:''}">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputNickName">별명</label>
+                                <input type="text" th:name="nickName" class="form-control" id="exampleInputNickName"
+                                       th:placeholder="${member.nickName?:''}" th:value="${member.nickName?:''}">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputTelephoneNumber">전화번호</label>
+                                <input type="text" th:name="memberTel" class="form-control"
+                                       id="exampleInputTelephoneNumber"
+                                       th:placeholder="${member.memberTel?:''}" th:value="${member.memberTel?:''}">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputAddr">주소</label>
+                                <input type="text" th:name="memberAddr" class="form-control" id="exampleInputAddr"
+                                       th:placeholder="${member.memberAddr?:''}" th:value="${member.memberAddr?:''}">
+                            </div>
+                            <button type="submit" class="btn btn-primary">회원 정보 수정</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="nav-myPasswordSettings" role="tabpanel"
+                     aria-labelledby="nav-myPasswordSettings-tab">
+                    <div class="container">
+                        <form class="form-group-all col-md-4" th:action="updatePassword" th:method="post">
+                            <input th:type="hidden" th:name="memberId" th:value="${member.memberId}"/>
+                            <div class="form-group">
+                                <label for="inputNewPassword">새 비밀번호</label>
+                                <input type="password" class="form-control" th:name="userpw" id="inputNewPassword">
+                            </div>
+                            <div class="form-group">
+                                <label for="inputConfirmPassword">새 비밀번호 확인</label>
+                                <input type="password" class="form-control" id="inputConfirmPassword">
+                            </div>
+                            <div><span id="message"></span></div>
+                            <button type="submit" id="submit-pass" class="btn btn-primary">비밀번호 변경</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

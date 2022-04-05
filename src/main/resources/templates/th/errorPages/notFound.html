@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="th/layout/defaultLayout">
+<head>
+    <meta charset="UTF-8">
+    <title>메인</title>
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/mainContent.css}">
+        <link rel="stylesheet" th:href="@{/css/sidebar.css}">
+    </th:block>
+
+</head>
+<body>
+<div layout:fragment="content">
+
+    <img  th:src="@{'/uploadImg/errorImg/notfound.png'}" class="rounded mx-auto d-block my-5">
+
+</div>
+</body>
+</html>
