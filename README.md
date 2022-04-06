@@ -73,3 +73,11 @@ thehouse Project 수정본.
 * askBoardList와 askSearchList 메소드 합쳐서 처리하고 view도 askBoardList.html 하나만 사용하도록 수정.
 * 비로그인 회원 글 접근시에 askBoardDetailNonMem으로 접근하던것 askBoardDetail로 접근하도록 수정.
 * 동일하게 photoBoardDetailNonMem도 photoBoardDetail로 접근하도록 수정.
+
+### 22/04/06
+* insertPhotoProc 메소드 처리시에 Controller에서 모든 처리 했었고 updatePhotoProc에서는 service에서 처리했었는데   
+  insert도 service로 빼면서 이미지 저장 및 vo에 set해주는 부분 분리해 update와 insert 모두 해당 메소드 통해서   
+  파일 저장 및 vo에 넣어주는 방법으로 수정.
+* 기존 코드들은 모두 주석처리해서 하단에 남겨둠.
+* 이미지 게시판 게시글 삭제시 이미지파일 삭제 코드 누락된것 추가.   
+  service에서 처리하도록 구현.

@@ -30,8 +30,9 @@
             , houseCode
             , placeCode
             , likeCount
-            , scrapCount )
-        VALUE (
+            , scrapCount
+            )
+        VALUES (
             #{memberId}
             , #{photoContent}
             , curdate()
@@ -89,10 +90,6 @@
         WHERE
             p.photoBoardNo = #{photoBoardNo}
     </select>
-
-    <!--<select id="photoDetail"  resultType="PhotoBoardVO">
-        SELECT * FROM photodetail WHERE photoBoardNo = #{photoBoardNo}
-    </select>-->
 
     <select id="userPhoto" resultType="PhotoBoardVO">
         SELECT photoBoardNo, photoImg1
@@ -164,7 +161,8 @@
     <insert id="scrap" parameterType="ScrapVO">
         INSERT INTO scrap(
             memberId
-            , photoBoardNo)
+            , photoBoardNo
+            )
         VALUES (
             #{memberId}
             , #{photoBoardNo}

@@ -223,7 +223,24 @@ function update(idx) {
 
 function del(idx){
     var photoBoardNo = idx;
-    location.href = "/photodelete/" + photoBoardNo;
+
+    var BoardNo = {
+        photoBoardNo : idx,
+        photoCount : $(".card-detail-card-image__image").length,
+    };
+
+    $.ajaxSettings.traditional = true;
+    $.ajax({
+        type: "post",
+        url: "/photodelete",
+        data: BoardNo,
+        success : function(data){
+
+            location.href = "/photoBoardList";
+        },
+    });
+
+    // location.href = "/photodelete/" + photoBoardNo;
 };
 
 $(function(){
