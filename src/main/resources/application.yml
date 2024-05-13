@@ -29,8 +29,8 @@ spring:
       client:
         registration:
           google:
-            client-id: 932323453386-c35qir2hsql97gji2b80b34btdja99jl.apps.googleusercontent.com
-            client-secret: _GSWMfIo02A1e-tSkgVidzoW
+            client-id: 
+            client-secret: 
   servlet:
     multipart:
       max-file-size: 10MB
@@ -40,11 +40,11 @@ spring:
 custom:
   oauth2:
     kakao:
-      client-id: c31c215f87b80a727a35582cd9d5a8df
-      client-secret: kvl9b59Gc2XCTe5Pe2cp0v82vnju223p
+      client-id: 
+      client-secret: 
     naver:
-      client-id: bEUVMecxliZdQ5VS6QxI
-      client-secret: ar1yy6uKAb
+      client-id: 
+      client-secret: 
 
 
 # server port
