@@ -45,7 +45,7 @@
 
 <br />
 
-<img src="./src/main/webapp/image/README_image/erd.jpg">
+<img src="./src/main/webapp/image/README_image/new_ERD.jpg">
 
 <br />
 
